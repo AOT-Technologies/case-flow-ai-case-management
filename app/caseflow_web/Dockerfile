@@ -31,4 +31,8 @@ RUN mkdir /app
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
+# Set proper permissions and ownership for nginx directories
+RUN mkdir -p /var/cache/nginx/client_temp \
+    && chown -R nginx:nginx /var/cache/nginx
+
 CMD ["nginx", "-g", "daemon off;"]
