@@ -20,7 +20,11 @@ RUN npm run build
 FROM nginx:1.17-alpine as production-stage
 
 # Create necessary directories with appropriate permissions
-RUN mkdir -p /var/cache/nginx/client_temp && \
+RUN mkdir -p /var/cache/nginx/client_temp \
+             /var/cache/nginx/proxy_temp \
+             /var/cache/nginx/fastcgi_temp \
+             /var/cache/nginx/uwsgi_temp \
+             /var/cache/nginx/scgi_temp && \
     chown -R nginx:nginx /var/cache/nginx
 
 RUN mkdir /app
