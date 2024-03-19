@@ -22,7 +22,7 @@ RUN npm install react-scripts@3.4.1 -g --silent
 RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
 # add app files
-COPY . ./case-flow-web
+COPY . /case-flow-web/app/
 
 RUN npm run build
 
