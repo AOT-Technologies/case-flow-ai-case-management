@@ -1,29 +1,31 @@
-# base image
-FROM node:14.17.0-alpine as build-stage
+# "build-stage", based on Node.js, to build and compile the frontend
+# pull official base image
+FROM node:14-alpine as build-stage
+
+# set working directory
+WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /node_modules/.bin:$PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
 
-# install and cache app dependencies
-COPY ./package*.json ./
-RUN npm ci
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+
+# create and set user permissions to app folder
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+# add app files
 COPY . ./
 
 RUN npm run build
 
-FROM artifacts.developer.gov.bc.ca/redhat-access-docker-remote/ubi8/nginx-122 AS deployer
-
-USER default
-
-# Copy the app built on build-stage to the resulting container.
-COPY --from=build-stage /opt/app-root/src/dist .
-
-# Copy the default.conf to /etc/nginx/conf.d
-COPY --from=builder /opt/app-root/src/default.conf /etc/nginx/conf.d
-
-COPY ./nginx.conf /etc/nginx/nginx.conf
-# Start nginx with the appropriate command
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.17 as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["nginx", "-g", "daemon off;"]
