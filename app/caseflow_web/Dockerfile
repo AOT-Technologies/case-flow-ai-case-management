@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:1.17-alpine as production-stage
+FROM registry.access.redhat.com/ubi8/nginx as production-stage
 
 # Set the user to root explicitly
 USER nginx;
