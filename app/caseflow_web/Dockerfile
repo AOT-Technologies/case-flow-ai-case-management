@@ -19,20 +19,14 @@ RUN npm run build
 # Production stage
 FROM nginx:1.17-alpine as production-stage
 
-# Create necessary directories with appropriate permissions
-RUN mkdir -p /var/cache/nginx/client_temp \
-             /var/cache/nginx/proxy_temp \
-             /var/cache/nginx/fastcgi_temp \
-             /var/cache/nginx/uwsgi_temp \
-             /var/cache/nginx/scgi_temp \
-             /var/run/nginx && \
-    chown -R nginx:nginx /var/cache/nginx \
-                         /var/run/nginx && \
-    chmod 777 /var/run/nginx.pid
-
-RUN mkdir /app
-
-COPY --from=build-stage /app/build /usr/share/nginx/html
+# Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Copy build files from the build stage
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+# Expose port 8080
+EXPOSE 8080
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
