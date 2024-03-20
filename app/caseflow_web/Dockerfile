@@ -7,10 +7,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json package-lock.json ./
 
-# Run npm install and other build steps as root
-USER root
-
-RUN npm install --silent
+RUN npm install
 
 RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
@@ -22,7 +19,7 @@ RUN npm run build
 FROM nginx:1.17-alpine as production-stage
 
 # Set the user to root explicitly
-USER root
+USER nginx;
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
