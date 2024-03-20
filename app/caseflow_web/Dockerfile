@@ -1,29 +1,29 @@
-# Build stage
-FROM node:14-alpine as build-stage
+# Use a smaller base image for the build stage
+FROM node:latest AS build-stage
 
+# Set working directory
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
-
+# Copy package.json and package-lock.json separately to leverage Docker caching
 COPY package.json package-lock.json ./
 
-RUN npm install
+# Install dependencies
+RUN npm install --silent
 
+# Add app files
 COPY . .
 
+# Build the app
 RUN npm run build
 
-# Production stage
-FROM registry.access.redhat.com/ubi8/nginx as production-stage
+# Use a smaller base image for the production stage
+FROM nginx:1.21 AS production-stage
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy build files from the build stage
+# Copy built files from the build stage to Nginx's HTML directory
 COPY --from=build-stage /app/build /usr/share/nginx/html
 
-# Expose port 8080
-EXPOSE 8080
+# Copy custom NGINX configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Start Nginx
+# Command to run Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
