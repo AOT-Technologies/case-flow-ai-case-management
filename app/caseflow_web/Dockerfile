@@ -9,17 +9,12 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
-
 COPY . .
 
 RUN npm run build
 
 # Production stage
 FROM registry.access.redhat.com/ubi8/nginx as production-stage
-
-# Set the user to root explicitly
-USER nginx;
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
