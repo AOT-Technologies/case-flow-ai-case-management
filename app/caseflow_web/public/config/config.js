@@ -45,5 +45,5 @@ window["_env_"] = {
 
     REACT_APP_FORMSFLOW_WEB_URL:'https://forms-flow-web-a358eb-dev.apps.silver.devops.gov.bc.ca',
 
-    REACT_APP_GENERIC_NAME : Case
+    REACT_APP_GENERIC_NAME : 'Case'
   };
