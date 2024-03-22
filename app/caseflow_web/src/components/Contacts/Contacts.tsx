@@ -24,14 +24,13 @@ const Contacts = () => {
   
   const navigate = useNavigate();
   const [filteredContactDetails, setFilteredContactDetails] = useState([]);
-  const [searchField, setSearchField] = useState();
+  const [searchField, setSearchField] = useState("");
   const [firstname, setFirstname]:any = useState();
   const [lastname, setLastname]:any = useState();
   const [phonenumber, setPhonenumber]:any = useState();
   const [email, setEmail]:any = useState();
   const [dateofbirth, setDateofbirth]:any = useState();
   const [address, setAddress]:any = useState();
-  const [searchColumn, setSearchColumn] = useState("firstname");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   
   const [isCreateContactOpen, setOpenCreateContactPopup] = useState(false);
@@ -51,11 +50,8 @@ const Contacts = () => {
     let searchResult = await getContactsData(
       selectedPage,
       searchField,
-      searchColumn,
-      null,
-      null
     );
-    let searchResultContacts = searchResult?.map((element) => {
+    let searchResultContacts = searchResult?.CaseflowContacts?.map((element) => {
       return { ...element, status: "Open" };
     });
 
@@ -81,15 +77,13 @@ const Contacts = () => {
     let searchResult = await getContactsData(
       selectedPage,
       searchField,
-      searchColumn,
-      null,
-      null
     );
-    let searchResultContacts = searchResult?.map((element) => {
+    console.log(searchResult, 'searchResult')
+    let searchResultContacts = searchResult?.CaseflowContacts?.map((element) => {
       return {
-        title: element.id + " - " + element.firstname,
-        content: element.firstname,
-        subtitle: GENERIC_NAME,
+        title: element.id + " - " + element.firstname +" "+ element.lastname,
+        content: element.phonenumber,
+        subtitle: 'Ph: ',
         link: "/private/contacts/" + element.id + "/details",
         imgIcon: require("../../assets/ContactsIcon.png"),
       };
@@ -115,7 +109,7 @@ const Contacts = () => {
 
   useEffect(() => {
     searchContactsDetails();
-  }, [searchField, searchColumn]);
+  }, [searchField]);
 
 const handleCreatNewContact = ()=> {
     setOpenCreateContactPopup(true);
@@ -180,16 +174,6 @@ const handleCreatNewContact = ()=> {
                     id="outlined-multiline-flexible" sx={{marginRight: 1}}
                     onChange={(e)=> setDateofbirth(e.target.value)}/>
             </div>
-            <div>
-                <Typography variant="subtitle1">Individual Name</Typography>
-                <TextField
-                    id="outlined-multiline-flexible"sx={{marginRight: 1}}/>
-            </div>
-              <div>
-                <Typography variant="subtitle1">Individual Birthdate</Typography>
-                <TextField type="date"
-                    id="outlined-multiline-flexible"/>
-            </div>
         </div>
         
           </FormControl>
@@ -216,7 +200,7 @@ const handleCreatNewContact = ()=> {
           <Search
             setSearchField={setSearchField}
             dropDownArray={dropDownArray}
-            setSearchColumn={setSearchColumn}
+            setSearchColumn={()=>{}}
             dropDownValues={searchResults}
           ></Search>
         </div>

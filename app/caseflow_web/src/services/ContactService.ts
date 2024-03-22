@@ -2,7 +2,7 @@ import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
   CREATE_NEW_CASEFLOW_CONTACT,
-  FETCH_ALL,
+  FETCH_ALL_CONTACTS_DATA,
   FETCH_DATA,
   UPDATE_NEW_CASEFLOW_CONTACT,
 } from "../graphql/contactRequest";
@@ -35,9 +35,6 @@ export const getContactDetails = async (id) => {
 export const getContactsData = async (
   number,
   searchField,
-  searchColumn,
-  fromDate,
-  toDate
 ) => {
   const url = LOBURL;
   const skip = (number - 1) * Number(PAGINATION_TAKE);
@@ -45,20 +42,11 @@ export const getContactsData = async (
   const output = await httpPOSTRequest(
     url,
     {
-      query: print(FETCH_ALL),
+      query: print(FETCH_ALL_CONTACTS_DATA),
       variables: {
-        // searchField: searchField,
-        // searchColumn: searchColumn,
+        searchField: searchField,
         Skip: skip,
         Take: Number(PAGINATION_TAKE),
-        // fromDate:
-        // fromDate && fromDate.$d
-        //   ? moment(fromDate.$d).format("YYYY-MM-DD")
-        //   : "",
-        // toDate:
-        //   toDate && toDate.$d
-        //     ? moment(toDate.$d).format("YYYY-MM-DD")
-        //     : moment().format("YYYY-MM-DD"),
       },
     },
     null
@@ -70,8 +58,8 @@ export const getContactsData = async (
       console.log(err);
       return {};
     });
-
-  return output?.getContactsList?.CaseflowContacts;
+  console.log(output, 'output')
+  return output?.searchCaseflowContacts;
 };
 
 export const createNewContact = async (data) => {

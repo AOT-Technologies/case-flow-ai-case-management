@@ -62,62 +62,35 @@ export class CaseflowIndividualsService {
 
   async searchCaseflowIndividuals(
     searchField,
-    searchColumn,
     skip,
     take,
-    fromDate,
-    toDate,
   ) {
     try {
-      if (fromDate === '') fromDate = '2000-01-01';
-
-      if (searchColumn) {
-        if (searchField.length !== 0) {
-          switch (searchColumn) {
-            case 'firstname': {
-              const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
-                .createQueryBuilder('table')
-                .where('table.firstname = :firstname', {
-                  firstname: searchField,
-                })
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-
-                .orderBy({ 'table.id': 'DESC' })
-                .take(take)
-                .skip(skip)
-                .getManyAndCount();
-              return { CaseflowIndividuals, totalCount };
-            }
-            default:
-              const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
-                .createQueryBuilder('table')
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-                .orderBy({ 'table.id': 'DESC' })
-                .take(take)
-                .skip(skip)
-                .getManyAndCount();
-              return { CaseflowIndividuals, totalCount };
-          }
-        } else {
-          const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
-            .createQueryBuilder('table')
-            .andWhere('table.createdAt >= :start_at', { start_at: fromDate })
-            .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-            .orderBy({ 'table.id': 'DESC' })
-            .take(take)
-            .skip(skip)
-
-            .getManyAndCount();
-          return { CaseflowIndividuals, totalCount };
-        }
+     
+      if (searchField) {
+        const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
+              .createQueryBuilder('table')
+              .where('table.firstname ilike :firstname', {
+                firstname: `%${searchField}%` ,
+              }).orWhere('table.lastname ilike :lastname', {
+                lastname: `%${searchField}%` ,
+              }).orWhere('table.phonenumber ilike :phonenumber', {
+                phonenumber: `%${searchField}%` ,
+              })
+              .orderBy({ 'table.id': 'DESC' })
+              .take(take)
+              .skip(skip)
+              .getManyAndCount();
+            return { CaseflowIndividuals, totalCount };
       } else {
-        return new HttpException('select a field', HttpStatus.BAD_REQUEST);
+        const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
+          .createQueryBuilder('table')
+          .orderBy({ 'table.id': 'DESC' })
+          .take(take)
+          .skip(skip)
+
+          .getManyAndCount();
+        return { CaseflowIndividuals, totalCount };
       }
     } catch (err) {
       return new HttpException(

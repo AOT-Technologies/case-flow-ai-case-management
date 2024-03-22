@@ -32,11 +32,8 @@ export class CaseflowContactsResolver {
   ): Promise<any> | HttpException {
     return this.caseflowContactsService.searchCaseflowContacts(
       args.searchField,
-      args.searchColumn,
       args.skip,
       args.take,
-      args.fromDate,
-      args.toDate,
     );
   }
 

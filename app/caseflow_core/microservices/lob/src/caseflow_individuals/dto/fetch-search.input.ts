@@ -7,17 +7,6 @@ export class FetchSearchArgs {
   @IsString()
   searchField;
 
-  @Field(() => String)
-  @IsString()
-  searchColumn;
-
-  @Field(() => String)
-  @IsString()
-  fromDate;
-
-  @Field(() => String)
-  @IsString()
-  toDate;
 
   @Field(() => Int)
   @IsInt()

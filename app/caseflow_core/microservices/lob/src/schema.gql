@@ -81,10 +81,10 @@ type Query {
   searchCaseflowLob(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
   getContactsById(id: Int!): CaseflowContacts!
   getContactsList(skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
-  searchCaseflowContacts(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
+  searchCaseflowContacts(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
   getIndividualsById(id: Int!): CaseflowIndividuals!
   getIndividualsList(skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
-  searchCaseflowIndividuals(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
+  searchCaseflowIndividuals(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
 }
 
 type Mutation {

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Search from "../Search/Search";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
-import PolicyHeader from "../PolicyHeader/PolicyHeader";
 import "./IndividualDetails.scss";
 import moment from "moment";
 import { getIndividualDetails } from "../../services/IndividualService";
@@ -48,12 +46,6 @@ const IndividualDetail = () => {
           <Typography variant="body1" className="title">
             CaseFlow
           </Typography>
-          <div className="search">
-            <Search
-              setSearchField={() => { } }
-              dropDownArray={[]}
-              setSearchColumn={() => { } } dropDownValues={undefined}            ></Search>
-          </div>
         </div>
       </div>
       <section className="lob-detail-container">

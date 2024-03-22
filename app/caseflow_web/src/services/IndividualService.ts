@@ -2,7 +2,7 @@ import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
   CREATE_NEW_CASEFLOW_INDIVIDUAL,
-  FETCH_ALL,
+  FETCH_ALL_INDIVIDUALS_DATA,
   FETCH_DATA,
   UPDATE_NEW_CASEFLOW_INDIVIDUAL,
 } from "../graphql/individualRequest";
@@ -35,9 +35,6 @@ export const getIndividualDetails = async (id) => {
 export const getIndividualsData = async (
   number,
   searchField,
-  searchColumn,
-  fromDate,
-  toDate
 ) => {
   const url = LOBURL;
   const skip = (number - 1) * Number(PAGINATION_TAKE);
@@ -45,20 +42,11 @@ export const getIndividualsData = async (
   const output = await httpPOSTRequest(
     url,
     {
-      query: print(FETCH_ALL),
+      query: print(FETCH_ALL_INDIVIDUALS_DATA),
       variables: {
-        // searchField: searchField,
-        // searchColumn: searchColumn,
+        searchField: searchField,
         Skip: skip,
         Take: Number(PAGINATION_TAKE),
-        // fromDate:
-        // fromDate && fromDate.$d
-        //   ? moment(fromDate.$d).format("YYYY-MM-DD")
-        //   : "",
-        // toDate:
-        //   toDate && toDate.$d
-        //     ? moment(toDate.$d).format("YYYY-MM-DD")
-        //     : moment().format("YYYY-MM-DD"),
       },
     },
     null
@@ -71,7 +59,7 @@ export const getIndividualsData = async (
       return {};
     });
 
-  return output?.getIndividualsList?.CaseflowIndividuals;
+  return output?.searchCaseflowIndividuals;
 };
 
 export const createNewIndividual = async (data) => {

@@ -33,6 +33,24 @@ const RecentIndividualCard = (props) => {
             viewindividualDetails(individual);
           }}
         >
+          <Grid item xs={1}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {individual.id}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
           <Grid item xs={2}>
             <ListItemText
               className="caseName-case-list"
@@ -101,7 +119,7 @@ const RecentIndividualCard = (props) => {
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <ListItemText
               className="caseName-case-list"
               primary={

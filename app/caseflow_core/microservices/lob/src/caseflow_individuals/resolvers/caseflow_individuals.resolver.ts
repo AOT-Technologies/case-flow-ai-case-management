@@ -32,11 +32,8 @@ export class CaseflowIndividualsResolver {
   ): Promise<any> | HttpException {
     return this.caseflowIndividualsService.searchCaseflowIndividuals(
       args.searchField,
-      args.searchColumn,
       args.skip,
       args.take,
-      args.fromDate,
-      args.toDate,
     );
   }
 

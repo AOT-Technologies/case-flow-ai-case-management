@@ -43,19 +43,13 @@ export const FETCH_ALL = gql`
 export const FETCH_ALL_CONTACTS_DATA = gql`
   query searchContacts(
     $searchField: String!
-    $searchColumn: String!
     $Skip: Int
     $Take: Int
-    $fromDate: String!
-    $toDate: String!
   ) {
     searchCaseflowContacts(
       searchField: $searchField
-      searchColumn: $searchColumn
       skip: $Skip
       take: $Take
-      fromDate: $fromDate
-      toDate: $toDate
     ) {
       totalCount
       CaseflowContacts {

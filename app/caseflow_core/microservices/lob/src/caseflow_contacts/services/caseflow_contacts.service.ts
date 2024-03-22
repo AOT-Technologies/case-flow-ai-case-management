@@ -62,62 +62,35 @@ export class CaseflowContactsService {
 
   async searchCaseflowContacts(
     searchField,
-    searchColumn,
-    skip,
+    skip, 
     take,
-    fromDate,
-    toDate,
   ) {
     try {
-      if (fromDate === '') fromDate = '2000-01-01';
 
-      if (searchColumn) {
-        if (searchField.length !== 0) {
-          switch (searchColumn) {
-            case 'firstname': {
-              const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
-                .createQueryBuilder('table')
-                .where('table.firstname = :firstname', {
-                  firstname: searchField,
-                })
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-
-                .orderBy({ 'table.id': 'DESC' })
-                .take(take)
-                .skip(skip)
-                .getManyAndCount();
-              return { CaseflowContacts, totalCount };
-            }
-            default:
-              const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
-                .createQueryBuilder('table')
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-                .orderBy({ 'table.id': 'DESC' })
-                .take(take)
-                .skip(skip)
-                .getManyAndCount();
-              return { CaseflowContacts, totalCount };
-          }
-        } else {
-          const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
-            .createQueryBuilder('table')
-            .andWhere('table.createdAt >= :start_at', { start_at: fromDate })
-            .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-            .orderBy({ 'table.id': 'DESC' })
-            .take(take)
-            .skip(skip)
-
-            .getManyAndCount();
-          return { CaseflowContacts, totalCount };
-        }
+      if (searchField) {
+        const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
+              .createQueryBuilder('table')
+              .where('table.firstname ilike :firstname', {
+                firstname: `%${searchField}%` ,
+              }).orWhere('table.lastname ilike :lastname', {
+                lastname: `%${searchField}%` ,
+              }).orWhere('table.phonenumber ilike :phonenumber', {
+                phonenumber: `%${searchField}%` ,
+              })
+              .orderBy({ 'table.id': 'DESC' })
+              .take(take)
+              .skip(skip)
+              .getManyAndCount();
+            return { CaseflowContacts, totalCount };
       } else {
-        return new HttpException('select a field', HttpStatus.BAD_REQUEST);
+        const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
+          .createQueryBuilder('table')
+          .orderBy({ 'table.id': 'DESC' })
+          .take(take)
+          .skip(skip)
+
+          .getManyAndCount();
+        return { CaseflowContacts, totalCount };
       }
     } catch (err) {
       return new HttpException(

@@ -24,14 +24,13 @@ const Individuals = () => {
   
   const navigate = useNavigate();
   const [filteredIndividualsDetails, setFilteredIndividualsDetails] = useState([]);
-  const [searchField, setSearchField] = useState();
+  const [searchField, setSearchField] = useState("");
   const [firstname, setFirstname]:any = useState();
   const [lastname, setLastname]:any = useState();
   const [phonenumber, setPhonenumber]:any = useState();
   const [email, setEmail]:any = useState();
   const [dateofbirth, setDateofbirth]:any = useState();
   const [address, setAddress]:any = useState();
-  const [searchColumn, setSearchColumn] = useState("firstname");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   
   const [isCreateIndividualOpen, setOpenCreateIndividualPopup] = useState(false);
@@ -50,12 +49,9 @@ const Individuals = () => {
   const filterDocumentDetails = async () => {
     let searchResult = await getIndividualsData(
       selectedPage,
-      searchField,
-      searchColumn,
-      null,
-      null
+      searchField
     );
-    let searchResultIndividuals = searchResult?.map((element) => {
+    let searchResultIndividuals = searchResult?.CaseflowIndividuals?.map((element) => {
       return { ...element, status: "Open" };
     });
 
@@ -81,15 +77,12 @@ const Individuals = () => {
     let searchResult = await getIndividualsData(
       selectedPage,
       searchField,
-      searchColumn,
-      null,
-      null
     );
-    let searchResultIndividuals = searchResult?.map((element) => {
+    let searchResultIndividuals = searchResult?.CaseflowIndividuals?.map((element) => {
       return {
-        title: element.id + " - " + element.firstname,
-        content: element.firstname,
-        subtitle: GENERIC_NAME,
+        title: element.id + " - " + element.firstname +" "+ element.lastname,
+        content: element.phonenumber,
+        subtitle: 'Ph: ',
         link: "/private/individuals/" + element.id + "/details",
         imgIcon: require("../../assets/ContactsIcon.png"),
       };
@@ -115,7 +108,7 @@ const Individuals = () => {
 
   useEffect(() => {
     searchIndividualsDetails();
-  }, [searchField, searchColumn]);
+  }, [searchField]);
 
 const handleCreatNewIndividual = ()=> {
     setOpenCreateIndividualPopup(true);
@@ -206,7 +199,7 @@ const handleCreatNewIndividual = ()=> {
           <Search
             setSearchField={setSearchField}
             dropDownArray={dropDownArray}
-            setSearchColumn={setSearchColumn}
+            setSearchColumn={()=>{}}
             dropDownValues={searchResults}
           ></Search>
         </div>

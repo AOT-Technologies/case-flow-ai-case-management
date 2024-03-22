@@ -55,6 +55,28 @@ const IndividualList = React.memo(
 
         <List>
           <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
+          <Grid
+              item
+              xs={1}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "id",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-individual-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Id
+                  </Typography>
+                }
+              />
+              </Grid>
             <Grid
               item
               xs={2}
@@ -136,7 +158,7 @@ const IndividualList = React.memo(
             </Grid>
             <Grid
               item
-              xs={2}
+              xs={3}
               onClick={() =>
                 setSortSetting({
                   orderBy: "dateOfBirth",
