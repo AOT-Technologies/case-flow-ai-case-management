@@ -9,7 +9,7 @@ window["_env_"] = {
     REACT_APP_KEYCLOAK_URL_REALM:'forms-flow-ai',
 
     // Keycloak base URL
-    REACT_APP_KEYCLOAK_URL:'https://socialsector-sso-dev.apps.gov.bc.ca/admin/formsflow-ai/console/',
+    REACT_APP_KEYCLOAK_URL:'https://socialsector-sso-dev.apps.gov.bc.ca/admin/formsflow-ai/console',
 
 
     // caseflow web Api End point
