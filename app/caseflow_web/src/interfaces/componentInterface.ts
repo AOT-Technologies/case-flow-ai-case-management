@@ -50,8 +50,32 @@ export interface caseListprops {
 export interface Case {
   id: number;
   name: string;
-  description: string;
   status: string;
+  email: string;
+  individualName: string;
+  contactName: string;
+  phoneNumber: number;
+  dateofbirth: Date;
+  city: string;
+  province: string;
+  issueType: String;
+  description: string;
+  caseOwner: string;
+  resolutionSought: string;
+}
+
+export interface Contact {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+}
+
+export interface Individual {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
 }
 
 export interface BreadCrumbs {

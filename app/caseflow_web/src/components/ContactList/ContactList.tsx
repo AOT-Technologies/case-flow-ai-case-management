@@ -16,6 +16,8 @@ import {
   GENERIC_NAME,
   PAGINATION_TAKE,
 } from "../../apiManager/endpoints/config";
+import RecentContactCard from "../RecentContactCard/RecentContactCard";
+import { Contact } from "../../interfaces/componentInterface";
 
 const ContactList = React.memo(
   ({ config, allRecentContacts, setSortSetting, sortSetting }: any) => {
@@ -53,12 +55,34 @@ const ContactList = React.memo(
 
         <List>
           <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
+          <Grid
               item
-              xs={1.5}
+              xs={1}
               onClick={() =>
                 setSortSetting({
-                  orderBy: "firstName",
+                  orderBy: "id",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-contact-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Contact ID
+                  </Typography>
+                }
+              />
+              </Grid>
+            <Grid
+              item
+              xs={2}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "firstname",
                   orderType: !sortSetting.orderType,
                 })
               }
@@ -77,7 +101,7 @@ const ContactList = React.memo(
               </Grid>
               <Grid
               item
-              xs={1.5}
+              xs={2}
               onClick={() =>
                 setSortSetting({
                   orderBy: "lastName",
@@ -99,7 +123,7 @@ const ContactList = React.memo(
             </Grid>
             <Grid
               item
-              xs={1.5}
+              xs={2}
               onClick={() =>
                 setSortSetting({
                   orderBy: "phoneNumber",
@@ -119,7 +143,7 @@ const ContactList = React.memo(
                 }
               />
             </Grid>
-            <Grid item xs={1.5}>
+            <Grid item xs={2}>
               <ListItemText
                 primary={
                   <Typography
@@ -132,22 +156,9 @@ const ContactList = React.memo(
                 }
               />
             </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              />
-            </Grid> */}
             <Grid
               item
-              xs={1.5}
+              xs={3}
               onClick={() =>
                 setSortSetting({
                   orderBy: "dateOfBirth",
@@ -167,663 +178,11 @@ const ContactList = React.memo(
                 }
               />
             </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    Address
-                  </Typography>
-                }
-              />
-            </Grid>
           </Grid>
           <Divider sx={{ border: 1, color: "#606060" }} />
-<Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "firstName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    James 
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "lastName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Smith
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "phoneNumber",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    +1613555015
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    smith@test.com
-                  </Typography>
-                }
-              />
-            </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              /> 
-            </Grid> */}
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "dateOfBirth",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    1989-10-29
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    123 Main St, Anytown, CA
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "firstName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    James
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "lastName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Johnson
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "phoneNumber",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    +13435550118
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    james@test.com
-                  </Typography>
-                }
-              />
-            </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              /> 
-            </Grid> */}
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "dateOfBirth",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    1948-12-20
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    456 Elm St, Notown, CA
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "firstName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Shruti
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "lastName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    James
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "phoneNumber",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    +19055550138
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    shruti@test.com
-                  </Typography>
-                }
-              />
-            </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              /> 
-            </Grid> */}
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "dateOfBirth",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    2022-10-24
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    789 Oak St, Anytown, CA
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "firstName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Robin
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "lastName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    James
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "phoneNumber",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    +16135518121
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    robin@test.com
-                  </Typography>
-                }
-              />
-            </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              /> 
-            </Grid> */}
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "dateOfBirth",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    2013-08-20
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    321 Pine St, Nowhere, CA
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "firstName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Samuel
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "lastName",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    James
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "phoneNumber",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    +16135550182
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    sam@test.com
-                  </Typography>
-                }
-              />
-            </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Address
-                  </Typography>
-                }
-              /> 
-            </Grid> */}
-            <Grid
-              item
-              xs={1.5}
-              onClick={() =>
-                setSortSetting({
-                  orderBy: "dateOfBirth",
-                  orderType: !sortSetting.orderType,
-                })
-              }
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-contact-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    1984-02-12
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-individual-card-style"
-                  >
-                    6 Birch St, Anywhere, CA
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-          {/* {allRecentContacts.length != 0 ? (
+          {allRecentContacts.length != 0 ? (
             allRecentContacts.map((eachcontacts: Contact) => (
-              <RecentContactcard contact={eachcontacts} key={eachcontacts.id} />
+              <RecentContactCard contact={eachcontacts} key={eachcontacts.id} />
             ))
           ) : (
             <ListItem>
@@ -838,7 +197,7 @@ const ContactList = React.memo(
                 </Grid>
               </Grid>
             </ListItem>
-          )} */}
+          )}
         </List>
         {config.pagination && totalPCount > 1 && (
           <Pagination
