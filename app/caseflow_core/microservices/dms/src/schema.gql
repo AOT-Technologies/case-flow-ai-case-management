@@ -61,6 +61,7 @@ type CaseDocuments {
   latestversion: String
   isdeleted: Boolean
   type: String
+  size: Float
   cases: Cases!
   versions: [Versions!]
 }
@@ -68,7 +69,7 @@ type CaseDocuments {
 type Query {
   documents: [CaseDocuments!]!
   getCaseDocument(id: Int!): [CaseDocuments!]!
-  SearchCaseDocument(searchField: String!, searchColumn: String!, orderBy: String!, orderType: String!): [CaseDocuments!]!
+  SearchCaseDocument(searchField: String!, searchColumn: String!, toDate: String!, fromDate: String!, skip: Int! = 0, take: Int! = 25, orderBy: String!, orderType: String!): caseDocumentResponse!
   getAllversions: [Versions!]!
   version(id: Int!): Versions!
 }
@@ -77,7 +78,6 @@ type Mutation {
   createDocument(createDocumentInput: CreateDocumentInput!): CaseDocuments!
   updateDocument(updateDocumentInput: UpdateDocumentInput!): CaseDocuments!
   removeDocument(id: Float!): CaseDocuments!
-  removeVersion(id: Int!): Versions!
 }
 
 input CreateDocumentInput {
@@ -85,12 +85,13 @@ input CreateDocumentInput {
   documentref: String!
   desc: String
   addedbyuserid: Float
-  creationdate: DateTime! = "2023-02-20T17:08:06.191Z"
+  creationdate: DateTime! = "2024-02-16T17:34:14.087Z"
   dmsprovider: Float!
   name: String!
   latestversion: String!
   isdeleted: Boolean! = false
   type: String
+  size: Float
 }
 
 input UpdateDocumentInput {
@@ -99,7 +100,7 @@ input UpdateDocumentInput {
   documentref: String!
   desc: String
   addedbyuserid: Float!
-  creationdate: DateTime! = "2023-02-20T17:08:06.192Z"
+  creationdate: DateTime! = "2024-02-16T17:34:14.088Z"
   dmsprovider: Float!
   name: String!
   latestversion: String!

@@ -93,26 +93,31 @@ const CaseDetails = () => {
   ]);
   const caseDetail = {
     status: "OPEN",
-    date: "2022-11-01",
+    startDate: "2022-11-01",
     owner: "Chris Robinson",
     tasks: ["Send for approval 1", "Send for approval 2"],
     docketNum: "1234",
     courtRef: "2022-11-01",
+    dueDate: "2022-11-01",
   };
   const optionsForAction = [
-    { id: 10, code: 10, text: "Edit" },
+    { id: 11, code: 11, text: "Edit" },
     { id: 1, code: "1", text: "Start Workflow" },
     { id: 2, code: 2, text: "Wake" },
     { id: 3, code: 3, text: "Pending" },
-    { id: 4, code: 4, text: "Complete" },
-    { id: 5, code: 5, text: "Merge" },
-    { id: 6, code: 6, text: "Archive" },
-    { id: 7, code: 7, text: "Upload Document" }, 
-    { id: 8, code: 8, text: "Add Note" }, 
-    { id: 9, code: 9, text: "Delete" },
+    // { id: 4, code: 4, text: "Complete" },
+    { id: 4, code: 4, text: "Merge" },
+    { id: 5, code: 5, text: "Archive" },
+    { id: 6, code: 6, text: "Upload Document" }, 
+    { id: 7, code: 7, text: "Add Note" }, 
+    { id: 8, code: 8, text: "Delete" },
+    { id: 9, code: 9, text: "Add Communication" }, 
+    { id: 10, code: 10, text: "Close" }, 
   ];
   const [isDeleteConfirmationUpOpen, setDeleteConfirmation] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [isCommunicationOpen, setIsCommunicationOpen] = useState(false);
+  const [isRecordOutputOpen, setIsRecordOutputOpen] = useState(false);
 
   const onCloseDeletePopup = (id) => {
     setDeleteConfirmation(false);
@@ -195,6 +200,8 @@ const CaseDetails = () => {
   const [formsList, setFormsList]: any = useState([]);
   const [selectedFormDetails, setSelectedFormDetails]: any = useState();
   const [note, setNote]: any = useState();
+  const [communication, setCommunication]: any = useState();
+  const [recordOutput, setRecordOutput]: any = useState();
 
   const handleClose = (event, reason) => {
     setOpenPopup(false);
@@ -204,7 +211,14 @@ const CaseDetails = () => {
     setIsNoteOpen(false);
     setSelected(0);
   };
-
+  const handleCommunicationPopUpClose = (event, reason) => {
+    setIsCommunicationOpen(false);
+    setSelected(0);
+  };
+  const handleRecordOutputPopUpClose = (event, reason) => {
+    setIsRecordOutputOpen(false);
+    setSelected(0);
+  };
   const onChnagehandler = (event) => {
     setselectedForm(event.target.value);
   };
@@ -256,20 +270,26 @@ const CaseDetails = () => {
       case optionsForAction[3].text: {
         return changeStatus(2); // Pending
       }
-      case optionsForAction[4].text: {
-        return changeStatus(3); // Complete
-      }
-      case optionsForAction[7].text: {
+      // case optionsForAction[4].text: {
+      //   return changeStatus(3); // Complete
+      // }
+      case optionsForAction[6].text: {
         return setOpenPopup(true);
       }
       case optionsForAction[0].text: {
         return editCaseDetails(selectedCase);
       }
-       case optionsForAction[9].text: {
+       case optionsForAction[8].text: {
         return setDeleteConfirmation(true)
       }
-       case optionsForAction[8].text: {
+       case optionsForAction[7].text: {
         return setIsNoteOpen(true)
+      }
+      case optionsForAction[9].text: {
+        return setIsCommunicationOpen(true)
+      }
+      case optionsForAction[10].text: {
+        return setIsRecordOutputOpen(true)
       }
     }
   };
@@ -529,6 +549,53 @@ const CaseDetails = () => {
     }
  
   }
+  const submitCommunication = async () =>{
+    console.log(communication);
+    if(communication){
+     
+      let response = await createNewNote({ caseid : selectedCase.id,
+        userid : userName,
+        notetext : "Communication - "+communication,
+      });
+      if(response.id){
+        setSelected(0);
+        setIsCommunicationOpen(false);
+        toast.success("Communication added succesfully!");
+        await fetchCaseHistory(selectedCase.id);
+      }
+      else{
+        toast.error("Failed to  add the communication. Please try again!");
+      }
+    }
+    else{
+      toast.error("Please add some communication");
+    }
+ 
+  }
+  const submitRecordedOutput = async () =>{
+    console.log(recordOutput);
+    if(recordOutput){
+     
+      let response = await createNewNote({ caseid : selectedCase.id,
+        userid : userName,
+        notetext : "Output of the Issue - "+recordOutput,
+      });
+      if(response.id){
+        setSelected(0);
+        setIsRecordOutputOpen(false);
+        toast.success("Output of the issue recorded succesfully!");
+        await fetchCaseHistory(selectedCase.id);
+        changeStatus(3);
+      }
+      else{
+        toast.error("Failed to record output of the issue. Please try again!");
+      }
+    }
+    else{
+      toast.error("Please add output of the issue");
+    }
+ 
+  }
   return (
     <>
       <div className="details-container">
@@ -566,13 +633,14 @@ const CaseDetails = () => {
           {selectedCase && selectedCase.id ? (
             <>
               <CaseDetailData
-                name={selectedCase.name}
-                date={caseDetail.date}
+                contactName={selectedCase.name}
+                startDate={caseDetail.startDate}
                 owner={caseDetail.owner}
                 caseDescription={selectedCase.desc}
                 tasks={tasks}
-                caseType={selectedCase.casestype}
-                lobCaseId={selectedCase.lobcaseid}
+                dueDate={caseDetail.dueDate}
+                additionalInfo={selectedCase.desc}
+                individual={selectedCase.name}
               />
               <CaseDetailReference caseId={selectedCase.id} />
             </>
@@ -695,6 +763,70 @@ const CaseDetails = () => {
               onClick={submitNote}
             >
               Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
+        title="Add Communication"
+        isOpen={isCommunicationOpen}
+        setIsOpen={setIsCommunicationOpen}
+        handleClose={handleCommunicationPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+          id="outlined-multiline-flexible"
+          label="Communication"
+          sx={{border: "0px"}}
+          multiline
+          rows={4}
+          onChange={(e)=> setCommunication(e.target.value)}
+        />
+          </FormControl>
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={submitCommunication}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
+        title="Record Output of the Issue"
+        isOpen={isRecordOutputOpen}
+        setIsOpen={setIsRecordOutputOpen}
+        handleClose={handleRecordOutputPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+          id="outlined-multiline-flexible"
+          label="Record output of the Issue"
+          sx={{border: "0px"}}
+          multiline
+          rows={4}
+          onChange={(e)=> setRecordOutput(e.target.value)}
+        />
+          </FormControl>
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={submitRecordedOutput}
+            >
+              Close
             </Button>
           </FormControl>
         </div>

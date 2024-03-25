@@ -19,7 +19,8 @@ import {
   setPageSelected,
 } from "../../reducers/taskReducer";
 import { Pagination } from "@mui/material";
-import { PAGINATION_TAKE } from "../../apiManager/endpoints/config";
+import { GENERIC_NAME, PAGINATION_TAKE } from "../../apiManager/endpoints/config";
+
 
 const MyTask = () => {
   const dispatch = useDispatch();
@@ -81,7 +82,7 @@ const MyTask = () => {
                   variant="subtitle1"
                   className="recent-case-card-style"
                 >
-                  Name
+                  Task
                 </Typography>
               }
             />
@@ -98,7 +99,7 @@ const MyTask = () => {
               }
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <ListItemText
               primary={
                 <Typography
@@ -110,6 +111,18 @@ const MyTask = () => {
               }
             />
           </Grid>
+          <Grid item xs={1.5}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="subtitle1"
+                  className="recent-case-card-style"
+                >
+                  Owner
+                </Typography>
+              }
+            />
+          </Grid>
           <Grid item xs={2}>
             <ListItemText
               primary={
@@ -117,12 +130,12 @@ const MyTask = () => {
                   variant="subtitle1"
                   className="recent-case-card-style"
                 >
-                  Assigned By
+                  Complete By
                 </Typography>
               }
             />
           </Grid>
-          <Grid item xs={2} style={{ paddingLeft: "1.5rem" }}>
+          <Grid item xs={1.5} style={{ paddingLeft: "1.5rem" }}>
             <ListItemText
               primary={
                 <Typography

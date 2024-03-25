@@ -46,7 +46,7 @@ type CaseflowLobResponse {
 type Query {
   getLobById(id: Int!): CaseflowLob!
   getLobList(skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
-  searchCaseflowLob(searchField: Int!, searchColumn: String!, skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
+  searchCaseflowLob(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
 }
 
 type Mutation {
@@ -56,7 +56,6 @@ type Mutation {
 }
 
 input CreateCaseflowLobInput {
-  caseId: Int
   policyNumber: Int
   policyEffectiveDate: DateTime
   policyExpiryDate: DateTime
@@ -67,7 +66,6 @@ input CreateCaseflowLobInput {
 
 input UpdateCaseflowLobInput {
   id: Int!
-  caseId: Int
   policyNumber: Int
   policyEffectiveDate: DateTime
   policyExpiryDate: DateTime

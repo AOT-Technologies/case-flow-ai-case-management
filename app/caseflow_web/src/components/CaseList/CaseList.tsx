@@ -55,7 +55,7 @@ const CaseList = React.memo(
           <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
             <Grid
               item
-              xs={2}
+              xs={1.5}
               onClick={() =>
                 setSortSetting({
                   orderBy: "id",
@@ -77,7 +77,7 @@ const CaseList = React.memo(
             </Grid>
             <Grid
               item
-              xs={2}
+              xs={1.5}
               onClick={() =>
                 setSortSetting({
                   orderBy: "name",
@@ -92,7 +92,54 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Name
+                    Individual
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid
+              item
+              xs={1.5}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "name",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-case-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Contact
+                  </Typography>
+                }
+              />
+            </Grid>
+            {/* <Grid item xs={1.5}>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-case-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Type
+                  </Typography>
+                }
+              />
+            </Grid> */}
+            <Grid item xs={3}>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-case-card-style"
+                  >
+                    Description
                   </Typography>
                 }
               />
@@ -105,19 +152,7 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Type
-                  </Typography>
-                }
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-case-card-style"
-                  >
-                    Description
+                    Owner
                   </Typography>
                 }
               />

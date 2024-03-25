@@ -120,6 +120,8 @@ export default function MiniDrawer() {
   const routeToPath = (route) => {
     if (route.key === 2) {
       openLinkInNewTab(FORMSFLOW_WEB_URL + "/task");
+    } else if (route.key === 5) {
+      openLinkInNewTab(FORMSFLOW_WEB_URL + "/insights");
     } else {
       navigate(route.path);
     }
@@ -134,7 +136,9 @@ export default function MiniDrawer() {
     { key: 2, text: "Tasks", path: FORMSFLOW_WEB_URL + "/tasks" },
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
-    { key: 5, text: "LOB", path: "/private/lob" },
+    { key: 5, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },
+    { key: 6, text: "Individual", path: "/private/individual" },
+    { key: 7, text: "Contacts", path: "/private/contacts" },
   ];
   const { pathname } = useLocation();
   const selectedPathName = pathname.split("/").slice(0, 3).join("/");
@@ -170,7 +174,15 @@ export default function MiniDrawer() {
         );
       case 4:
         return (
-          <img alt="LOBicon" src={require("../../assets/LOBIcon.png")}></img>
+          <img alt="ReportsIcon" src={require("../../assets/ReportsIcon.png")}></img>
+        );
+      case 5:
+        return (
+          <img alt="IndividualIcon" src={require("../../assets/AssignedIcon.png")}></img>
+        );
+      case 6:
+        return (
+          <img alt="ContactIcon" src={require("../../assets/ContactsIcon.png")}></img>
         );
       default:
         return (
@@ -202,7 +214,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType(selectedType));
+    dispatch(setSelectedCaseType("employeeRegistration"));
     setOpenPopup(false);
     navigate("cases/create");
   };
@@ -267,7 +279,7 @@ export default function MiniDrawer() {
               sx={{ backgroundColor: "primary.main" }}
               onClick={() => {
                 
-                setOpenPopup(true);
+                selectForm();
               }}
             >
               <AddCircleIcon />

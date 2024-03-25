@@ -8,56 +8,76 @@ import {
 } from "../../../apiManager/endpoints/config";
 import moment from "moment";
 interface CaseDetailDataProps {
-  name: String;
-  date: any;
+  contactName: String;
+  individual: String;
+  startDate: any;
   owner: String;
   caseDescription: String;
   tasks: any;
-  caseType: any;
-  lobCaseId: number;
+  dueDate: any;
+  city: String;
+  province: String;
+  additionalInfo: String;
 }
 
 const CaseDetailData = ({
-  name,
-  date,
+  contactName,
+  individual,
+  startDate,
   owner,
   caseDescription,
   tasks,
-  caseType,
-  lobCaseId,
+  dueDate,
+  city,
+  province,
+  additionalInfo,
 }: CaseDetailDataProps) => {
   return (
     <>
       <div className="case-details">
         <div className="case-detail-name">
-          <Typography variant="subtitle1">{GENERIC_NAME} name</Typography>
-          <Typography variant="body2">{name}</Typography>
+          <Typography variant="subtitle1">Contact name</Typography>
+          <Typography variant="body2">Samuel James</Typography>
+        </div>
+        <div className="case-detail-name">
+          <Typography variant="subtitle1">Individual</Typography>
+          <Typography variant="body2">Shruti James</Typography>
         </div>
         <div className="case-detail-date">
           <Typography variant="subtitle1">Start Date</Typography>
 
           <Typography variant="body2">
-            {moment(date).format("YYYY-MM-DD")}
+          <Typography variant="body2">2024-02-14</Typography>
           </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">
+              {GENERIC_NAME} Description
+            </Typography>
+          <Typography variant="body2">Request for 50-50 Child custody</Typography>
         </div>
         <div className="case-detail-owner">
           <Typography variant="subtitle1">Owner</Typography>
           <Typography variant="body2">{owner}</Typography>
         </div>
+        <div className="case-detail-date">
+        <Typography variant="subtitle1">Due Date</Typography>
+        <Typography variant="body2">2025-02-14</Typography>
+
+        </div>
+        <div className="case-detail-city">
+          <Typography variant="subtitle1">City</Typography>
+          <Typography variant="body2">Victoria</Typography>
+        </div>
+        <div className="case-detail-province">
+          <Typography variant="subtitle1">Province</Typography>
+          <Typography variant="body2">BC</Typography>
+        </div>
         <div>
           <Typography variant="subtitle1">
-            {GENERIC_NAME} Description
-          </Typography>
-          <Typography variant="body2">{caseDescription}</Typography>
-        </div>
-        <div>
-          <Typography variant="subtitle1">{GENERIC_NAME} Type</Typography>
-          <Typography variant="body2">{caseType?.displayname}</Typography>
-        </div>
-        <div>
-          <Typography variant="subtitle1">LOB ID</Typography>
-
-          <Typography variant="body2">{lobCaseId}</Typography>
+              Additional Information
+            </Typography>
+          <Typography variant="body2">parent needs custody of the child</Typography>
         </div>
       </div>
 

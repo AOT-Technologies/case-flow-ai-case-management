@@ -34,7 +34,7 @@ const RecentCaseCard = (props) => {
             viewCaseDetails(CaseDetails);
           }}
         >
-          <Grid item xs={2}>
+          <Grid item xs={1.5}>
             <ListItemText
               primary={
                 <Typography
@@ -47,6 +47,76 @@ const RecentCaseCard = (props) => {
                   }}
                 >
                   <u>{CaseDetails.id}</u>
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.name}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.name}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          {/* <Grid item xs={1.5}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails?.casestype?.displayname}{" "}
+                </Typography>
+              }
+            />
+          </Grid> */}
+          <Grid item xs={3}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.desc}{" "}
                 </Typography>
               }
             />
@@ -69,41 +139,7 @@ const RecentCaseCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={2}>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body2"
-                  noWrap
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {CaseDetails?.casestype?.displayname}{" "}
-                </Typography>
-              }
-            />
-          </Grid>
-
-          <Grid item xs={4}>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body2"
-                  noWrap
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {CaseDetails.desc}{" "}
-                </Typography>
-              }
-            />
-          </Grid>
+          
 
           <Grid
             item

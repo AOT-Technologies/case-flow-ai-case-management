@@ -61,7 +61,7 @@ const MyTaskCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <ListItemText
               primary={
                 <Typography
@@ -79,7 +79,7 @@ const MyTaskCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1.5}>
             <ListItemText
               primary={
                 <Typography
@@ -92,13 +92,31 @@ const MyTaskCard = (props) => {
                     paddingTop: "7px",
                   }}
                 >
-                  Admin{" "}
+                  {props.task.owner}{" "}
                 </Typography>
               }
             />
           </Grid>
-
           <Grid item xs={2}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    paddingTop: "7px",
+                  }}
+                >
+                  {moment(props.task.due).format("MMMM Do, YYYY")}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={1.5}>
             <Typography className="recent-case-card-status">
               <div className="recent-case-card-status-text">Active</div>
             </Typography>

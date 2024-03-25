@@ -33,29 +33,52 @@ const LobCustom = () => {
 
   return (
     <>
+    <>
       <Typography
         variant="body1"
         sx={{ margin: "3.5rem 0  1rem ", fontSize: 24 }}
       >
-        LOB Custom Content
+        Contact Details
       </Typography>
       <Divider sx={{ border: 1, color: "#606060" }} />
-      {lobData && lobData.id ? (
-        <div className="lob-custom-content-case-detail">
-          <div>
-            <Typography variant="subtitle1">Policy Number</Typography>
-            <Typography variant="body2" color="#606060">
-              {lobData.policyNumber}
-            </Typography>
-          </div>
-          <div>
-            <Typography variant="subtitle1">Sum Assured</Typography>
-            <Typography variant="body2" color="#606060">
-              {lobData.sumAssured}
-            </Typography>
-          </div>
-
-          <div>
+      {/* {lobData && lobData.id ? ( */}
+      <div className="lob-custom-content-case-detail">
+        <div>
+          <Typography variant="subtitle1">Name</Typography>
+          <Typography variant="subtitle1">Samuel James (Parent)</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Phone No</Typography>
+          <Typography variant="subtitle1">+1613555015</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">City</Typography>
+          <Typography variant="subtitle1">Anytown</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Region</Typography>
+          <Typography variant="subtitle1">BC</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Email</Typography>
+          <Typography variant="subtitle1">james@test.com</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+          {/* <div>
             <Typography
               variant="subtitle1"
               className="lob-record-link-upper-section"
@@ -69,14 +92,83 @@ const LobCustom = () => {
                 LOB Record <LaunchIcon style={{ fontSize: ".875rem" }} />
               </Link>
             </Typography>
-          </div>
+          </div> */}
         </div>
-      ) : (
+      {/* ) : (
         <Typography variant="body1" className="no-details-found">
           No Details Found!
         </Typography>
-      )}
+      )} */}
     </>
+     <>
+     <Typography
+       variant="body1"
+       sx={{ margin: "3.5rem 0  1rem ", fontSize: 24 }}
+     >
+       Individual Details
+     </Typography>
+     <Divider sx={{ border: 1, color: "#606060" }} />
+     {/* {lobData && lobData.id ? ( */}
+     <div className="lob-custom-content-case-detail">
+     <div>
+          <Typography variant="subtitle1">Name</Typography>
+          <Typography variant="subtitle1">Shruti James (child)</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Phone No</Typography>
+          <Typography variant="subtitle1">+1613555015</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">City</Typography>
+          <Typography variant="subtitle1">Anytown</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Region</Typography>
+          <Typography variant="subtitle1">BC</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Email</Typography>
+          <Typography variant="subtitle1">james@test.com</Typography>
+          <Typography variant="body2" color="#606060">
+            
+          </Typography>
+        </div>
+
+         {/* <div>
+           <Typography
+             variant="subtitle1"
+             className="lob-record-link-upper-section"
+           ></Typography>
+           <Typography variant="body2">
+             <Link
+               onClick={navigateToLob}
+               underline="always"
+               style={{ color: "blue", cursor: "pointer" }}
+             >
+               LOB Record <LaunchIcon style={{ fontSize: ".875rem" }} />
+             </Link>
+           </Typography>
+         </div> */}
+       </div>
+     {/* ) : (
+       <Typography variant="body1" className="no-details-found">
+         No Details Found!
+       </Typography>
+     )} */}
+   </>
+   </>
   );
 };
 

@@ -33,6 +33,7 @@ type CaseEvents {
   id: ID!
   eventtypeId: Float
   artifactId: Float!
+  workflowtype: String
   casehistory: [CaseHistory!]
   eventtype: EventTypes
 }
@@ -62,6 +63,7 @@ type CaseTypes {
   code: Float!
   displaylocations: Float!
   formid: String
+  searchterm: String
   casestatus: [CaseStatuses!]
   cases: [Cases!]
 }
@@ -74,6 +76,15 @@ type CaseStatuses {
   code: String!
   casestype: CaseTypes
   cases: [Cases!]
+}
+
+type CaseNotes {
+  id: ID!
+  caseid: Float
+  creationdate: DateTime!
+  userid: Float!
+  notetext: String
+  case: Cases
 }
 
 type Cases {
@@ -97,6 +108,7 @@ type Cases {
   casehistory: [CaseHistory!]
   casestatus: CaseStatuses
   casestype: CaseTypes
+  casenote: [CaseNotes!]
 }
 
 type casesResponse {
@@ -119,12 +131,15 @@ type Query {
   getSingleCaseStatus(id: Int!): CaseStatuses!
   getCaseTypes: [CaseTypes!]!
   caseType(id: Int!): CaseTypes!
+  caseNotes: [CaseNotes!]!
+  caseNote(id: Int!): CaseNotes!
+  caseNotesByCaseId(id: Int!): [CaseNotes!]!
 }
 
 type Mutation {
   createCase(createCaseInput: CreateCaseInput!): Cases!
   updateCase(updateCaseInput: UpdateCaseInput!): Cases!
-  removeCase(id: Float!): Cases!
+  removeCase(removeCaseArgs: RemoveCaseArgs!): Cases!
   createCaseHistory(createCaseHistoryInput: CreateCaseHistoryInput!): CaseHistory!
   updateCaseHistory(updateCaseHistoryInput: UpdateCaseHistoryInput!): CaseHistory!
   removeCaseHistory(id: Int!): CaseHistory!
@@ -137,6 +152,9 @@ type Mutation {
   createCaseType(createCaseTypeInput: CreateCaseTypeInput!): CaseTypes!
   updateCaseType(updateCaseTypeInput: UpdateCaseTypeInput!): CaseTypes!
   removeCaseType(id: Int!): CaseTypes!
+  createCaseNote(createCaseNoteInput: CreateCaseNoteInput!): CaseNotes!
+  updateCaseNote(updateCaseNoteInput: UpdateCaseNoteInput!): CaseNotes!
+  removeCaseNote(id: Int!): CaseNotes!
 }
 
 input CreateCaseInput {
@@ -146,7 +164,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2023-03-27T13:19:38.166Z"
+  creationdate: DateTime = "2024-02-16T17:32:19.374Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -166,9 +184,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2023-03-27T13:19:38.155Z"
+  creationdate: DateTime = "2024-02-16T17:32:19.291Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2023-03-27T13:19:38.155Z"
+  lastmodificationdate: DateTime = "2024-02-16T17:32:19.291Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -178,8 +196,12 @@ input UpdateCaseInput {
   lobcaseid: Float
 }
 
+input RemoveCaseArgs {
+  id: Int!
+}
+
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2023-03-27T13:19:38.198Z"
+  datetime: DateTime = "2024-02-16T17:32:19.718Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -189,7 +211,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2023-03-27T13:19:38.198Z"
+  datetime: DateTime = "2024-02-16T17:32:19.718Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -202,11 +224,13 @@ input UpdateCaseHistoryInput {
 input CreateCaseEventInput {
   artifactId: Int!
   eventtypeId: Int!
+  workflowtype: String
 }
 
 input UpdateCaseEventInput {
   artifactId: Int
   eventtypeId: Int
+  workflowtype: String
   id: Int!
 }
 
@@ -237,6 +261,22 @@ input UpdateCaseTypeInput {
   code: Float!
   displaylocations: Float
   formid: String
+  searchterm: String
+}
+
+input CreateCaseNoteInput {
+  caseid: Float!
+  creationdate: DateTime = "2024-02-16T17:32:24.499Z"
+  userid: Float
+  notetext: String
+}
+
+input UpdateCaseNoteInput {
+  caseid: Float
+  creationdate: DateTime = "2024-02-16T17:32:24.499Z"
+  userid: Float
+  notetext: String
+  id: Int!
 }
 
 scalar link__Import
