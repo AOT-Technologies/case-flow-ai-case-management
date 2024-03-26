@@ -18,14 +18,14 @@ export class UpdateCaseInput {
   @Field((type) => Int, { nullable: true })
   lobid: number;
 
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+  // @Field()
+  // @IsString()
+  // @IsNotEmpty()
+  // name: string;
 
-  @Field({ nullable: true })
-  @IsString()
-  desc: string;
+  // @Field({ nullable: true })
+  // @IsString()
+  // desc: string;
 
   @Field((type) => Int)
   @IsNumber()
@@ -71,7 +71,39 @@ export class UpdateCaseInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  individualName: string;
+  individualid: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  contactid: string;
+
+  @Field({ nullable: true })
+  phonenumber: String;
+
+  @Field({ nullable: true })
+  email: string;
+
+  @Field({ nullable: true })
+  dateofbirth: Date;
+
+  @Field({ nullable: true })
+  city: string;
+
+  @Field({ nullable: true })
+  region: string;
+
+  @Field({ nullable: true })
+  issuetype: string;
+
+  @Field({ nullable: true })
+  caseowner: string;
+
+  @Field({ nullable: true })
+  describetheissue: string;
+
+  @Field({ nullable: true })
+  resolutionsought: string;
 }
 
 @InputType()

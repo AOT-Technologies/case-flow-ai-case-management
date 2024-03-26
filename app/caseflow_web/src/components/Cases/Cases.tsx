@@ -5,6 +5,7 @@ import CaseList from "../CaseList/CaseList";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
 import { searchCases } from "../../services/CaseService";
+import { ToastContainer, toast } from "react-toastify";
 import {
   setTotalCaseCount,
   setsearchCaseResult,
@@ -17,10 +18,12 @@ const caseListProps = {
   isShowSort: false,
   pagination: true,
 };
+
+
 const Cases = () => {
   const [filteredCaseDetails, setFilteredCaseDetails] = useState([]);
   const [searchField, setSearchField] = useState("");
-  const [searchColumn, setSearchColumn] = useState("name");
+  const [searchColumn, setSearchColumn] = useState("individualid");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   const [sortSetting, setSortSetting] = useState({
     orderBy: "id",

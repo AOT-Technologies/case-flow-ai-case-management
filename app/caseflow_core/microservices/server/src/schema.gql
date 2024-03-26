@@ -90,8 +90,6 @@ type CaseNotes {
 type Cases {
   id: ID!
   lobid: Int!
-  name: String!
-  desc: String
   statusid: Float!
   typeid: Float!
   linkedcases: [Int!]
@@ -109,6 +107,17 @@ type Cases {
   casestatus: CaseStatuses
   casestype: CaseTypes
   casenote: [CaseNotes!]
+  contactid: String
+  individualid: String
+  email: String
+  dateofbirth: DateTime
+  phonenumber: String
+  city: String
+  region: String
+  issuetype: String
+  caseowner: String
+  describetheissue: String
+  resolutionsought: String
 }
 
 type casesResponse {
@@ -159,12 +168,10 @@ type Mutation {
 
 input CreateCaseInput {
   lobid: Int
-  name: String!
-  desc: String
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-12T07:10:07.795Z"
+  creationdate: DateTime = "2024-03-26T01:07:20.509Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -174,20 +181,28 @@ input CreateCaseInput {
   involvedparties: [Int!]
   isdeleted: Boolean = false
   lobcaseid: Float
-  individualName: String!
+  individualid: String!
+  contactid: String!
+  phonenumber: String
+  email: String
+  dateofbirth: DateTime
+  city: String
+  region: String
+  issuetype: String
+  caseowner: String
+  describetheissue: String
+  resolutionsought: String
 }
 
 input UpdateCaseInput {
   id: Int!
   lobid: Int
-  name: String!
-  desc: String
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-12T07:10:07.675Z"
+  creationdate: DateTime = "2024-03-26T01:07:20.505Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-03-12T07:10:07.675Z"
+  lastmodificationdate: DateTime = "2024-03-26T01:07:20.505Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -195,7 +210,17 @@ input UpdateCaseInput {
   involvedparties: [Int!]
   isdeleted: Boolean = false
   lobcaseid: Float
-  individualName: String!
+  individualid: String!
+  contactid: String!
+  phonenumber: String
+  email: String
+  dateofbirth: DateTime
+  city: String
+  region: String
+  issuetype: String
+  caseowner: String
+  describetheissue: String
+  resolutionsought: String
 }
 
 input RemoveCaseArgs {
@@ -203,7 +228,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-03-12T07:10:08.057Z"
+  datetime: DateTime = "2024-03-26T01:07:20.519Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -213,7 +238,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-03-12T07:10:08.057Z"
+  datetime: DateTime = "2024-03-26T01:07:20.519Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -268,14 +293,14 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
+  creationdate: DateTime = "2024-03-26T01:07:20.621Z"
   userid: Float
   notetext: String
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
+  creationdate: DateTime = "2024-03-26T01:07:20.621Z"
   userid: Float
   notetext: String
   id: Int!

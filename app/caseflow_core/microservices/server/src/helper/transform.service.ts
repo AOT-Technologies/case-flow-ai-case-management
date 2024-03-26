@@ -13,8 +13,8 @@ export class TransformService {
   transformCreateCase = (data) => {
     try {
       const createCaseInput: CreateCaseInput = {
-        name: data.name,
-        desc: data?.description,
+        // name: data.name,
+        // desc: data?.description,
         lobid: data?.lobid,
         statusid: data?.statusid,
         typeid: data?.typeid,
@@ -29,7 +29,17 @@ export class TransformService {
         involvedparties: data?.involvedparties,
         isdeleted: false,
         lobcaseid : data?.lobcaseid,
-        individualName: data?.individualName,
+        individualid: data?.individualid,
+        contactid: data?.contactid,
+        phonenumber: data?.phonenumber,
+        email: data?.email,
+        dateofbirth: data?.dateofbirth,
+        city: data?.city,
+        region: data?.region,
+        issuetype: data?.issuetype,
+        caseowner: data?.caseowner,
+        describetheissue: data?.describetheissue,
+        resolutionsought: data?.resolutionsought,
       };
       return createCaseInput;
     } catch (error) {
@@ -44,8 +54,6 @@ export class TransformService {
     try {
       const createCaseInput: UpdateCaseInput = {
         id: data.id,
-        name: data?.name,
-        desc: data?.description,
         lobid: data?.lobid,
         statusid: data?.statusid,
         typeid: data?.typeid,
@@ -60,7 +68,17 @@ export class TransformService {
         involvedparties: data?.involvedparties,
         isdeleted: false,
         lobcaseid : data?.lobcaseid,
-        individualName: data?.individualName,
+        individualid: data?.individualid,
+        contactid: data?.contactid,
+        phonenumber: data?.phonenumber,
+        email: data?.email,
+        dateofbirth: data?.dateofbirth,
+        city: data?.city,
+        region: data?.region,
+        issuetype: data?.issuetype,
+        caseowner: data?.caseowner,
+        describetheissue: data?.describetheissue,
+        resolutionsought: data?.resolutionsought,
       };
       return createCaseInput;
     } catch (error) {

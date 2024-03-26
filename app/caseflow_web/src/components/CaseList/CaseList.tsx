@@ -139,7 +139,7 @@ const CaseList = React.memo(
                     variant="subtitle1"
                     className="recent-case-card-style"
                   >
-                    Description
+                    Issue Type
                   </Typography>
                 }
               />
@@ -152,7 +152,7 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Owner
+                    Case Owner
                   </Typography>
                 }
               />

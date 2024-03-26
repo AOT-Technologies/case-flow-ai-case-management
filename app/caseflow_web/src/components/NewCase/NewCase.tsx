@@ -52,11 +52,20 @@ const NewCase = () => {
 
   const initialFieldValues = {
     id: 0,
-    name: "",
-    desc: "",
+    contactid: "",
+    individualid: "",
     statusid: 1,
     typeid: 1,
-    lobcaseid: 0,
+    email: "",
+    phonenumber: "",
+    dateofbirth: new Date(),
+    caseowner:"",
+    city: "",
+    region: "",
+    issuetype:"",
+    describetheissue:"",
+    resolutionsought:"",
+    lobcaseid:0,
   };
 
   const caseList = useSelector((state: State) => state.cases.selectedCase);
@@ -83,16 +92,16 @@ const NewCase = () => {
         try {
           response = data;
           const SUBJECT = "CaseUpdate";
-          const MESSAGE = {
-            eventId: String(uuidv4()),
-            eventRef: String(values.id),
-            eventOrigin: String("Caseflow"),
-            eventCategory: String("Caseflow"),
-            eventType: String(SUBJECT),
-            eventDateTime: String(new Date()),
-            eventPublisher: String(userName),
-          };
-          publishMessage(SUBJECT, MESSAGE);
+          // const MESSAGE = {
+          //   eventId: String(uuidv4()),
+          //   eventRef: String(values.id),
+          //   eventOrigin: String("Caseflow"),
+          //   eventCategory: String("Caseflow"),
+          //   eventType: String(SUBJECT),
+          //   eventDateTime: String(new Date()),
+          //   eventPublisher: String(userName),
+          // };
+          // publishMessage(SUBJECT, MESSAGE);
         } catch (error) {
           console.log(error);
         }
@@ -145,11 +154,20 @@ const NewCase = () => {
       const data = await getCaseDetails(matches[0]);
       const InitialSelectedCaseDetails = {
         id: data.id,
-        name: data.name,
-        desc: data.desc,
+        contactid: data.contactid,
+        individualid: data.individualid,
         statusid: data.statusid,
         typeid: data.typeid,
-        lobcaseid: data.lobcaseid,
+        email: data.email,
+        phonenumber: data.phonenumber,
+        city: data.city,
+        region: data.region,
+        dateofbirth: data.dateofbirth,
+        issuetype: data.issuetype,
+        caseowner: data.caseowner,
+        describetheissue: data.describetheissue,
+        resolutionsought: data.resolutionsought,
+        lobcaseid:data.lobcaseid,
       };
       setValues(InitialSelectedCaseDetails);
       setIsEdit(true);
@@ -189,6 +207,8 @@ const NewCase = () => {
     }
   };
   const submitForm = (data) => {
+    
+    console.log(data, 'inside new case details');
     submitNewForm(selectedFormDetails._id, data).then((res) => {
       let submissionData = {
         formId: res.form,
@@ -235,7 +255,7 @@ const NewCase = () => {
               console.log(error);
             }
             toast.success("New workflow started successfully");
-            navigate("/private/cases/" + task.caseInstanceId + "/details");
+            navigate("/private/cases");
           } else {
             toast.success("Failed to  start the workflow. Please try again!");
           }
@@ -286,27 +306,26 @@ const NewCase = () => {
                   variant="body2"
                   className="case-name-tag"
                 >
-                  {GENERIC_NAME + " "}Name :
+                 Contact Name :
                 </Typography>
               </Grid>
               <Grid item xs={8}>
                 <Controller
-                  name={"name"}
+                  name={"contactid"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <TextField
                       id="standard-basic"
-                      label={GENERIC_NAME + " Name"}
                       variant="standard"
                       rows={1}
                       sx={{
                         width: "100%",
                       }}
-                      value={values.name}
+                      placeholder={"Contact Name"}
+                      value={values.contactid}
                       onChange={(e) => {
-                        setValues({ ...values, name: e.target.value });
+                        setValues({ ...values, contactid: e.target.value });
                       }}
-                      placeholder={GENERIC_NAME + " Name"}
                     />
                   )}
                 />
@@ -319,30 +338,25 @@ const NewCase = () => {
                   variant="body2"
                   className="case-desc-tag"
                 >
-                  {GENERIC_NAME + " "} Description :
+                  Individual Name:
                 </Typography>
               </Grid>
               <Grid item xs={8}>
                 <Controller
-                  name={"desc"}
+                  name={"individualid"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <TextField
                       id="standard-basic"
-                      label="Description"
-                      multiline
-                      rows={4}
+                      rows={1}
                       variant="standard"
                       sx={{
-                        "& .MuiInputLabel-root": { color: "#404040" },
-                        borderBottom: "1px solid #404040",
                         width: "100%",
                       }}
-                      InputProps={{ disableUnderline: true }}
-                      placeholder={"Enter the details of the " + GENERIC_NAME}
-                      value={values.desc}
+                      placeholder={"Individual Name"}
+                      value={values.individualid}
                       onChange={(e) => {
-                        setValues({ ...values, desc: e.target.value });
+                        setValues({ ...values, individualid: e.target.value });
                       }}
                     />
                   )}
@@ -350,41 +364,33 @@ const NewCase = () => {
               </Grid>
             </Grid>
 
-            <Grid container spacing={3} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
               <Grid item xs={4}>
                 <Typography
                   sx={{ padding: "1rem 1rem 0rem 0rem" }}
                   variant="body2"
-                  className="case-name-tag"
+                  className="case-desc-tag"
                 >
-                  LOB Id :
+                  Email:
                 </Typography>
               </Grid>
               <Grid item xs={8}>
                 <Controller
-                  name={"LOB Id"}
+                  name={"email"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <TextField
                       id="standard-basic"
-                      label="LOB Id"
-                      variant="standard"
                       rows={1}
+                      variant="standard"
                       sx={{
                         width: "100%",
                       }}
-                      value={values.lobcaseid}
+                      placeholder={"email"}
+                      value={values.email}
                       onChange={(e) => {
-                        setValues({
-                          ...values,
-                          lobcaseid: parseInt(
-                            e && e.target && e.target.value
-                              ? e.target.value.toString()
-                              : "0"
-                          ),
-                        });
+                        setValues({ ...values, email: e.target.value });
                       }}
-                      placeholder="LOB Id"
                     />
                   )}
                 />
@@ -397,35 +403,254 @@ const NewCase = () => {
                   variant="body2"
                   className="case-desc-tag"
                 >
-                  Case Type :
+                  Phone Number:
                 </Typography>
               </Grid>
               <Grid item xs={8}>
                 <Controller
-                  name={"desc"}
+                  name={"phonenumber"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Age"
-                        value={values.typeid}
-                        onChange={(e) => {
-                          setValues({
-                            ...values,
-                            typeid: parseInt(e.target.value.toString()),
-                          });
-                        }}
-                        className="dropDownStyle"
-                      >
-                        {caseTypes.map((option, index) => (
-                          <MenuItem key={index} value={option.id}>
-                            {option.displayname}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      // type="number"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Phone Number"}
+                      value={values.phonenumber}
+                      onChange={(e) => {
+                        setValues({ ...values, phonenumber: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Date Of Birth:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"dateofbirth"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      type="date"
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Date of Birth"}
+                      value={values.dateofbirth}
+                      onChange={(e) => {
+                        setValues({ ...values, dateofbirth: new Date(e.target.value) });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  City:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"city"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"City"}
+                      value={values.city}
+                      onChange={(e) => {
+                        setValues({ ...values, city: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Region:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"region"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Region"}
+                      value={values.region}
+                      onChange={(e) => {
+                        setValues({ ...values, region: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Issue Type:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"issuetype"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Issue Type"}
+                      value={values.issuetype}
+                      onChange={(e) => {
+                        setValues({ ...values, issuetype: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Case Owner:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"caseowner"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Case Owner"}
+                      value={values.caseowner}
+                      onChange={(e) => {
+                        setValues({ ...values, caseowner: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Describe the Issue:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"describetheissue"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={4}
+                      multiline
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Describe the Issue"}
+                      value={values.describetheissue}
+                      onChange={(e) => {
+                        setValues({ ...values, describetheissue: e.target.value });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ padding: "1rem 1rem 0rem 0rem" }}
+                  variant="body2"
+                  className="case-desc-tag"
+                >
+                  Resolution Sought:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Controller
+                  name={"resolutionsought"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="standard-basic"
+                      rows={1}
+                      variant="standard"
+                      sx={{
+                        width: "100%",
+                      }}
+                      placeholder={"Resolution Sought"}
+                      value={values.resolutionsought}
+                      onChange={(e) => {
+                        setValues({ ...values, resolutionsought: e.target.value });
+                      }}
+                    />
                   )}
                 />
               </Grid>

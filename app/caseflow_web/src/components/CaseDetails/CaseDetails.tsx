@@ -165,6 +165,8 @@ const CaseDetails = () => {
     }
   }
   async function fetchCaseHistory(id) {
+    
+    console.log(id, 'fetchcasehistory')
     const caseHistoryData = await getCaseHistory(id);
     const caseNotes = await getCaseNotes(id);
     const output = caseHistoryData?.casehistory.map((element, index) => {
@@ -391,7 +393,7 @@ const CaseDetails = () => {
       { text: GENERIC_NAME, link: "/private/cases" },
       {
         text: GENERIC_NAME + " : " + selectedCase.id,
-        link: "/private/cases/" + selectedCase.id + "details",
+        link: "/private/cases/" + selectedCase.id + "/details",
       },
     ]);
   }, [selectedCase]);
@@ -464,6 +466,7 @@ const CaseDetails = () => {
     }
 
     submitNewForm(selectedForm, data).then((res) => {
+      console.log(res, 'inside case details');
       let submissionData = {
         formId: res.form,
         submissionId: res._id,
@@ -633,14 +636,21 @@ const CaseDetails = () => {
           {selectedCase && selectedCase.id ? (
             <>
               <CaseDetailData
-                contactName={selectedCase.name}
+                contactid={selectedCase.contactid}
+                individualid={selectedCase.individualid}
                 startDate={caseDetail.startDate}
                 owner={caseDetail.owner}
-                caseDescription={selectedCase.desc}
                 tasks={tasks}
                 dueDate={caseDetail.dueDate}
-                additionalInfo={selectedCase.desc}
-                individual={selectedCase.name}
+                email={selectedCase.email}
+                caseowner={selectedCase.caseowner}
+                city={selectedCase.city}
+                region={selectedCase.region}
+                dateofbirth={selectedCase.dateofbirth}
+                describetheissue={selectedCase.describetheissue}
+                resolutionsought={selectedCase.resolutionsought}
+                issuetype={selectedCase.issuetype}
+                phonenumber={selectedCase.phonenumber}
               />
               <CaseDetailReference caseId={selectedCase.id} />
             </>

@@ -7,21 +7,19 @@ export const FETCH_CASES = gql`
       totalCount
       Cases {
         id
-        name
-        desc
         typeid
         lobcaseid
         email
-        individualName
-        contactName
-        phoneNumber
+        individualid
+        contactid
+        phoneumber
         dateofbirth
         city
-        province
-        issueType
-        description
-        caseOwner
-        resolutionSought
+        region
+        issuetype
+        describetheissue
+        caseowner
+        resolutionsought
         casestype {
           id
           name
@@ -59,20 +57,18 @@ export const FETCH_CASE_DETAILS = gql`
   query getCase($CaseId: Int!) {
     getCase(id: $CaseId) {
       id
-      name
-      desc
       statusid
       email
-      individualName
-      contactName
-      phoneNumber
+      individualid
+      contactid
+      phonenumber
       dateofbirth
       city
-      province
-      issueType
-      description
-      caseOwner
-      resolutionSought
+      region
+      issuetype
+      describetheissue
+      caseowner
+      resolutionsought
       casestatus {
         id
         name
@@ -106,7 +102,7 @@ export const ADD_CASE = gql`
 export const DELETE_CASE = gql`
   mutation removeCase($removeCaseArgs: RemoveCaseArgs!) {
     removeCase(removeCaseArgs: $removeCaseArgs) {
-      desc
+      id
     }
   }
 `;
@@ -143,20 +139,18 @@ export const SEARCH_CASE_LIST = gql`
       totalCount
       Cases {
         id
-        name
-        desc
         statusid
         email
-        individualName
-        contactName
-        phoneNumber
+        individualid
+        contactid
+        phonenumber
         dateofbirth
         city
-        province
-        issueType
-        description
-        caseOwner
-        resolutionSought
+        region
+        issuetype
+        describetheissue
+        caseowner
+        resolutionsought
         casestatus {
           id
           name
@@ -184,20 +178,18 @@ export const FETCH_RECENT_CASES = gql`
   query {
     fetchRecentCase {
       id
-      name
-      desc
       statusid
       email
-      individualName
-      contactName
-      phoneNumber
+      individualid
+      contactid
+      phonenumber
       dateofbirth
       city
-      province
-      issueType
-      description
-      caseOwner
-      resolutionSought
+      region
+      issuetype
+      describetheissue
+      caseowner
+      resolutionsought
       casestatus {
         id
         name
