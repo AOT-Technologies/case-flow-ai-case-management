@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { config } from 'dotenv';
 import { Transport } from '@nestjs/microservices';
 
 //_____________________Custom Imports_____________________//
@@ -6,6 +7,7 @@ import { Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  config();
   const app = await NestFactory.create(AppModule);
 
   app.connectMicroservice({
