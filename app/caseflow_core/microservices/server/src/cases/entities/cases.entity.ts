@@ -33,13 +33,13 @@ export class Cases {
   @Field((type) => Int)
   lobid: number;
 
-  @Column()
-  @Field()
-  name: string;
+  // @Column()
+  // @Field()
+  // name: string;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  desc: string;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // desc: string;
 
   @Column({ nullable: true })
   @Field()
@@ -114,4 +114,48 @@ export class Cases {
   @OneToMany(() => CaseNotes, (casenote) => casenote.case)
   @Field(() => [CaseNotes], { nullable: true })
   casenote: CaseNotes[];
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  contactid: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  individualid: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  dateofbirth: Date;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  phonenumber: String;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  region: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  issuetype: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  caseowner: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  describetheissue: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  resolutionsought: string;
 }

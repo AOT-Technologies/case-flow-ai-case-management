@@ -98,7 +98,7 @@ export const getTaskCountByUserId = async (id) => {
   return output;
 };
 
-export const addWorkflowCaseHistory = async (caseId: string,workflowtype="") => {
+export const addWorkflowCaseHistory = async (caseId,workflowtype="") => {
   const url = GRAPHQL;
   return httpPOSTRequest(
     url,
@@ -106,7 +106,7 @@ export const addWorkflowCaseHistory = async (caseId: string,workflowtype="") => 
       query: print(ADD_WORKFLOW_CASE_HISTORY),
       variables: {
         createCaseEventInput: {
-          artifactId: parseInt(caseId),
+          artifactId: caseId,
           eventtypeId: 12,
           workflowtype:workflowtype,
         },

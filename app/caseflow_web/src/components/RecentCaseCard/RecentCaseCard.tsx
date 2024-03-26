@@ -64,7 +64,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.name}{" "}
+                  {CaseDetails.contactid}{" "}
                 </Typography>
               }
             />
@@ -82,7 +82,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.name}{" "}
+                  {CaseDetails.individualid}{" "}
                 </Typography>
               }
             />
@@ -116,7 +116,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.desc}{" "}
+                  {CaseDetails.issuetype}{" "}
                 </Typography>
               }
             />
@@ -134,7 +134,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.name}{" "}
+                  {CaseDetails.caseowner}{" "}
                 </Typography>
               }
             />

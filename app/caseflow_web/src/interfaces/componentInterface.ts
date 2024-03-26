@@ -49,19 +49,18 @@ export interface caseListprops {
 
 export interface Case {
   id: number;
-  name: string;
   status: string;
   email: string;
-  individualName: string;
-  contactName: string;
-  phoneNumber: number;
+  individualid: string;
+  contactid: string;
+  phonenumber: string;
   dateofbirth: Date;
   city: string;
-  province: string;
-  issueType: String;
-  description: string;
-  caseOwner: string;
-  resolutionSought: string;
+  region: string;
+  issuetype: String;
+  describetheissue: string;
+  caseowner: string;
+  resolutionsought: string;
 }
 
 export interface Contact {

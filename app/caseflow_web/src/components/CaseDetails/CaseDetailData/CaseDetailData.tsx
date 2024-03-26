@@ -8,76 +8,98 @@ import {
 } from "../../../apiManager/endpoints/config";
 import moment from "moment";
 interface CaseDetailDataProps {
-  contactName: String;
-  individual: String;
+  contactid: String;
+  individualid: String;
   startDate: any;
   owner: String;
-  caseDescription: String;
   tasks: any;
   dueDate: any;
+  email: String;
+  caseowner: String;
   city: String;
-  province: String;
-  additionalInfo: String;
+  region: String;
+  dateofbirth: any;
+  describetheissue: String;
+  resolutionsought: String;
+  issuetype: String;
+  phonenumber: String;
 }
 
 const CaseDetailData = ({
-  contactName,
-  individual,
+  contactid,
+  individualid,
   startDate,
   owner,
-  caseDescription,
   tasks,
   dueDate,
+  email,
+  caseowner,
   city,
-  province,
-  additionalInfo,
+  region,
+  dateofbirth,
+  describetheissue,
+  resolutionsought,
+  issuetype,
+  phonenumber,
 }: CaseDetailDataProps) => {
   return (
     <>
       <div className="case-details">
         <div className="case-detail-name">
           <Typography variant="subtitle1">Contact name</Typography>
-          <Typography variant="body2">Samuel James</Typography>
+          <Typography variant="body2">{contactid}</Typography>
         </div>
         <div className="case-detail-name">
           <Typography variant="subtitle1">Individual</Typography>
-          <Typography variant="body2">Shruti James</Typography>
+          <Typography variant="body2">{individualid}</Typography>
         </div>
-        <div className="case-detail-date">
+        <div className="case-detail-email">
+          <Typography variant="subtitle1">Email</Typography>
+          <Typography variant="body2">{email}</Typography>
+        </div>
+        <div className="case-detail-phonenumber">
+          <Typography variant="subtitle1">Phone Number</Typography>
+          <Typography variant="body2">{phonenumber}</Typography>
+        </div>
+        <div className="case-detail-dateofbirth">
+          <Typography variant="subtitle1">Date of Birth</Typography>
+          <Typography variant="body2">{dateofbirth}</Typography>
+        </div>
+        {/* <div className="case-detail-date">
           <Typography variant="subtitle1">Start Date</Typography>
 
           <Typography variant="body2">
-          <Typography variant="body2">2024-02-14</Typography>
+          <Typography variant="body2">{startDate}</Typography>
           </Typography>
-        </div>
-        <div>
-          <Typography variant="subtitle1">
-              {GENERIC_NAME} Description
-            </Typography>
-          <Typography variant="body2">Request for 50-50 Child custody</Typography>
-        </div>
+        </div> */}
         <div className="case-detail-owner">
           <Typography variant="subtitle1">Owner</Typography>
-          <Typography variant="body2">{owner}</Typography>
+          <Typography variant="body2">{caseowner}</Typography>
         </div>
-        <div className="case-detail-date">
+        {/* <div className="case-detail-date">
         <Typography variant="subtitle1">Due Date</Typography>
-        <Typography variant="body2">2025-02-14</Typography>
+        <Typography variant="body2">{dueDate}</Typography>
 
-        </div>
+        </div> */}
         <div className="case-detail-city">
           <Typography variant="subtitle1">City</Typography>
-          <Typography variant="body2">Victoria</Typography>
+          <Typography variant="body2">{city}</Typography>
         </div>
         <div className="case-detail-province">
-          <Typography variant="subtitle1">Province</Typography>
-          <Typography variant="body2">BC</Typography>
+          <Typography variant="subtitle1">Region</Typography>
+          <Typography variant="body2">{region}</Typography>
         </div>
-        <div>
-          <Typography variant="subtitle1">
-              Additional Information
-            </Typography>
-          <Typography variant="body2">parent needs custody of the child</Typography>
+        <div className="case-detail-issuetype">
+          <Typography variant="subtitle1">Issue Type</Typography>
+          <Typography variant="body2">{issuetype}</Typography>
+        </div>
+        <div className="case-detail-describetheissue">
+          <Typography variant="subtitle1">Describe the Issue</Typography>
+          <Typography variant="body2">{describetheissue}</Typography>
+        </div>
+        <div className="case-detail-resolutionsought">
+          <Typography variant="subtitle1">Resolution Sought</Typography>
+          <Typography variant="body2">{resolutionsought}</Typography>
         </div>
       </div>
 
