@@ -299,7 +299,8 @@ const CaseDetails = () => {
   const getForms = async () => {
 
     let type= caseTypes.find(type=> type.id == selectedCase.typeid)
-    const formsList = await getFormsListByName(type?.searchterm);
+    //Hard coded form name for POC, should be removed for actual implemetnation
+    const formsList = await getFormsListByName('Case Flow POC');
     setFormsList(formsList);
     setOpenWorkflowPopup(true);
   };
