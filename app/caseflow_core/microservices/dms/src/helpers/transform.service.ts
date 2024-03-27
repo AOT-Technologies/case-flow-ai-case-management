@@ -104,7 +104,43 @@ export class TransformService {
     }
   };
 
-  transform = (dms, type, document, data) => {
+  transformDatabase = (type, data, file) => {
+    try {
+      switch (type) {
+        case 'CREATE':
+          return {
+            caseId: data.caseId,
+            documentref: '',
+            name: data.name,
+            desc: data.desc,
+            addedbyuserid: data.addedbyuserid,
+            creationdate: new Date(),
+            dmsprovider: 4,
+            latestversion: '',
+            isdeleted: false,
+            type: data?.type,
+            size: data?.size,
+            file: file,
+          };
+
+        case 'UPDATE':
+          return {
+            documentref: '',
+            desc: data.desc,
+            addedbyuserid: data.addedbyuserid,
+            dmsprovider: 4,
+            latestversion:'',
+            isdeleted: false,
+            file: file,
+          };
+      }
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  };
+
+  transform = (dms, type, document, data, file) => {
     try {
       switch (dms) {
         case '1':
@@ -115,6 +151,9 @@ export class TransformService {
 
         case '3':
           return this.transformAlfresco(type, document, data);
+
+        case '4':
+          return this.transformDatabase(type, data, file);
       }
     } catch (error) {
       console.log(error);

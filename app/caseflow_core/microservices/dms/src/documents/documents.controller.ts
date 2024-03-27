@@ -25,6 +25,7 @@ import {
   downloadDocumentSchema,
   updateDocumentSchema,
 } from 'src/validation-schemas/document_validation.schema';
+import { Binary } from 'typeorm';
 @Controller('documents')
 export class DocumentsController {
   constructor(
@@ -40,6 +41,7 @@ export class DocumentsController {
     @Headers() auth,
   ) {
     try {
+    
       let documentDetails = await this.fileService.uploadFile(
         file,
         body,
@@ -51,6 +53,7 @@ export class DocumentsController {
         'CREATE',
         documentDetails,
         body,
+        file.buffer
       );
       const data = this.documentService.createDocument(formattedDocument);
       return data;
@@ -85,6 +88,7 @@ export class DocumentsController {
           'UPDATE',
           documentDetails,
           body,
+          file
         );
         return this.documentService.update(body.id, document);
       } else {
@@ -108,7 +112,11 @@ export class DocumentsController {
       let documentDetails = await this.documentService.findOne(
         parseInt(param.id),
       );
+      
       let dms = await documentDetails.dmsprovider;
+      if (dms == 4) {
+        return res.send(new Buffer(documentDetails.file));
+      }
       if (dms === 2) {
         doc_id = await documentDetails.name;
       } else {

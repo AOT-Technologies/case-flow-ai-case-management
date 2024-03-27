@@ -25,6 +25,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
+import { getContactsData } from "../../services/ContactService";
+import { getIndividualsData } from "../../services/IndividualService";
 
 export default function AdvancedSearch() {
   const [searchField, setSearchField] = useState("");
@@ -37,6 +39,8 @@ export default function AdvancedSearch() {
   const [documentSearch, setDocumentsearch] = useState(false);
   const [caseSearch, setCasesearch] = useState(false);
   const [lobSearch, setLobsearch] = useState(false);
+  const [contactSearch, setContactSearch] = useState(false);
+  const [individualSearch, setIndividualSearch] = useState(false);
   const [fromDateForSearch, setFromDateForSearch] = useState(null);
   const [toDateForSearch, setToDateForSearch] = useState(null);
   const [showDate, setShowDate] = useState(false);
@@ -59,8 +63,8 @@ export default function AdvancedSearch() {
           totalCount = totalCount + searchCaseResult.totalCount;
           searchCaseResult?.Cases.map((element) => {
             result.push({
-              title: element.id + " - " + element.name,
-              content: element.desc,
+              title: element.id + " - " + element.issuetype,
+              content: element.individualid,
               subtitle: GENERIC_NAME,
               link: "/private/cases/" + element.id + "/details",
               imgIcon: require("../../assets/CasesIcon.png"),
@@ -107,6 +111,38 @@ export default function AdvancedSearch() {
             });
           });
         }),
+      (allSearch || contactSearch) &&
+      getContactsData(
+          1,
+          searchField
+        ).then((contacts) => {
+          totalCount = totalCount + contacts?.totalCount;
+          contacts?.CaseflowContacts?.map((element) => {
+            result.push({
+              title: element.id + " - " + element.firstname +" "+element.lastname,
+              content: element.phonenumber,
+              subtitle: "Contact",
+              link: "/private/contacts/" + element.id + "/details",
+              imgIcon: require("../../assets/ContactsIcon.png"),
+            });
+          });
+        }),
+      (allSearch || individualSearch) &&
+        getIndividualsData(
+          1,
+          searchField
+        ).then((individuals) => {
+          totalCount = totalCount + individuals?.CaseflowIndividuals?.totalCount;
+          individuals?.CaseflowIndividuals?.map((element) => {
+            result.push({
+              title: element.id + " - " + element.firstname +" "+element.lastname,
+              content: element.phonenumber,
+              subtitle: "Individual",
+              link: "/private/individuals/" + element.id + "/details",
+              imgIcon: require("../../assets/AssignedIcon.png"),
+            });
+          });
+        }),
     ]);
 
     dispatch(
@@ -118,7 +154,9 @@ export default function AdvancedSearch() {
     setCasesearch(false);
     setAllsearch(true);
     setDocumentsearch(false);
+    setContactSearch(false);
     setLobsearch(false);
+    setIndividualSearch(false);
     setFromDateForSearch(null);
     setToDateForSearch(null);
     setShowDate(false);
@@ -134,6 +172,8 @@ export default function AdvancedSearch() {
     documentSearch,
     caseSearch,
     lobSearch,
+    contactSearch,
+    individualSearch,
     toDateForSearch,
   ]);
 
@@ -180,6 +220,8 @@ export default function AdvancedSearch() {
                         setCasesearch(false);
                         setDocumentsearch(false);
                         setLobsearch(false);
+                        setIndividualSearch(false);
+                        setContactSearch(false);
                       }
 
                     }}
@@ -212,7 +254,7 @@ export default function AdvancedSearch() {
                 }
                 label="Documents"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     checked={lobSearch}
@@ -223,6 +265,30 @@ export default function AdvancedSearch() {
                   />
                 }
                 label="Line of Bussiness"
+              /> */}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={individualSearch}
+                    onChange={() => {
+                      setIndividualSearch(!individualSearch);
+                      setAllsearch(false);
+                    }}
+                  />
+                }
+                label="Individuals"
+              />
+               <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={contactSearch}
+                    onChange={() => {
+                      setContactSearch(!contactSearch);
+                      setAllsearch(false);
+                    }}
+                  />
+                }
+                label="Contacts"
               />
               <FormControlLabel
                 control={

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException,BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 
@@ -189,8 +189,16 @@ export class CasesService {
         }
         default :
          const [Cases,totalCount] = await  (this.caseRepository.createQueryBuilder("table")
-        // .where("LOWER(table.name) LIKE :title", { title: `%${ searchField.toLowerCase() }%` }) 
-        .where('table.isdeleted = :status', {status:false})
+        .where(new Brackets((qb) => {
+          qb.where("LOWER(table.issuetype) LIKE :issuetype", { issuetype: `%${ searchField.toLowerCase() }%` })
+          .orWhere("LOWER(table.contactid) LIKE :contactid", { contactid: `%${ searchField.toLowerCase() }%` })  
+          .orWhere("LOWER(table.individualid) LIKE :individualid", { individualid: `%${ searchField.toLowerCase() }%` })  
+          .orWhere("LOWER(table.caseowner) LIKE :caseowner", { caseowner: `%${ searchField.toLowerCase() }%` })  
+          .orWhere("LOWER(table.city) LIKE :city", { city: `%${ searchField.toLowerCase() }%` })  
+          .orWhere("LOWER(table.region) LIKE :region", { region: `%${ searchField.toLowerCase() }%` })  
+          .orWhere("LOWER(table.phonenumber) LIKE :phonenumber", { phonenumber: `%${ searchField.toLowerCase() }%` })
+        })
+        ).andWhere('table.isdeleted = :status', {status:false})
         .andWhere('table.creationdate >= :start_at', { start_at: fromDate})
         .andWhere('table.creationdate <= :end_at', { end_at: toDate})
         .orderBy({[orderBy]: orderType}).take(take).skip(skip)
