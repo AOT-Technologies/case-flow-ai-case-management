@@ -1,9 +1,10 @@
 import { Field, ObjectType, Directive, ID } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Binary } from 'typeorm';
 
 //_____________________Custom Imports_____________________//
 import { Cases } from './cases.entity';
 import { Versions } from 'src/versions/entities/version.entity';
+import { Blob } from 'buffer';
 
 @Entity()
 @ObjectType()
@@ -16,6 +17,9 @@ export class CaseDocuments {
   @Column()
   @Field()
   caseId: number;
+
+  @Column({ type: "bytea", nullable: false })
+  file: Buffer;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -63,4 +67,6 @@ export class CaseDocuments {
   @OneToMany(() => Versions, (versions) => versions.documents)
   @Field(() => [Versions], { nullable: true })
   versions: Versions[];
+
+
 }

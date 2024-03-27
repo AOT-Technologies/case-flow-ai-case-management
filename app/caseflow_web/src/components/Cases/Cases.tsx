@@ -68,8 +68,8 @@ const Cases = () => {
     );
     let searchResultCases = searchResult.Cases?.map((element) => {
       return {
-        title: element.id + " - " + element.name,
-        content: element.desc,
+        title: element.id + " - " + element.issuetype,
+        content: element.individualid,
         subtitle: GENERIC_NAME,
         link: "/private/cases/" + element.id + "/details",
         imgIcon: require("../../assets/CasesIcon.png"),
@@ -77,10 +77,6 @@ const Cases = () => {
     });
 
     if (searchResultCases) {
-      console.log({
-        searchResultCases: searchResultCases,
-        totalCount: searchResult.totalCount,
-      });
       dispatch(
         setsearchCaseResult({
           searchResult: searchResultCases,

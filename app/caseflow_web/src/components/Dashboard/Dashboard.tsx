@@ -3,9 +3,12 @@ import Search from "../Search/Search";
 import "./dashboard.scss";
 import CaseList from "../CaseList/CaseList";
 import MyTask from "../MyTask/MyTask";
-import { fetchRecentCaseList } from "../../services/CaseService";
+import { fetchRecentCaseList, searchCases } from "../../services/CaseService";
 import { Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
+import { useDispatch, useSelector } from "react-redux";
+import { setsearchCaseResult } from "../../reducers/newCaseReducer";
+import { State } from "../../interfaces/stateInterface";
 
 const caseListProps = {
   title: "Recent " + GENERIC_NAME,
@@ -16,6 +19,45 @@ const caseListProps = {
 
 const Dashboard = () => {
   const [recentCases, setrecentCases] = useState([]);
+
+  const [searchField, setSearchField] = useState("");
+  const [searchColumn, setSearchColumn] = useState("name");
+  
+  const dispatch = useDispatch();
+  const searchResults = useSelector(
+    (state: State) => state.cases.searchCaseResult
+  );
+
+  const searchCasesDetails = async () => {
+    let searchResult = await searchCases(
+      searchField,
+      searchColumn,
+      1,
+      "id",
+      true,
+      true,
+      null,
+      null
+    );
+    let searchResultCases = searchResult.Cases?.map((element) => {
+      return {
+        title: element.id + " - " + element.issuetype,
+        content: element.individualid,
+        subtitle: GENERIC_NAME,
+        link: "/private/cases/" + element.id + "/details",
+        imgIcon: require("../../assets/CasesIcon.png"),
+      };
+    });
+
+    if (searchResultCases) {
+      dispatch(
+        setsearchCaseResult({
+          searchResult: searchResultCases,
+          totalCount: searchResult.totalCount,
+        })
+      );
+    }
+  };
 
   const recentCaseList = async () => {
     let recentCases = await fetchRecentCaseList();
@@ -28,9 +70,10 @@ const Dashboard = () => {
   useEffect(() => {
     recentCaseList();
   }, []);
+  useEffect(() => {
+    searchCasesDetails();
+  }, [searchField, searchColumn]);
 
-  const [searchField, setSearchField] = useState("");
-  const [searchColumn, setSearchColumn] = useState("name");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   return (
     <div className="dashboard">
@@ -42,8 +85,7 @@ const Dashboard = () => {
           <Search
             setSearchField={setSearchField}
             dropDownArray={dropDownArray}
-            setSearchColumn={setSearchColumn}
-          ></Search>
+            setSearchColumn={setSearchColumn} dropDownValues={searchResults}          ></Search>
         </div>
       </div>
       <div className="recent-cases">

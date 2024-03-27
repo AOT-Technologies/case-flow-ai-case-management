@@ -20,7 +20,7 @@ window["_env_"] = {
 
 
     // default DMS
-    REACT_APP_CASEFLOW_DMS:3,
+    REACT_APP_CASEFLOW_DMS:4,
 
     // application name
     APPLICATION_NAME:'caseflow.ai',
