@@ -208,7 +208,6 @@ const NewCase = () => {
   };
   const submitForm = (data) => {
     
-    console.log(data, 'inside new case details');
     submitNewForm(selectedFormDetails._id, data).then((res) => {
       let submissionData = {
         formId: res.form,

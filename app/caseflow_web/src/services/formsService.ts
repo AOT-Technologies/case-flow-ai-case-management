@@ -67,7 +67,6 @@ export const getFormDetailsById = async (formId) => {
   return output;
 };
 export const submitNewForm = async (id, body) => {
-  console.log(parseInt(id));
   const formIoToken = await getFormIORoleIds();
   const token = { "x-jwt-token": formIoToken };
   const url = `${FORMSFLOW_APPLICATION_URL}/form/${id}/submission`;

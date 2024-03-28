@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux/es/exports";
 import "../../styles.scss";
 
 const RecentCaseCard = (props) => {
-  console.log(props.case);
   const [CaseDetails, setcaseDetails] = useState(props.case);
   const dispatch = useDispatch();
   const navigate = useNavigate();

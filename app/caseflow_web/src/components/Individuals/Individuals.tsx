@@ -89,10 +89,6 @@ const Individuals = () => {
     });
 
     if (searchResultIndividuals) {
-      console.log({
-        searchResultIndividuals: searchResultIndividuals,
-        totalCount: searchResult?.totalCount,
-      });
       dispatch(
         setsearchIndividualResult({
           searchResult: searchResultIndividuals,

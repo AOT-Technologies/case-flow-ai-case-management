@@ -78,7 +78,6 @@ const Contacts = () => {
       selectedPage,
       searchField,
     );
-    console.log(searchResult, 'searchResult')
     let searchResultContacts = searchResult?.CaseflowContacts?.map((element) => {
       return {
         title: element.id + " - " + element.firstname +" "+ element.lastname,
@@ -90,10 +89,6 @@ const Contacts = () => {
     });
 
     if (searchResultContacts) {
-      console.log({
-        searchResultContacts: searchResultContacts,
-        totalCount: searchResult?.totalCount,
-      });
       dispatch(
         setsearchContactResult({
           searchResult: searchResultContacts,
