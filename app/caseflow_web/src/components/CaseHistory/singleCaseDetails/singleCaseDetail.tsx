@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { State } from "../../../interfaces/stateInterface";
 
 const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
-  console.log(caseHistoryData,"caseHistoryType")
   let date = caseHistoryData.date.split(" ");
   const [expand, setExpand] = useState(false);
   const caseNotes = useSelector((state: State) => state.cases.selectedCase.notes);

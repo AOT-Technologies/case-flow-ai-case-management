@@ -166,7 +166,6 @@ const CaseDetails = () => {
   }
   async function fetchCaseHistory(id) {
     
-    console.log(id, 'fetchcasehistory')
     const caseHistoryData = await getCaseHistory(id);
     const caseNotes = await getCaseNotes(id);
     const output = caseHistoryData?.casehistory.map((element, index) => {
@@ -448,8 +447,6 @@ const CaseDetails = () => {
   const callBack = (err, submission) => {};
 
   const submitForm = (data) => {
-    console.log(data);
-    console.log(selectedFormDetails);
     try {
       const SUBJECT = "workFlowStart";
       const MESSAGE = {
@@ -467,7 +464,6 @@ const CaseDetails = () => {
     }
 
     submitNewForm(selectedForm, data).then((res) => {
-      console.log(res, 'inside case details');
       let submissionData = {
         formId: res.form,
         submissionId: res._id,
@@ -554,7 +550,6 @@ const CaseDetails = () => {
  
   }
   const submitCommunication = async () =>{
-    console.log(communication);
     if(communication){
      
       let response = await createNewNote({ caseid : selectedCase.id,
@@ -577,7 +572,6 @@ const CaseDetails = () => {
  
   }
   const submitRecordedOutput = async () =>{
-    console.log(recordOutput);
     if(recordOutput){
      
       let response = await createNewNote({ caseid : selectedCase.id,

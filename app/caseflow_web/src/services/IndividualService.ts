@@ -38,7 +38,6 @@ export const getIndividualsData = async (
 ) => {
   const url = LOBURL;
   const skip = (number - 1) * Number(PAGINATION_TAKE);
-  console.log(searchField, 'searchField')
   const output = await httpPOSTRequest(
     url,
     {
