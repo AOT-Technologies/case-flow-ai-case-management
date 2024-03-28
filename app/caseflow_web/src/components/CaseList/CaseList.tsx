@@ -75,6 +75,7 @@ const CaseList = React.memo(
                 }
               />
             </Grid>
+            
             <Grid
               item
               xs={1.5}
@@ -92,7 +93,7 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Individual
+                    Contact
                   </Typography>
                 }
               />
@@ -114,7 +115,7 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Contact
+                    Individual
                   </Typography>
                 }
               />
