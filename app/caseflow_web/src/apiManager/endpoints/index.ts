@@ -7,6 +7,7 @@ import {
   FORMSFLOW_URL,
   FORMSFLOW_FORM_URL,
   FORMSFLOW_APP_URL,
+  FORMSFLOW_WEB_URL
 } from "./config";
 
 export const GRAPHQLAPI: string = `${CASEFLOW_GRAPHQL_API_URL}`;
@@ -20,4 +21,5 @@ export const GRAPHQL = GRAPHQLAPI + "/graphql";
 export const LOBURL = LOB_GRAPHQLAPI + "/graphql";
 export const BPM_URL = FORMSFLOW_URL;
 export const FORMSFLOW_APPLICATION_URL = FORMSFLOW_APP_URL;
+export const FORMSFLOW_WEB_APPLICATION_URL = FORMSFLOW_WEB_URL;
 export const FORM_URL = FORMSFLOW_FORM_URL;

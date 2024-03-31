@@ -60,6 +60,7 @@ import {
 } from "@mui/material";
 import LobCustom from "./LobCustom/LobCustom";
 import {
+  createCase,
   createDraft,
   getFormDetailsById,
   getFormsList,
@@ -68,7 +69,7 @@ import {
   submitNewFormDraft,
 } from "../../services/formsService";
 import { Form as FormIOForm, saveSubmission, Formio } from "react-formio";
-import { FORMSFLOW_APPLICATION_URL } from "../../apiManager/endpoints";
+import { FORMSFLOW_APPLICATION_URL, FORMSFLOW_WEB_APPLICATION_URL } from "../../apiManager/endpoints";
 import { publishMessage } from "../../services/NatsServices";
 import { v4 as uuidv4 } from "uuid";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
@@ -474,19 +475,20 @@ const CaseDetails = () => {
           "/submission/" +
           res._id,
         webFormUrl:
-          FORMSFLOW_APPLICATION_URL +
+        FORMSFLOW_WEB_APPLICATION_URL +
           "/form/" +
           res.form +
           "/submission/" +
           res._id,
       };
-      let createDraftData = { data: {}, formId: res.form };
-      createDraft(createDraftData)
-        .then((draftId) => {
-          if (draftId) {
-            return submitNewFormDraft(submissionData, draftId);
-          }
-        })
+      // let createDraftData = { data: {}, formId: res.form };
+      // createDraft(createDraftData)
+      //   .then((draftId) => {
+      //     if (draftId) {
+      //       return submitNewFormDraft(submissionData, draftId);
+      //     }
+      //   })
+        createCase(submissionData)
         .then(async (data) => {
           if (data && data.applicationStatus == "Completed") {
             toast.success("New workflow started successfully");

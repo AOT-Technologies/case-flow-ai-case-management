@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import Divider from "@mui/material/Divider";
 import {
   addCases,
+  fetchRecentCaseList,
   getCaseDetails,
   updateCases,
 } from "../../services/CaseService";
@@ -33,6 +34,7 @@ import { publishMessage } from "../../services/NatsServices";
 import { v4 as uuidv4 } from "uuid";
 
 import {
+  createCase,
   createDraft,
   getFormDetails,
   getFormsList,
@@ -41,7 +43,7 @@ import {
   submitNewFormDraft,
 } from "../../services/formsService";
 import { getTaksByProcessInstanceId } from "../../services/workflowService";
-import { FORMSFLOW_APPLICATION_URL } from "../../apiManager/endpoints";
+import { FORMSFLOW_APPLICATION_URL, FORMSFLOW_WEB_APPLICATION_URL } from "../../apiManager/endpoints";
 import { Form as FormIOForm, saveSubmission, Formio } from "react-formio";
 import CustomizedDialog from "../Dialog/Dialog";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
@@ -206,7 +208,7 @@ const NewCase = () => {
       setOpenPopup(true);
     }
   };
-  const submitForm = (data) => {
+  const submitForm = async (data) => {
     
     submitNewForm(selectedFormDetails._id, data).then((res) => {
       let submissionData = {
@@ -219,23 +221,24 @@ const NewCase = () => {
           "/submission/" +
           res._id,
         webFormUrl:
-          FORMSFLOW_APPLICATION_URL +
+          FORMSFLOW_WEB_APPLICATION_URL +
           "/form/" +
           res.form +
           "/submission/" +
           res._id,
       };
-      let createDraftData = { data: {}, formId: res.form };
-      createDraft(createDraftData)
-        .then((draftId) => {
-          if (draftId) {
-            return submitNewFormDraft(submissionData, draftId);
-          }
-        })
+      // let createDraftData = { data: {}, formId: res.form };
+      // createDraft(createDraftData)
+      //   .then((draftId) => {
+      //     if (draftId) {
+      //       return submitNewFormDraft(submissionData, draftId);
+      //     }
+      //   })
+      createCase(submissionData)
         .then((data) => {
           return getTaksByProcessInstanceId(data.processInstanceId);
         })
-        .then((tasks) => {
+        .then(async (tasks) => {
           let task = tasks[0];
           if (task &&task["id"]) {
             try {
@@ -254,7 +257,8 @@ const NewCase = () => {
               console.log(error);
             }
             toast.success("New workflow started successfully");
-            navigate("/private/cases");
+            let recentCases = await fetchRecentCaseList();
+            navigate("/private/cases/" + recentCases[0].id + "/details");
           } else {
             toast.success("Failed to  start the workflow. Please try again!");
           }
