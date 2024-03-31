@@ -106,6 +106,19 @@ export const createDraft = async (body) => {
   return output;
 };
 
+export const createCase = async (body) => {
+  const createUrl = `${FORM_URL}/application/create`;
+  const output = await httpPOSTRequest(createUrl, body, null, true, false, null)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      console.log({ error: error });
+      return {};
+    });
+  return output;
+};
+
 export const getTaksByCaseId = async (id) => {
   const url = `${FORM_URL}/camunda/engine-rest-ext/v1/task?caseInstanceId=${id}`;
   const output = await httpGETRequest(url, {}, null)
