@@ -1,0 +1,74 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: caseflow-caseflow-web
+  namespace: a358eb-dev
+  labels:
+    app: caseflow-caseflow-web
+    app.kubernetes.io/part-of: caseflow-caseflow-web
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: caseflow-caseflow-web
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - caseflow-caseflow-web
+        from:
+          kind: ImageStreamTag
+          namespace: a358eb-tools
+          name: 'caseflow-web-build:latest'
+  template:
+    metadata:
+      labels:
+        app: caseflow-caseflow-web
+        deploymentconfig: caseflow-caseflow-web
+    spec:
+      volumes:
+        - name: caseflow-config
+          configMap:
+            name: caseflow-config
+            defaultMode: 420
+      containers:
+        - name: caseflow-caseflow-web
+          image: ''
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: REACT_APP_GENERIC_NAME
+              value: Case
+            - name: envs
+              valueFrom:
+                configMapKeyRef:
+                  name: caseflow-config
+                  key: config.js
+          resources:
+            limits:
+              cpu: 475m
+              memory: 1Gi
+            requests:
+              cpu: 225m
+              memory: 512Mi
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              

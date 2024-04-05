@@ -1,0 +1,101 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: caseflow-microservices-lob
+  namespace: a358eb-dev
+  labels:
+    app: caseflow-microservices-lob
+    app.kubernetes.io/part-of: caseflow-microservices-lob
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","metadata":{"annotations":{},"labels":{"app":"caseflow-microservices-lob","app.kubernetes.io/part-of":"caseflow-microservices-lob"},"name":"caseflow-microservices-lob","namespace":"a358eb-dev"},"spec":{"replicas":1,"selector":{"deploymentconfig":"caseflow-microservices-lob"},"strategy":{"type":"Rolling"},"template":{"metadata":{"labels":{"app":"caseflow-microservices-lob","deploymentconfig":"caseflow-microservices-lob"}},"spec":{"containers":[{"image":"","imagePullPolicy":"Always","name":"caseflow-microservices-lob","ports":[{"containerPort":8000,"protocol":"TCP"}],"resources":{"limits":{"cpu":"275m","memory":"450Mi"},"requests":{"cpu":"125m","memory":"150Mi"}}}]}},"triggers":[{"type":"ConfigChange"},{"imageChangeParams":{"automatic":true,"containerNames":["caseflow-microservices-lob"],"from":{"kind":"ImageStreamTag","name":"caseflow-microservices-lob:dev"}},"type":"ImageChange"}]}}
+  resourceVersion: '9563615747'
+  uid: d3f0900a-fd70-41f2-9fde-6de4120c104b
+  creationTimestamp: '2024-03-06T04:38:39Z'
+  generation: 34
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: caseflow-microservices-lob
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - caseflow-microservices-lob
+        from:
+          kind: ImageStreamTag
+          namespace: a358eb-tools
+          name: 'caseflow-lob-build:latest'
+  template:
+    metadata:
+      labels:
+        app: caseflow-microservices-lob
+        deploymentconfig: caseflow-microservices-lob
+    spec:
+      containers:
+        - name: caseflow-microservices-lob
+          image: ''
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 275m
+              memory: 450Mi
+            requests:
+              cpu: 125m
+              memory: 150Mi
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+status:
+  observedGeneration: 34
+  details:
+    message: config change
+    causes:
+      - type: ConfigChange
+  availableReplicas: 1
+  unavailableReplicas: 0
+  latestVersion: 13
+  updatedReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2024-03-21T20:16:00Z'
+      lastTransitionTime: '2024-03-21T20:16:00Z'
+      message: Deployment config has minimum availability.
+    - type: Progressing
+      status: 'True'
