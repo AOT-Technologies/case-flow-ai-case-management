@@ -1,0 +1,91 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: caseflow-microservices-gateway
+  namespace: a358eb-dev
+  labels:
+    app: caseflow-microservices-gateway
+    app.kubernetes.io/part-of: caseflow-microservices-gateway
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","metadata":{"annotations":{},"labels":{"app":"caseflow-microservices-gateway","app.kubernetes.io/part-of":"caseflow-microservices-gateway"},"name":"caseflow-microservices-gateway","namespace":"a358eb-dev"},"spec":{"replicas":1,"selector":{"deploymentconfig":"caseflow-microservices-gateway"},"strategy":{"type":"Rolling"},"template":{"metadata":{"labels":{"app":"caseflow-microservices-gateway","deploymentconfig":"caseflow-microservices-gateway"}},"spec":{"containers":[{"env":[{"name":"CASE_SUBGRAPH_URL","valueFrom":{"configMapKeyRef":{"key":"CASE_SUBGRAPH_URL","name":"caseflow-gateway"}}},{"name":"DOCUMENT_SUBGRAPH_URL","valueFrom":{"configMapKeyRef":{"key":"DOCUMENT_SUBGRAPH_URL","name":"caseflow-gateway"}}}],"image":"","imagePullPolicy":"Always","name":"caseflow-microservices-gateway","ports":[{"containerPort":7000,"protocol":"TCP"}],"resources":{"limits":{"cpu":"275m","memory":"450Mi"},"requests":{"cpu":"125m","memory":"150Mi"}}}]}},"triggers":[{"type":"ConfigChange"},{"imageChangeParams":{"automatic":true,"containerNames":["caseflow-microservices-gateway"],"from":{"kind":"ImageStreamTag","name":"caseflow-microservices-gateway:dev"}},"type":"ImageChange"}]}}
+  resourceVersion: '9573173737'
+  uid: 136d3d27-4af8-40a4-8241-2c3e8cc48a67
+  creationTimestamp: '2024-03-06T04:38:40Z'
+  generation: 44
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: caseflow-microservices-gateway
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - caseflow-microservices-gateway
+        from:
+          kind: ImageStreamTag
+          namespace: a358eb-tools
+          name: 'caseflow-gateway-build:latest'
+  template:
+    metadata:
+      labels:
+        app: caseflow-microservices-gateway
+        deploymentconfig: caseflow-microservices-gateway
+    spec:
+      containers:
+        - name: caseflow-microservices-gateway
+          image: ''
+          ports:
+            - containerPort: 7000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 275m
+              memory: 450Mi
+            requests:
+              cpu: 125m
+              memory: 150Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+status:
+  observedGeneration: 44
+  details:
+    message: config change
+    causes:
+      - type: ConfigChange
+  availableReplicas: 1
+  unavailableReplicas: 0
+  latestVersion: 11
+  updatedReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2024-03-28T17:04:18Z'
+      lastTransitionTime: '2024-03-28T17:04:18Z'
+      message: Deployment config has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2024-03-28T17:04:49Z'
+      lastTransitionTime: '2024-03-28T17:04:45Z'
+      reason: NewReplicationControllerAvailable
+      message: >-
+        replication controller "caseflow-microservices-gateway-11" successfully
+        rolled out

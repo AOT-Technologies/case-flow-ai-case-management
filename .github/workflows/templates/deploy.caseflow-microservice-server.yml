@@ -1,0 +1,84 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: caseflow-microservices-server
+  namespace: a358eb-dev
+  labels:
+    app: caseflow-microservices-server
+    app.kubernetes.io/part-of: caseflow-microservices-server
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: caseflow-microservices-server
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - caseflow-microservices-server
+        from:
+          kind: ImageStreamTag
+          namespace: a358eb-tools
+          name: 'caseflow-server-build:latest'
+  template:
+    metadata:
+      labels:
+        app: caseflow-microservices-server
+        deploymentconfig: caseflow-microservices-server
+    spec:
+      containers:
+        - name: caseflow-microservices-server
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/a358eb-tools/caseflow-server-build@sha256:1f3a71f6168c2908c3ee5ccf233262b4da7343f005ff8f88bffe954e882e0ab5
+          ports:
+            - containerPort: 7001
+              protocol: TCP
+          env: []
+          resources:
+            limits:
+              cpu: 275m
+              memory: 450Mi
+            requests:
+              cpu: 125m
+              memory: 150Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+status:
+  observedGeneration: 37
+  details:
+    message: config change
+    causes:
+      - type: ConfigChange
+  availableReplicas: 1
+  unavailableReplicas: 0
+  latestVersion: 22
+  updatedReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2024-03-28T17:05:28Z'
+      lastTransitionTime: '2024-03-28T17:05:28Z'
+      message: Deployment config has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2024-03-28T17:05:41Z'
+      lastTransitionTime: '2024-03-28T17:05:36Z'
+      reason: NewReplicationControllerAvailable
+      message: >-
+        replication controller "caseflow-microservices-server-22" successfully
+        rolled out
