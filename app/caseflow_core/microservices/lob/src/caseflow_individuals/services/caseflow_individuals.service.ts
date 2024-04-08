@@ -39,14 +39,26 @@ export class CaseflowIndividualsService {
     }
   }
 
-  async findAll(
-    args: FetchArgs = { skip: 0, take: 5 },
-  ): Promise<CaseflowIndividualsResponse> {
+  async findByIds(id: number): Promise<CaseflowIndividualsResponse> {
+    try {
+      if (id) {
+        const [CaseflowIndividuals, totalCount] = await this.caseflowIndividualsRepository
+              .createQueryBuilder('table')
+              .where('table.id IN(:...ids)', { ids: id })
+              .orderBy({ 'table.id': 'DESC' })
+              .getManyAndCount();
+            return { CaseflowIndividuals, totalCount };
+      } 
+      throw new BadRequestException("request doesn't have any id");
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async findAll(): Promise<CaseflowIndividualsResponse> {
     try {
       const [CaseflowIndividuals, totalCount] = await Promise.all([
         this.caseflowIndividualsRepository.find({
-          take: args.take,
-          skip: args.skip,
           order: {
             id: 'DESC',
           },
@@ -74,9 +86,12 @@ export class CaseflowIndividualsService {
                 firstname: `%${searchField}%` ,
               }).orWhere('table.lastname ilike :lastname', {
                 lastname: `%${searchField}%` ,
+              }).orWhere('table.firstname || \' \' || table.lastname ilike :fullname', {
+                fullname: `%${searchField}%` ,
               }).orWhere('table.phonenumber ilike :phonenumber', {
                 phonenumber: `%${searchField}%` ,
-              })
+              }).orWhere("table.id = :id", { id: isNaN(parseInt(searchField))?0:parseInt(searchField)})  
+          
               .orderBy({ 'table.id': 'DESC' })
               .take(take)
               .skip(skip)

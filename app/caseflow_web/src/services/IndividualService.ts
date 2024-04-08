@@ -2,6 +2,8 @@ import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
   CREATE_NEW_CASEFLOW_INDIVIDUAL,
+  FETCH_ALL,
+  FETCH_ALL_BY_IDS,
   FETCH_ALL_INDIVIDUALS_DATA,
   FETCH_DATA,
   UPDATE_NEW_CASEFLOW_INDIVIDUAL,
@@ -31,6 +33,52 @@ export const getIndividualDetails = async (id) => {
     });
   return output;
 };
+
+export const getIndividualDetailsByIds = async (ids) => { 
+  const url = LOBURL;
+  const output = await httpPOSTRequest(
+    url,
+    {
+      query: print(FETCH_ALL_BY_IDS),
+      variables: {
+        Id: ids,
+      },
+    },
+    null
+  )
+    .then((res) => {
+      return res.data.data.getIndividualsByIds.CaseflowIndividuals;
+    })
+    .catch((error) => {
+      console.log({ error: error });
+      return {};
+    });
+  return output;
+};
+
+
+export const getAllIndividualData = async () => {
+  const url = LOBURL;
+  const output = await httpPOSTRequest(
+    url,
+    {
+      query: print(FETCH_ALL),
+      variables: {
+       Take: Number(PAGINATION_TAKE),
+      },
+    },
+    null
+  )
+    .then((res) => {
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return {};
+    });
+  return output?.getIndividualsList?.CaseflowIndividuals;
+};
+
 
 export const getIndividualsData = async (
   number,

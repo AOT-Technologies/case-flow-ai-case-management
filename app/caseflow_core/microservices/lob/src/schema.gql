@@ -80,10 +80,12 @@ type Query {
   getLobList(skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
   searchCaseflowLob(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
   getContactsById(id: Int!): CaseflowContacts!
-  getContactsList(skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
+  getContactsByIds(id: [Int!]!): CaseflowContactsResponse!
+  getContactsList: CaseflowContactsResponse!
   searchCaseflowContacts(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
   getIndividualsById(id: Int!): CaseflowIndividuals!
-  getIndividualsList(skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
+  getIndividualsByIds(id: [Int!]!): CaseflowIndividualsResponse!
+  getIndividualsList: CaseflowIndividualsResponse!
   searchCaseflowIndividuals(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
 }
 

@@ -20,9 +20,14 @@ export class CaseflowIndividualsResolver {
     return this.caseflowIndividualsService.findById(id);
   }
 
+  @Query(() => CaseflowIndividualsResponse, { name: 'getIndividualsByIds' })
+  findAllByIds(@Args('id', { type: () => [Int] }) id: number) {
+    return this.caseflowIndividualsService.findByIds(id);
+  }
+
   @Query((returns) => CaseflowIndividualsResponse, { name: 'getIndividualsList' })
-  getIndividualsList(@Args() args: FetchArgs): Promise<CaseflowIndividualsResponse> {
-    const output = this.caseflowIndividualsService.findAll(args);
+  getIndividualsList(): Promise<CaseflowIndividualsResponse> {
+    const output = this.caseflowIndividualsService.findAll();
     return output;
   }
 

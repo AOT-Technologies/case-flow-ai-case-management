@@ -20,9 +20,14 @@ export class CaseflowContactsResolver {
     return this.caseflowContactsService.findById(id);
   }
 
+  @Query(() => CaseflowContactsResponse, { name: 'getContactsByIds' })
+  findAllByIds(@Args('id', { type: () => [Int] }) id: number) {
+    return this.caseflowContactsService.findByIds(id);
+  }
+
   @Query((returns) => CaseflowContactsResponse, { name: 'getContactsList' })
-  getContactsList(@Args() args: FetchArgs): Promise<CaseflowContactsResponse> {
-    const output = this.caseflowContactsService.findAll(args);
+  getContactsList(): Promise<CaseflowContactsResponse> {
+    const output = this.caseflowContactsService.findAll();
     return output;
   }
 

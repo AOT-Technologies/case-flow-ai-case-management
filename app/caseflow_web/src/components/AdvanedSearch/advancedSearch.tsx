@@ -60,11 +60,11 @@ export default function AdvancedSearch() {
           fromDateForSearch,
           toDateForSearch
         ).then((searchCaseResult) => {
-          totalCount = totalCount + searchCaseResult.totalCount;
+          totalCount = totalCount + searchCaseResult?.totalCount;
           searchCaseResult?.Cases.map((element) => {
             result.push({
               title: element.id + " - " + element.issuetype,
-              content: element.individualid,
+              content: 'Owner: '+element.caseowner,
               subtitle: GENERIC_NAME,
               link: "/private/cases/" + element.id + "/details",
               imgIcon: require("../../assets/CasesIcon.png"),
@@ -81,7 +81,7 @@ export default function AdvancedSearch() {
           fromDateForSearch,
           toDateForSearch
         ).then((searchDocumentResult) => {
-          totalCount = totalCount + searchDocumentResult.totalCount;
+          totalCount = totalCount + searchDocumentResult?.totalCount;
           searchDocumentResult?.CaseDocuments.map((element) => {
             result.push({
               title: element.id + " - " + element.name,
@@ -92,25 +92,25 @@ export default function AdvancedSearch() {
             });
           });
         }),
-      (allSearch || lobSearch) &&
-        getLobData(
-          1,
-          searchField,
-          "policyNumber",
-          fromDateForSearch,
-          toDateForSearch
-        ).then((searchLobResult) => {
-          totalCount = totalCount + searchLobResult?.totalCount;
-          searchLobResult?.CaseflowLob.map((element) => {
-            result.push({
-              title: element.id + " - " + element.policyNumber,
-              content: moment(element.createdDate).format("MMMM Do, YYYY"),
-              subtitle: "Policy",
-              link: "/private/lob/" + element.id + "/details",
-              imgIcon: require("../../assets/LOBIcon.png"),
-            });
-          });
-        }),
+      // (allSearch || lobSearch) &&
+      //   getLobData(
+      //     1,
+      //     searchField,
+      //     "policyNumber",
+      //     fromDateForSearch,
+      //     toDateForSearch
+      //   ).then((searchLobResult) => {
+      //     totalCount = totalCount + searchLobResult?.totalCount;
+      //     searchLobResult?.CaseflowLob.map((element) => {
+      //       result.push({
+      //         title: element.id + " - " + element.policyNumber,
+      //         content: moment(element.createdDate).format("MMMM Do, YYYY"),
+      //         subtitle: "Policy",
+      //         link: "/private/lob/" + element.id + "/details",
+      //         imgIcon: require("../../assets/LOBIcon.png"),
+      //       });
+      //     });
+      //   }),
       (allSearch || contactSearch) &&
       getContactsData(
           1,
@@ -132,7 +132,7 @@ export default function AdvancedSearch() {
           1,
           searchField
         ).then((individuals) => {
-          totalCount = totalCount + individuals?.CaseflowIndividuals?.totalCount;
+          totalCount = totalCount + individuals?.totalCount;
           individuals?.CaseflowIndividuals?.map((element) => {
             result.push({
               title: element.id + " - " + element.firstname +" "+element.lastname,
@@ -164,7 +164,6 @@ export default function AdvancedSearch() {
 
   useEffect(() => {
     searchDetails();
-    console.log(searchresults);
   }, [
     searchField,
     fromDateForSearch,

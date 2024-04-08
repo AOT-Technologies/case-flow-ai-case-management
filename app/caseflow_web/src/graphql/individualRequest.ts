@@ -15,16 +15,27 @@ export const FETCH_DATA = gql`
   }
 `;
 
+export const FETCH_ALL_BY_IDS = gql`
+  query getIndividualsByIds($Id: [Int!]!) {
+    getIndividualsByIds(id: $Id) {
+      totalCount
+      CaseflowIndividuals {
+      id
+      firstname
+      lastname
+      phonenumber
+      email
+      dateofbirth
+      address
+      createdat
+      }
+    }
+  }
+`;
 
 export const FETCH_ALL = gql`
-  query getAll(
-    $Skip: Int
-    $Take: Int
-  ) {
-    getIndividualsList(
-      skip: $Skip
-      take: $Take
-    ) {
+  query getAll {
+    getIndividualsList {
       totalCount
       CaseflowIndividuals {
         id
