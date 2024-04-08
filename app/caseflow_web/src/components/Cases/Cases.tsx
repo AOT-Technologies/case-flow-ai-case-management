@@ -12,6 +12,8 @@ import {
 } from "../../reducers/newCaseReducer";
 import { Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
+import { getContactDetailsByIds } from "../../services/ContactService";
+import { getIndividualDetailsByIds } from "../../services/IndividualService";
 const caseListProps = {
   title: GENERIC_NAME,
   count: 5,
@@ -23,7 +25,7 @@ const caseListProps = {
 const Cases = () => {
   const [filteredCaseDetails, setFilteredCaseDetails] = useState([]);
   const [searchField, setSearchField] = useState("");
-  const [searchColumn, setSearchColumn] = useState("individualid");
+  const [searchColumn, setSearchColumn] = useState("other");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   const [sortSetting, setSortSetting] = useState({
     orderBy: "id",
@@ -47,10 +49,37 @@ const Cases = () => {
       null,
       null
     );
+    
     let searchResultCases = searchResult.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
+    let contacts = await searchResultCases.reduce(function(pV, cV){
+      pV.push(parseInt(cV.contactid));
+      return pV;
+    }, []);
+    let individuals = await searchResultCases.reduce(function(pV, cV){
+      pV.push(parseInt(cV.individualid));
+      return pV;
+    }, []);
+    let contactList = await getContactDetailsByIds(contacts);
+    let individualList = await getIndividualDetailsByIds(individuals);
+    
+    let contactsKey = new Map<string, string>();
+    contactList.map(contact=>{
+      contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
+    })
+    
+    let individualsKey = new Map<string, string>();
+    individualList.map(individual=>{
+      individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
+    })
 
+    searchResultCases = searchResultCases.map((element) => {
+      element.contactname=contactsKey.get(element.contactid);
+      element.individualname=individualsKey.get(element.individualid);
+      return element;
+    });
+    
     if (searchResultCases) setFilteredCaseDetails(searchResultCases);
     dispatch(setTotalCaseCount(searchResult.totalCount));
   };
@@ -69,7 +98,7 @@ const Cases = () => {
     let searchResultCases = searchResult.Cases?.map((element) => {
       return {
         title: element.id + " - " + element.issuetype,
-        content: element.individualid,
+        content: 'Owner: '+element.caseowner,
         subtitle: GENERIC_NAME,
         link: "/private/cases/" + element.id + "/details",
         imgIcon: require("../../assets/CasesIcon.png"),

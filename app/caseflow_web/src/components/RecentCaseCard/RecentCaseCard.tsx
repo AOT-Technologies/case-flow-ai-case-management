@@ -14,7 +14,6 @@ const RecentCaseCard = (props) => {
   const [CaseDetails, setcaseDetails] = useState(props.case);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const viewCaseDetails = async (CaseDetails) => {
     navigate("/private/cases/" + CaseDetails.id + "/details");
   };
@@ -63,13 +62,13 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.contactid}{" "}
+                  {CaseDetails.contactname}
                 </Typography>
               }
             />
           </Grid>
           <Grid item xs={1.5}>
-            <ListItemText
+            <ListItemText 
               className="caseName-case-list"
               primary={
                 <Typography
@@ -81,7 +80,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.individualid}{" "}
+                  {CaseDetails.individualname}{" "}
                 </Typography>
               }
             />

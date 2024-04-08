@@ -2,6 +2,8 @@ import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
   CREATE_NEW_CASEFLOW_CONTACT,
+  FETCH_ALL,
+  FETCH_ALL_BY_IDS,
   FETCH_ALL_CONTACTS_DATA,
   FETCH_DATA,
   UPDATE_NEW_CASEFLOW_CONTACT,
@@ -30,6 +32,50 @@ export const getContactDetails = async (id) => {
       return {};
     });
   return output;
+};
+
+export const getContactDetailsByIds = async (ids) => { 
+  const url = LOBURL;
+  const output = await httpPOSTRequest(
+    url,
+    {
+      query: print(FETCH_ALL_BY_IDS),
+      variables: {
+        Id: ids,
+      },
+    },
+    null
+  )
+    .then((res) => {
+      return res.data.data.getContactsByIds.CaseflowContacts;
+    })
+    .catch((error) => {
+      console.log({ error: error });
+      return {};
+    });
+  return output;
+};
+
+export const getAllContactsData = async () => {
+  const url = LOBURL;
+  const output = await httpPOSTRequest(
+    url,
+    {
+      query: print(FETCH_ALL),
+      variables: {
+       Take: Number(PAGINATION_TAKE),
+      },
+    },
+    null
+  )
+    .then((res) => {
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      return {};
+    });
+  return output?.getContactsList?.CaseflowContacts;
 };
 
 export const getContactsData = async (

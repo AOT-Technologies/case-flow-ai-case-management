@@ -20,6 +20,7 @@ import {
 } from "../../reducers/newCaseReducer";
 import "./NewCaseComponent.scss";
 import {
+  Autocomplete,
   FormControl,
   InputLabel,
   MenuItem,
@@ -47,6 +48,8 @@ import { FORMSFLOW_APPLICATION_URL, FORMSFLOW_WEB_APPLICATION_URL } from "../../
 import { Form as FormIOForm, saveSubmission, Formio } from "react-formio";
 import CustomizedDialog from "../Dialog/Dialog";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
+import { getAllContactsData } from "../../services/ContactService";
+import { getAllIndividualData } from "../../services/IndividualService";
 const NewCase = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -80,6 +83,8 @@ const NewCase = () => {
   );
   const [values, setValues] = useState(initialFieldValues);
   const [isEdit, setIsEdit] = useState(false);
+  const [contactList, setContactList]: any = useState();
+  const [individualList, setIndividualList]: any = useState();
   const { handleSubmit, control, register } = useForm();
   // const [caseList.isEdit,setIsCaseEdit] = useState(Boolean);
   const [selectedForm, setselectedForm]: any = useState("");
@@ -172,6 +177,8 @@ const NewCase = () => {
         lobcaseid:data.lobcaseid,
       };
       setValues(InitialSelectedCaseDetails);
+      await getContacts();
+      await getIndividuals();
       setIsEdit(true);
     }
   };
@@ -180,6 +187,25 @@ const NewCase = () => {
     const caseTypes = await fetchCaseTypess();
     dispatch(setCaseTypes(caseTypes));
   };
+
+  const getContacts = async () => {
+    const contacts = await getAllContactsData();
+    let values:any = [];
+    contacts.forEach(function (contact){
+      values.push({'id': contact.id,'label': contact.firstname+' '+contact.lastname })
+    })
+    setContactList(values);
+  };
+
+  const getIndividuals = async () => {
+    const individials = await getAllIndividualData();
+    const values = [{}];
+    individials.forEach(function (individual){
+      values.push({id: individual.id,label: individual.firstname+' '+individual.lastname })
+    })
+    setIndividualList(values);
+  };
+
 
   const refreshCases = () => {
     dispatch(resetSelectedCase());
@@ -285,7 +311,6 @@ const NewCase = () => {
 
     }
   }, [selectedFormDetails]);
-
   return (
     <>
       <div
@@ -317,19 +342,21 @@ const NewCase = () => {
                   name={"contactid"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <TextField
-                      id="standard-basic"
-                      variant="standard"
-                      rows={1}
-                      sx={{
-                        width: "100%",
-                      }}
-                      placeholder={"Contact Name"}
+                    <Select
+                    sx={{
+                          width: "100%",
+                        }}
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
                       value={values.contactid}
                       onChange={(e) => {
-                        setValues({ ...values, contactid: e.target.value });
-                      }}
-                    />
+                            setValues({ ...values, contactid: e.target.value });
+                          }}
+                    >
+                      {contactList.map(contact => (
+                      <MenuItem value={contact.id}>{contact.label}</MenuItem>
+                      ))}
+                    </Select>
                   )}
                 />
               </Grid>
@@ -349,19 +376,21 @@ const NewCase = () => {
                   name={"individualid"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <TextField
-                      id="standard-basic"
-                      rows={1}
-                      variant="standard"
-                      sx={{
-                        width: "100%",
-                      }}
-                      placeholder={"Individual Name"}
+                    <Select
+                    sx={{
+                          width: "100%",
+                        }}
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
                       value={values.individualid}
                       onChange={(e) => {
-                        setValues({ ...values, individualid: e.target.value });
-                      }}
-                    />
+                            setValues({ ...values, individualid: e.target.value });
+                          }}
+                    >
+                      {individualList.map(individual => (
+                      <MenuItem value={individual.id}>{individual.label}</MenuItem>
+                      ))}
+                    </Select>
                   )}
                 />
               </Grid>

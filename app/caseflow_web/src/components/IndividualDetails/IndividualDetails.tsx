@@ -8,12 +8,60 @@ import { getIndividualDetails } from "../../services/IndividualService";
 import { useDispatch } from "react-redux";
 import { setSelectedIndividual } from "../../reducers/newIndividualReducer";
 import { Typography } from "@mui/material";
+import CaseList from "../CaseList/CaseList";
+import { searchCases } from "../../services/CaseService";
+import { getContactDetailsByIds } from "../../services/ContactService";
+
+const caseListProps = {
+  title: "Related Cases",
+};
 
 const IndividualDetail = () => {
   const [dataForBreadCrumbs, setDataForBreadCrumbs] = useState([
     { text: "Home", link: "/private" },
   ]);
   const individual = useSelector((state: State) => state.individuals.selectedIndividual);
+  const [recentCases, setrecentCases] = useState([]);
+  
+  const [searchColumn] = useState("individualid");
+
+  
+  const relatedCaseList = async (output) => {
+    let recentCases = await searchCases(
+      output.id,
+      searchColumn,
+      1,
+      "id",
+      true,
+      true,
+      null,
+      null
+    );
+    let searchResultCases = recentCases.Cases?.map((element) => {
+      return { ...element, status: "Open" };
+    });
+    let contacts = await searchResultCases?.reduce(function(pV, cV){
+      pV.push(parseInt(cV.contactid));
+      return pV;
+    }, []);
+    let contactList = contacts ? await getContactDetailsByIds(contacts):[];
+    
+    
+    let contactsKey = new Map<string, string>();
+    contactList.map(contact=>{
+      contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
+    })
+    
+
+    searchResultCases = searchResultCases.map((element) => {
+      element.individualname=output.firstname+' '+output.lastname;
+      element.contactname=contactsKey.get(element.contactid);
+      return element;
+    });
+    
+    setrecentCases(searchResultCases);
+  };
+
   const location = useLocation();
   const dispatch = useDispatch();
   async function fetchIndividualDetails() {
@@ -21,6 +69,7 @@ const IndividualDetail = () => {
     if (matches && matches[0]) {
       let output = await getIndividualDetails(matches[0]);
       dispatch(setSelectedIndividual(output));
+      relatedCaseList(output);
     }
   }
 
@@ -104,6 +153,13 @@ const IndividualDetail = () => {
             {individual.id}
           </Typography>
         </div>
+      </div>
+      
+      <div className="recent-cases">
+        <CaseList
+          config={caseListProps}
+          allRecentCases={recentCases}
+        ></CaseList>
       </div>
     </>
   );

@@ -74,6 +74,10 @@ import { publishMessage } from "../../services/NatsServices";
 import { v4 as uuidv4 } from "uuid";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
 import { createNewNote, getCaseNotes } from "../../services/caseNotesService";
+import { getContactDetails, getContactsData } from "../../services/ContactService";
+import { setSelectedContact } from "../../reducers/newContactReducer";
+import { getIndividualDetails } from "../../services/IndividualService";
+import { setSelectedIndividual } from "../../reducers/newIndividualReducer";
 
 // Formio.setProjectUrl("https://app2.aot-technologies.com/formio");
 // Formio.setBaseUrl("https://app2.aot-technologies.com/formio");
@@ -86,6 +90,8 @@ const CaseDetails = () => {
   const caseTypes = useSelector((state: State) => state.constants.caseTypes);
   const tasks = useSelector((state: State) => state.cases.selectedCase.tasks);
   const selectedCase = useSelector((state: State) => state.cases.selectedCase);
+  const selectedContact = useSelector((state: State) => state.contacts.selectedContact);
+  const selectedIndividual = useSelector((state: State) => state.individuals.selectedIndividual);
   const userName = useSelector(
     (state: State) => state.auth.userDetails.userName
   );
@@ -102,18 +108,18 @@ const CaseDetails = () => {
     dueDate: "2022-11-01",
   };
   const optionsForAction = [
-    { id: 11, code: 11, text: "Edit" },
+    { id: 9, code: 9, text: "Edit" },
     { id: 1, code: "1", text: "Start Workflow" },
     { id: 2, code: 2, text: "Wake" },
     { id: 3, code: 3, text: "Pending" },
     // { id: 4, code: 4, text: "Complete" },
-    { id: 4, code: 4, text: "Merge" },
-    { id: 5, code: 5, text: "Archive" },
-    { id: 6, code: 6, text: "Upload Document" }, 
-    { id: 7, code: 7, text: "Add Note" }, 
-    { id: 8, code: 8, text: "Delete" },
-    { id: 9, code: 9, text: "Add Communication" }, 
-    { id: 10, code: 10, text: "Close" }, 
+    // { id: 4, code: 4, text: "Merge" },
+    // { id: 5, code: 5, text: "Archive" },
+    { id: 4, code: 4, text: "Upload Document" }, 
+    { id: 5, code: 5, text: "Add Note" }, 
+    { id: 6, code: 6, text: "Delete" },
+    { id: 7, code: 7, text: "Add Communication" }, 
+    { id: 8, code: 8, text: "Close" }, 
   ];
   const [isDeleteConfirmationUpOpen, setDeleteConfirmation] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
@@ -163,6 +169,8 @@ const CaseDetails = () => {
       let output = await getCaseDetails(matches[0]);
       dispatch(setSelectedCase({ ...output, isEdit: false }));
       await fetchCaseHistory(matches[0]);
+      findContact(output.contactid);
+      findIndividual(output.individualid);
     }
   }
   async function fetchCaseHistory(id) {
@@ -275,22 +283,22 @@ const CaseDetails = () => {
       // case optionsForAction[4].text: {
       //   return changeStatus(3); // Complete
       // }
-      case optionsForAction[6].text: {
+      case optionsForAction[4].text: {
         return setOpenPopup(true);
       }
       case optionsForAction[0].text: {
         return editCaseDetails(selectedCase);
       }
-       case optionsForAction[8].text: {
+       case optionsForAction[6].text: {
         return setDeleteConfirmation(true)
       }
-       case optionsForAction[7].text: {
+       case optionsForAction[5].text: {
         return setIsNoteOpen(true)
       }
-      case optionsForAction[9].text: {
+      case optionsForAction[7].text: {
         return setIsCommunicationOpen(true)
       }
-      case optionsForAction[10].text: {
+      case optionsForAction[8].text: {
         return setIsRecordOutputOpen(true)
       }
     }
@@ -323,7 +331,14 @@ const CaseDetails = () => {
     fetchCaseDetails();
     fetchAllCaseStatuses();
   }, []);
-
+  async function  findContact (contactid){
+    const selectedContact = await getContactDetails([contactid]);
+    dispatch(setSelectedContact(selectedContact));
+  };
+  async function  findIndividual (individualid) {
+    const selectedIndividual = await getIndividualDetails(individualid);
+    dispatch(setSelectedIndividual(selectedIndividual));
+  };
   useEffect(() => {
     if (selectedCase && selectedCase.id) fetchRealtedTasks();
   }, [selectedCase.id]);
@@ -633,8 +648,8 @@ const CaseDetails = () => {
           {selectedCase && selectedCase.id ? (
             <>
               <CaseDetailData
-                contactid={selectedCase.contactid}
-                individualid={selectedCase.individualid}
+                contactid={selectedContact.firstname+' '+selectedContact.lastname}
+                individualid={selectedIndividual.firstname+" "+selectedIndividual.lastname}
                 startDate={caseDetail.startDate}
                 owner={caseDetail.owner}
                 tasks={tasks}

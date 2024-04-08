@@ -4,16 +4,65 @@ import { useSelector } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
 import "./ContactDetails.scss";
 import moment from "moment";
-import { getContactDetails } from "../../services/ContactService";
+import { getContactDetails, getContactDetailsByIds } from "../../services/ContactService";
 import { useDispatch } from "react-redux";
 import { setSelectedContact } from "../../reducers/newContactReducer";
 import { Typography } from "@mui/material";
+import CaseList from "../CaseList/CaseList";
+import { fetchRecentCaseList, searchCases } from "../../services/CaseService";
+import { GENERIC_NAME } from "../../apiManager/endpoints/config";
+import { setsearchCaseResult } from "../../reducers/newCaseReducer";
+import { getIndividualDetailsByIds } from "../../services/IndividualService";
+
+const caseListProps = {
+  title: "Related Cases",
+};
 
 const ContactDetail = () => {
   const [dataForBreadCrumbs, setDataForBreadCrumbs] = useState([
     { text: "Home", link: "/private" },
   ]);
   const contact = useSelector((state: State) => state.contacts.selectedContact);
+  const [recentCases, setrecentCases] = useState([]);
+  
+  const [searchColumn] = useState("contactid");
+
+  const relatedCaseList = async (output) => {
+    let recentCases = await searchCases(
+      output.id,
+      searchColumn,
+      1,
+      "id",
+      true,
+      true,
+      null,
+      null
+    );
+    let searchResultCases = recentCases.Cases?.map((element) => {
+      return { ...element, status: "Open" };
+    });
+    let individuals = await searchResultCases?.reduce(function(pV, cV){
+      pV.push(parseInt(cV.individualid));
+      return pV;
+    }, []);
+    let individualList = individuals ? await getIndividualDetailsByIds(individuals):[];
+    
+    
+    let individualsKey = new Map<string, string>();
+    individualList.map(individual=>{
+      individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
+    })
+    
+
+    searchResultCases = searchResultCases.map((element) => {
+      element.contactname=output.firstname+' '+output.lastname;
+      element.individualname=individualsKey.get(element.individualid);
+      return element;
+    });
+    
+    setrecentCases(searchResultCases);
+  };
+
   const location = useLocation();
   const dispatch = useDispatch();
   async function fetchContactDetails() {
@@ -21,6 +70,7 @@ const ContactDetail = () => {
     if (matches && matches[0]) {
       let output = await getContactDetails(matches[0]);
       dispatch(setSelectedContact(output));
+      relatedCaseList(output);
     }
   }
 
@@ -38,7 +88,6 @@ const ContactDetail = () => {
       },
     ]);
   }, [contact]);
-
   return (
     <>
       <div className="lob-details-container">
@@ -104,6 +153,12 @@ const ContactDetail = () => {
             {contact.id}
           </Typography>
         </div>
+      </div>
+      <div className="recent-cases">
+        <CaseList
+          config={caseListProps}
+          allRecentCases={recentCases}
+        ></CaseList>
       </div>
     </>
   );
