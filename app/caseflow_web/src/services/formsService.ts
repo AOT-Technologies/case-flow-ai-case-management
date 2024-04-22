@@ -26,7 +26,7 @@ export const getFormsList = async () => {
   return output;
 };
 export const getFormsListByName = async (name) => {
-  const url = `${FORM_URL}/form?formName=${name}`;
+  const url = `${FORM_URL}/form`;
   const output = await httpGETRequest(url, {}, null)
     .then((res) => {
       return res.data;

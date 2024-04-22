@@ -87,6 +87,19 @@ type CaseNotes {
   case: Cases
 }
 
+type WorkflowActivity {
+  id: ID!
+  taskid: String
+  caseid: Float
+  creationdate: DateTime!
+  userid: String!
+  taskname: String
+  formurl: String
+  status: String
+  selectedform: String
+  case: Cases
+}
+
 type Cases {
   id: ID!
   lobid: Int!
@@ -107,6 +120,7 @@ type Cases {
   casestatus: CaseStatuses
   casestype: CaseTypes
   casenote: [CaseNotes!]
+  workflowactivity: [WorkflowActivity!]
   contactid: String
   individualid: String
   email: String
@@ -143,6 +157,7 @@ type Query {
   caseNotes: [CaseNotes!]!
   caseNote(id: Int!): CaseNotes!
   caseNotesByCaseId(id: Int!): [CaseNotes!]!
+  workflowActivitiesByCaseId(id: Int!): [WorkflowActivity!]!
 }
 
 type Mutation {
@@ -164,6 +179,8 @@ type Mutation {
   createCaseNote(createCaseNoteInput: CreateCaseNoteInput!): CaseNotes!
   updateCaseNote(updateCaseNoteInput: UpdateCaseNoteInput!): CaseNotes!
   removeCaseNote(id: Int!): CaseNotes!
+  createWorkflowActivity(createWorkflowActivityInput: CreateWorkflowActivityInput!): WorkflowActivity!
+  updateWorkflowActivity(updateWorkflowActivityInput: UpdateWorkflowActivityInput!): WorkflowActivity!
 }
 
 input CreateCaseInput {
@@ -171,7 +188,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-26T01:07:20.509Z"
+  creationdate: DateTime = "2024-04-21T04:08:52.906Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -200,9 +217,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-26T01:07:20.505Z"
+  creationdate: DateTime = "2024-04-21T04:08:52.902Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-03-26T01:07:20.505Z"
+  lastmodificationdate: DateTime = "2024-04-21T04:08:52.902Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -228,7 +245,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-03-26T01:07:20.519Z"
+  datetime: DateTime = "2024-04-21T04:08:52.912Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -238,7 +255,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-03-26T01:07:20.519Z"
+  datetime: DateTime = "2024-04-21T04:08:52.912Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -293,17 +310,33 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-03-26T01:07:20.621Z"
+  creationdate: DateTime = "2024-04-21T04:08:52.987Z"
   userid: Float
   notetext: String
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-03-26T01:07:20.621Z"
+  creationdate: DateTime = "2024-04-21T04:08:52.987Z"
   userid: Float
   notetext: String
   id: Int!
+}
+
+input CreateWorkflowActivityInput {
+  caseid: Float
+  creationdate: DateTime = "2024-04-21T04:08:52.992Z"
+  userid: String
+  taskid: String!
+  taskname: String
+  formurl: String
+  status: String
+  selectedform: String
+}
+
+input UpdateWorkflowActivityInput {
+  taskid: String
+  status: String
 }
 
 scalar link__Import

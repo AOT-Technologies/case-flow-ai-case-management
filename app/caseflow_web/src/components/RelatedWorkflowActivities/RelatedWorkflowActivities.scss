@@ -1,0 +1,27 @@
+@import "../../styles.scss";
+
+.case-document-table {
+  padding: 0;
+  .caseDocumentAction-center {
+    background-color: #bcbcbc;
+    opacity: 0.3;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    color: black;
+    &:first-child {
+    }
+  }
+  .document-actions {
+    font-size: 0rem;
+  }
+}
+.no-case-doc-found {
+  text-align: center;
+}
+
+.css-avy57p-MuiAccordionDetails-root,
+.css-6kfpg7 {
+  padding-inline: 0px !important;
+}

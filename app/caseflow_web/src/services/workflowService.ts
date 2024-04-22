@@ -9,7 +9,6 @@ import { print } from "graphql";
 import { ADD_WORKFLOW_CASE_HISTORY } from "../graphql/caseRequests";
 
 export const getWorkflowList = async (caseType) => {
-  console.log(parseInt(caseType));
   const url = `${BPM_URL}/camunda/engine-rest-ext/v1/process-definition?latestVersion=true`;
   const output = await httpGETRequest(url, {}, null)
     .then((res) => {
@@ -22,7 +21,6 @@ export const getWorkflowList = async (caseType) => {
   return output;
 };
 export const startNewWorkflow = async (id, body) => {
-  console.log(parseInt(id));
   const url = `${BPM_URL}/camunda/engine-rest-ext/v1/process-definition/key/${id}/start`;
   const output = await httpPOSTRequest(url, body, null)
     .then((res) => {
@@ -106,7 +104,7 @@ export const addWorkflowCaseHistory = async (caseId,workflowtype="") => {
       query: print(ADD_WORKFLOW_CASE_HISTORY),
       variables: {
         createCaseEventInput: {
-          artifactId: caseId,
+          artifactId: parseInt(caseId),
           eventtypeId: 12,
           workflowtype:workflowtype,
         },
