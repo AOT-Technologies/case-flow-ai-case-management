@@ -78,6 +78,8 @@ import { getContactDetails, getContactsData } from "../../services/ContactServic
 import { setSelectedContact } from "../../reducers/newContactReducer";
 import { getIndividualDetails } from "../../services/IndividualService";
 import { setSelectedIndividual } from "../../reducers/newIndividualReducer";
+import { createNewWorkflowActivity, getWorkflowActivities } from "../../services/workflowActivityService";
+import RelatedWorkflowActivities from "../RelatedWorkflowActivities/RelatedWorkflowActivities";
 
 // Formio.setProjectUrl("https://app2.aot-technologies.com/formio");
 // Formio.setBaseUrl("https://app2.aot-technologies.com/formio");
@@ -92,6 +94,7 @@ const CaseDetails = () => {
   const selectedCase = useSelector((state: State) => state.cases.selectedCase);
   const selectedContact = useSelector((state: State) => state.contacts.selectedContact);
   const selectedIndividual = useSelector((state: State) => state.individuals.selectedIndividual);
+  const [workflowActivities, setWorkflowActivities] = useState([]);
   const userName = useSelector(
     (state: State) => state.auth.userDetails.userName
   );
@@ -171,6 +174,7 @@ const CaseDetails = () => {
       await fetchCaseHistory(matches[0]);
       findContact(output.contactid);
       findIndividual(output.individualid);
+      setWorkflowActivities(await getWorkflowActivities(matches[0]))
     }
   }
   async function fetchCaseHistory(id) {
@@ -307,8 +311,8 @@ const CaseDetails = () => {
   const getForms = async () => {
 
     let type= caseTypes.find(type=> type.id == selectedCase.typeid)
-    //Hard coded form name for POC, should be removed for actual implemetnation
-    const formsList = await getFormsListByName('Case Flow POC');
+    // const formsList = await getFormsListByName('Case Flow POC');
+    const formsList = await getFormsListByName(type?.searchterm);
     setFormsList(formsList);
     setOpenWorkflowPopup(true);
   };
@@ -463,22 +467,22 @@ const CaseDetails = () => {
   const callBack = (err, submission) => {};
 
   const submitForm = (data) => {
-    try {
-      const SUBJECT = "workFlowStart";
-      const MESSAGE = {
-        eventId: String(uuidv4()),
-        eventRef: String(selectedCase.id),
-        eventOrigin: String("Caseflow"),
-        eventCategory: String("Caseflow"),
-        eventType: String(SUBJECT),
-        eventDateTime: String(new Date()),
-        eventPublisher: String(userName),
-      };
-      publishMessage(SUBJECT, MESSAGE);
-    } catch (error) {
-      console.log(error);
-    }
-
+    // try {
+    //   const SUBJECT = "workFlowStart";
+    //   const MESSAGE = {
+    //     eventId: String(uuidv4()),
+    //     eventRef: String(selectedCase.id),
+    //     eventOrigin: String("Caseflow"),
+    //     eventCategory: String("Caseflow"),
+    //     eventType: String(SUBJECT),
+    //     eventDateTime: String(new Date()),
+    //     eventPublisher: String(userName),
+    //   };
+    //   publishMessage(SUBJECT, MESSAGE);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    
     submitNewForm(selectedForm, data).then((res) => {
       let submissionData = {
         formId: res.form,
@@ -511,6 +515,7 @@ const CaseDetails = () => {
             setOpenFormIOPopup(false);
             fetchRealtedTasks();
             setSelected(0);
+            setWorkflowActivities(await getWorkflowActivities(selectedCase.id))
 
             await addWorkflowCaseHistory(selectedCase.id,selectedFormDetails.title);
             await fetchCaseHistory(selectedCase.id);
@@ -518,11 +523,14 @@ const CaseDetails = () => {
             return getTaksByProcessInstanceId(data.processInstanceId);
           }
         })
-        .then((tasks) => {
+        .then(async (tasks) => {
           if (tasks) {
             let task = tasks[0];
             if (task) {
               task.caseInstanceId = selectedCase.id;
+              
+              await createNewWorkflowActivity(selectedCase.id, task.id, task.name, selectedFormDetails.title, 
+                FORMSFLOW_WEB_APPLICATION_URL + "/form/" + res.form + "/submission/" + res._id, 'New', userName)
               return updateTaksById(task.id, task);
             }
           }
@@ -534,8 +542,7 @@ const CaseDetails = () => {
             setOpenWorkflowPopup(false);
             setOpenFormIOPopup(false);
             fetchRealtedTasks();
-
-            await addWorkflowCaseHistory(selectedCase.id,selectedFormDetails.title);
+            setWorkflowActivities(await getWorkflowActivities(selectedCase.id))
             await fetchCaseHistory(selectedCase.id);
           } else {
             toast.error("Failed to  start the workflow. Please try again!");
@@ -678,6 +685,25 @@ const CaseDetails = () => {
               sx={{ marginBottom: 0 }}
             >
               <Typography variant="body1" className="caseDocuments-headtag">
+                 Related Workflow Activities
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ paddingLeft: 0 }}>
+              <RelatedWorkflowActivities
+                id={selectedCase.id}
+                activitiesList={workflowActivities}
+              ></RelatedWorkflowActivities>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion className="case-documents">
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              className="case-documents-head-section"
+              sx={{ marginBottom: 0 }}
+            >
+              <Typography variant="body1" className="caseDocuments-headtag">
                  {GENERIC_NAME} Documents
               </Typography>
             </AccordionSummary>
@@ -750,6 +776,28 @@ const CaseDetails = () => {
         fullWidth
       >
         <div className="workflow">
+          <div className="case-details">
+            <div>
+              <Typography variant="subtitle2">Case ID</Typography>
+              <Typography variant="body2">{selectedCase.id}</Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2">Contact name</Typography>
+              <Typography variant="body2">{selectedContact.firstname+' '+selectedContact.lastname}</Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2">Individual name</Typography>
+              <Typography variant="body2">{selectedIndividual.firstname+' '+selectedIndividual.lastname}</Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2">Issue Type </Typography>
+              <Typography variant="body2"> {selectedCase.issuetype}</Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2">Issue Detials </Typography>
+              <Typography variant="body2"> {selectedCase.describetheissue}</Typography>
+            </div>
+          </div>
           <FormIOForm
             form={selectedFormDetails}
             submission={undefined}

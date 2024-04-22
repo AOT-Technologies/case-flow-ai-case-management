@@ -9,7 +9,7 @@ import { UpdateCaseNoteInput } from './dto/update-case_note.input';
 export class CaseNotesResolver {
   constructor(private readonly caseNotesService: CaseNotesService) {}
 
-  @Mutation(() => CaseNotes)
+  @Mutation(() => CaseNotes, {name:'createCaseNote'})
   createCaseNote(@Args('createCaseNoteInput') createCaseNoteInput: CreateCaseNoteInput) {
     return this.caseNotesService.create(createCaseNoteInput);
   }
@@ -30,12 +30,12 @@ export class CaseNotesResolver {
     return this.caseNotesService.findByCaseId(id);
   }
 
-  @Mutation(() => CaseNotes)
+  @Mutation(() => CaseNotes, {name:'updateCaseNote'})
   updateCaseNote(@Args('updateCaseNoteInput') updateCaseNoteInput: UpdateCaseNoteInput) {
     return this.caseNotesService.update(updateCaseNoteInput.id, updateCaseNoteInput);
   }
 
-  @Mutation(() => CaseNotes)
+  @Mutation(() => CaseNotes, {name:'removeCaseNote'})
   removeCaseNote(@Args('id', { type: () => Int }) id: number) {
     return this.caseNotesService.remove(id);
   }
