@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
@@ -6,12 +6,32 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import moment from "moment";
 import { Link } from "@mui/material";
-import { FORMSFLOW_WEB_URL } from "../../apiManager/endpoints/config";
+import CustomizedDialog from "../Dialog/Dialog";
+import "react-datepicker/dist/react-datepicker.css";
+import "./mytaskcard.scss";
+import TaskDetailsPopUp from "./TaskDetailsPopup";
 
 const MyTaskCard = (props) => {
-  console.log(props);
+  
+  const [isTaskDetailsOpen, setOpenTaskDetailsPopup] = useState(false);
+  
+  const handleTaskDetailsView = ()=> {
+    setOpenTaskDetailsPopup(true);
+  };
+  const handleTaskDetailsPopUpClose = async ()=> {
+    setOpenTaskDetailsPopup(false);
+  };
   return (
     <>
+     <CustomizedDialog
+        title={props.task?.name}
+        isOpen={isTaskDetailsOpen}
+        setIsOpen={setOpenTaskDetailsPopup}
+        handleClose={handleTaskDetailsPopUpClose}
+        fullWidth
+      >
+        <TaskDetailsPopUp taskId={props.task.id} handleClose={handleTaskDetailsPopUpClose}/>
+      </CustomizedDialog>
       <ListItem
         button
         sx={{ paddingInline: 0, paddingTop: 1.3, paddingBottom: 2 }}
@@ -33,7 +53,7 @@ const MyTaskCard = (props) => {
                   {" "}
                   <Link
                     target="_blank"
-                    href={FORMSFLOW_WEB_URL + `/task/${props.task.id}`}
+                    onClick={handleTaskDetailsView}
                   >
                     {" "}
                     {props.task.name}{" "}
@@ -74,7 +94,7 @@ const MyTaskCard = (props) => {
                     paddingTop: "7px",
                   }}
                 >
-                  {props.task.description}{" "}
+                  {props.task?.description}{" "}
                 </Typography>
               }
             />
@@ -92,7 +112,7 @@ const MyTaskCard = (props) => {
                     paddingTop: "7px",
                   }}
                 >
-                  {props.task.owner}{" "}
+                  {props.task?.owner}{" "}
                 </Typography>
               }
             />
@@ -111,7 +131,7 @@ const MyTaskCard = (props) => {
                     paddingTop: "7px",
                   }}
                 >
-                  {moment(props.task.due).format("MMMM Do, YYYY")}{" "}
+                  {props.task.due ? moment(props.task.due).format("MMMM Do, YYYY"):"NA"}{" "}
                 </Typography>
               }
             />
@@ -129,3 +149,7 @@ const MyTaskCard = (props) => {
 };
 
 export default MyTaskCard;
+function dispatch(arg0: { payload: any; type: string; }) {
+  throw new Error("Function not implemented.");
+}
+

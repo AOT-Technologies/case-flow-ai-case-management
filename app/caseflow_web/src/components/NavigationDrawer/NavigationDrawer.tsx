@@ -118,9 +118,10 @@ export default function MiniDrawer() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
   const routeToPath = (route) => {
-    if (route.key === 2) {
-      openLinkInNewTab(FORMSFLOW_WEB_URL + "/task");
-    } else if (route.key === 5) {
+    // if (route.key === 2) {
+    //   openLinkInNewTab(FORMSFLOW_WEB_URL + "/task");
+    // } else 
+    if (route.key === 5) {
       openLinkInNewTab(FORMSFLOW_WEB_URL + "/insights");
     } else {
       navigate(route.path);
@@ -133,7 +134,7 @@ export default function MiniDrawer() {
       text: "Home",
       path: "/private/",
     },
-    { key: 2, text: "Tasks", path: FORMSFLOW_WEB_URL + "/tasks" },
+    { key: 2, text: "Tasks", path: "/private/tasks" },
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
     { key: 5, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },

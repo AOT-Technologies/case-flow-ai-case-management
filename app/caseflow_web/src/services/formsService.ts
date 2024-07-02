@@ -66,6 +66,20 @@ export const getFormDetailsById = async (formId) => {
     });
   return output;
 };
+export const getFormDetailsByFormAndSubmmisionId = async (formId, submissionId) => {
+  const url = `${FORMSFLOW_APPLICATION_URL}/form/${formId}/submission/${submissionId}`;
+  const formIoToken = await getFormIORoleIds();
+  const headers = { "x-jwt-token": formIoToken };
+  const output = await httpGETRequest(url, {}, formIoToken, false, headers)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      console.log({ error: error });
+      return {};
+    });
+  return output;
+};
 export const submitNewForm = async (id, body) => {
   const formIoToken = await getFormIORoleIds();
   const token = { "x-jwt-token": formIoToken };
@@ -185,4 +199,18 @@ export const getFormIORoleIds = () => {
     .catch((error) => {
       return error;
     });
+};
+
+export const getHistoryByApplicationId =async (applicationId) => {
+  const url = FORMSFLOW_FORM_URL + `/application/${applicationId}/history`;
+
+  const output = await httpGETRequest(url, {}, null)
+  .then((res) => {
+    return res.data;
+  })
+  .catch((error) => {
+    console.log({ error: error });
+    return {};
+  });
+  return output;
 };

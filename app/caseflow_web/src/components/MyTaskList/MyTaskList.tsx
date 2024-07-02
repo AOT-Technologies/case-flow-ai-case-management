@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import Divider from "@mui/material/Divider";
@@ -11,33 +11,59 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
 import {
   getTaksByUserId,
+  getTaskCountByUserId,
 } from "../../services/workflowService";
 import {
   setUserTaskList,
+  setTotalTaskCount,
+  setPageSelected,
 } from "../../reducers/taskReducer";
+import { Pagination } from "@mui/material";
+import { GENERIC_NAME, PAGINATION_TAKE } from "../../apiManager/endpoints/config";
 
 
-const MyTask = () => {
+const MyTaskList = () => {
   const dispatch = useDispatch();
+  const [totalPCount, setTotalPCount] = useState(1);
   const userName = useSelector(
     (state: State) => state.auth.userDetails.userName
   );
-  let taskList = useSelector((state: State) => state.tasks.userTasksList);
-
+  const taskList = useSelector((state: State) => state.tasks.userTasksList);
+  const totalCount = useSelector((state: State) => state.tasks.totalTaskCount);
+  const pageSelected = useSelector((state: State) => state.tasks.pageSelected);
+console.log(taskList, 'taskList')
   useEffect(() => {
     if (userName) {
       fetchUserTasks();
     }
-  }, [userName]);
+  }, [userName, pageSelected]);
   const fetchUserTasks = async () => {
+    const start = (pageSelected - 1) * Number(PAGINATION_TAKE);
     const tasks = await getTaksByUserId(
       userName,
-      0,
-      5,
+      start,
+      Number(PAGINATION_TAKE),
       'created'
     );
+    getTaskCountByUserId(userName).then((data) => {
+      dispatch(setTotalTaskCount(data.count));
+    });
     dispatch(setUserTaskList(tasks));
   };
+  useEffect(() => {
+    dispatch(setPageSelected(1));
+    setTotalPgCount();
+  }, [totalCount]);
+
+  async function setTotalPgCount() {
+    const totalPage = Math.ceil(totalCount / Number(PAGINATION_TAKE));
+    setTotalPCount(totalPage);
+  }
+
+  const caseListpagination = (e, p) => {
+    dispatch(setPageSelected(p));
+  };
+
   return (
     <div className="myTaskStyle" style={{ padding: "2rem 4rem 0rem 4rem" }}>
       <Typography
@@ -57,7 +83,7 @@ const MyTask = () => {
                   variant="subtitle1"
                   className="recent-case-card-style"
                 >
-                  Task
+                  Task 
                 </Typography>
               }
             />
@@ -128,7 +154,7 @@ const MyTask = () => {
 
       {taskList?.length > 0 ? (
         taskList.map((eachTask, index) => (
-          <MyTaskCard key={index} task={eachTask}/>
+          <MyTaskCard key={index} task={eachTask} />
         ))
       ) : (
         <ListItem>
@@ -144,8 +170,16 @@ const MyTask = () => {
           </Grid>
         </ListItem>
       )}
+      {totalPCount > 1 && (
+        <Pagination
+          count={totalPCount}
+          shape="rounded"
+          className="pagination-case-list"
+          onChange={caseListpagination}
+        />
+      )}
     </div>
   );
 };
 
-export default MyTask;
+export default MyTaskList;

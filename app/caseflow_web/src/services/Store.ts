@@ -12,6 +12,7 @@ import lobReducer from "../reducers/lobReducer";
 import taskReducer from "../reducers/taskReducer";
 import contactReducer from "../reducers/newContactReducer";
 import individualReducer from "../reducers/newIndividualReducer";
+import processReducer from "../reducers/processReducer";
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({ history: createBrowserHistory() });
@@ -29,6 +30,7 @@ export const store = configureStore({
     tasks: taskReducer,
     contacts: contactReducer,
     individuals: individualReducer,
+    process: processReducer,
   }),
   middleware: [routerMiddleware],
 });

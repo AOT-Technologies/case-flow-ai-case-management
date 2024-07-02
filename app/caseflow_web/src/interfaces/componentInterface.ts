@@ -77,6 +77,15 @@ export interface Individual {
   email: string;
 }
 
+export interface TaskHistory {
+  created: string;
+  applicationStatus: string;
+  submittedBy: string;
+  formUrl: string;
+  formId: String;
+  submissionId: String;
+}
+
 export interface BreadCrumbs {
   link: string;
   text: string;
