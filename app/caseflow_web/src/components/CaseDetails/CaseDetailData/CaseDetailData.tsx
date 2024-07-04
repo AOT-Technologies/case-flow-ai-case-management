@@ -1,12 +1,8 @@
 import { Link, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import "./CaseDetailData.scss";
-import {
-  FORMSFLOW_APP_URL,
-  FORMSFLOW_WEB_URL,
-  GENERIC_NAME,
-} from "../../../apiManager/endpoints/config";
-import moment from "moment";
+import CustomizedDialog from "../../Dialog/Dialog";
+import TaskDetailsPopUp from "../../MyTaskCard/TaskDetailsPopup";
 interface CaseDetailDataProps {
   contactid: String;
   individualid: String;
@@ -42,8 +38,27 @@ const CaseDetailData = ({
   issuetype,
   phonenumber,
 }: CaseDetailDataProps) => {
+  const [isTaskDetailsPopupOpen, setIsTaskDetailsPopupOpen] = useState(false);
+  const [selectedTask, setSelectedTask]=useState<any>({})
+  const handleTaskDetailsView = async (task)=> {
+    setSelectedTask(task);
+    setIsTaskDetailsPopupOpen(true);
+  };
+  const handleTaskDetailsPopUpClose = async ()=> {
+    setIsTaskDetailsPopupOpen(false);
+  };
+  
   return (
     <>
+    <CustomizedDialog
+        title={selectedTask.taskname}
+        isOpen={isTaskDetailsPopupOpen}
+        setIsOpen={setIsTaskDetailsPopupOpen}
+        handleClose={handleTaskDetailsPopUpClose}
+        fullWidth
+      >
+        <TaskDetailsPopUp taskId={selectedTask.id} handleClose={handleTaskDetailsPopUpClose}/>
+      </CustomizedDialog>
       <div className="case-details">
         <div className="case-detail-name">
           <Typography variant="subtitle1">Contact name</Typography>
@@ -109,7 +124,7 @@ const CaseDetailData = ({
         </Typography>
         {tasks && tasks.length ? (
           tasks.map((task: any, index: any) => (
-            <Link target="_blank" href={FORMSFLOW_WEB_URL + `/task/${task.id}`}>
+            <Link target="_blank" style={{cursor:'pointer'}} onClick={()=>handleTaskDetailsView(task)}>
               {" "}
               <Typography variant="body2" key={index}>
                 {task.name}

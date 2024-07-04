@@ -40,6 +40,7 @@ import {
   getFormDetails,
   getFormsList,
   getFormsListByName,
+  getUsers,
   submitNewForm,
   submitNewFormDraft,
 } from "../../services/formsService";
@@ -84,6 +85,7 @@ const NewCase = () => {
   const [values, setValues] = useState(initialFieldValues);
   const [isEdit, setIsEdit] = useState(false);
   const [contactList, setContactList]: any = useState();
+  const [userList, setUserList]: any = useState();
   const [individualList, setIndividualList]: any = useState();
   const { handleSubmit, control, register } = useForm();
   // const [caseList.isEdit,setIsCaseEdit] = useState(Boolean);
@@ -179,6 +181,7 @@ const NewCase = () => {
       setValues(InitialSelectedCaseDetails);
       await getContacts();
       await getIndividuals();
+      await getUserList();
       setIsEdit(true);
     }
   };
@@ -195,6 +198,15 @@ const NewCase = () => {
       values.push({'id': contact.id,'label': contact.firstname+' '+contact.lastname })
     })
     setContactList(values);
+  };
+
+  const getUserList = async () => {
+    const users = await getUsers();
+    let values:any = [];
+    users.forEach(function (user){
+      values.push({'id': user.username,'label': user.username })
+    })
+    setUserList(values);
   };
 
   const getIndividuals = async () => {
@@ -605,19 +617,21 @@ const NewCase = () => {
                   name={"caseowner"}
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <TextField
-                      id="standard-basic"
-                      rows={1}
-                      variant="standard"
-                      sx={{
-                        width: "100%",
-                      }}
-                      placeholder={"Case Owner"}
+                    <Select
+                    sx={{
+                          width: "100%",
+                        }}
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
                       value={values.caseowner}
                       onChange={(e) => {
                         setValues({ ...values, caseowner: e.target.value });
-                      }}
-                    />
+                          }}
+                    >
+                      {userList.map(user => (
+                      <MenuItem value={user.id}>{user.label}</MenuItem>
+                      ))}
+                    </Select>
                   )}
                 />
               </Grid>

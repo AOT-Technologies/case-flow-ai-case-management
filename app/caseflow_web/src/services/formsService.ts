@@ -214,3 +214,17 @@ export const getHistoryByApplicationId =async (applicationId) => {
   });
   return output;
 };
+
+
+export const getUsers = async () => {
+  const url = FORMSFLOW_FORM_URL + "/user?pageNo=1&limit=-1&role=false&count=true";
+
+  const output =  httpGETRequest(url, {}, UserService.getToken(), true)
+    .then((res) => {
+      return res?.data?.data;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return output;
+};
