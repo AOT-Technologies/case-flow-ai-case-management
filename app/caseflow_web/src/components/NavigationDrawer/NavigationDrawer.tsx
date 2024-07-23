@@ -121,11 +121,11 @@ export default function MiniDrawer() {
     // if (route.key === 2) {
     //   openLinkInNewTab(FORMSFLOW_WEB_URL + "/task");
     // } else 
-    if (route.key === 5) {
-      openLinkInNewTab(FORMSFLOW_WEB_URL + "/insights");
-    } else {
+    // if (route.key === 5) {
+    //   openLinkInNewTab(FORMSFLOW_WEB_URL + "/insights");
+    // } else {
       navigate(route.path);
-    }
+    // }
   };
 
   const routes = [
@@ -137,7 +137,7 @@ export default function MiniDrawer() {
     { key: 2, text: "Tasks", path: "/private/tasks" },
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
-    { key: 5, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },
+    { key: 5, text: "Reports", path: "/private/reports" },
     { key: 6, text: "Individual", path: "/private/individuals" },
     { key: 7, text: "Contacts", path: "/private/contacts" },
   ];

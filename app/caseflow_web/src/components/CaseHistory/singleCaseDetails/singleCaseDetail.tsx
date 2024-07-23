@@ -18,7 +18,6 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
 
   const getNote = () => {
     let note = caseNotes.find(note=>note.id == caseHistoryData.artifactId);
-
     return (note && note["notetext"]) ? note["notetext"] : "";
   }
   return (
@@ -55,7 +54,7 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
         </h3>
         {expand && (
           <div>
-            <p>{( caseNotes && caseNotes.length && caseHistoryData.eventtypeId == 4) ? getNote() : (caseHistoryData.caseHistoryWorkflowType ? caseHistoryData.caseHistoryWorkflowType : caseHistoryData.caseHistoryType)}</p>
+            <p>{( caseNotes && caseNotes.length && (caseHistoryData.eventtypeId == 4 || caseHistoryData.eventtypeId == 14 || caseHistoryData.eventtypeId == 15)) ? getNote() : (caseHistoryData.caseHistoryWorkflowType ? caseHistoryData.caseHistoryWorkflowType : caseHistoryData.caseHistoryType)}</p>
             <p>User - {userInfo.userName}</p>
           </div>
         )}

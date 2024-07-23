@@ -8,6 +8,7 @@ export const FETCH_DATA = gql`
       creationdate
       userid
       notetext
+      actiontype
     }
   }
 `;
@@ -22,6 +23,7 @@ export const CREATE_NEW_CASE_NOTE = gql`
       creationdate
       userid
       notetext
+      actiontype
     }
   }
 `;
@@ -34,6 +36,7 @@ export const UPDATE_NEW_CASE_NOTE = gql`
       creationdate
       userid
       notetext
+      actiontype
     }
   }
 `;
@@ -47,6 +50,7 @@ export const FETCH_CASENOTES = gql`
       creationdate
       userid
       notetext
+      actiontype
     }
   }
 `;

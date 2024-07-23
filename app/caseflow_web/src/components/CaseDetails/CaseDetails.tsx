@@ -112,7 +112,7 @@ const CaseDetails = () => {
   };
   const optionsForAction = [
     { id: 9, code: 9, text: "Edit" },
-    { id: 1, code: "1", text: "Start Workflow" },
+    { id: 1, code: 1, text: "Start Workflow" },
     { id: 2, code: 2, text: "Wake" },
     { id: 3, code: 3, text: "Pending" },
     // { id: 4, code: 4, text: "Complete" },
@@ -205,6 +205,7 @@ const CaseDetails = () => {
   const [confirmationText, setConfirmationText] = useState("");
   const [newStatus, setNewStatus] = useState(0);
   const [selected, setSelected] = useState(0);
+  const [selectedAction, setSelectedAction] = useState(0);
   const docDetail = useSelector(
     (state: store) => state.cases.selectedCase.documents
   );
@@ -297,12 +298,15 @@ const CaseDetails = () => {
         return setDeleteConfirmation(true)
       }
        case optionsForAction[5].text: {
+        setSelectedAction(5)
         return setIsNoteOpen(true)
       }
       case optionsForAction[7].text: {
+        setSelectedAction(7)
         return setIsCommunicationOpen(true)
       }
       case optionsForAction[8].text: {
+        setSelectedAction(8)
         return setIsRecordOutputOpen(true)
       }
     }
@@ -551,12 +555,12 @@ const CaseDetails = () => {
     });
   };
   const submitNote = async () =>{
-    console.log(note);
     if(note){
      
       let response = await createNewNote({ caseid : selectedCase.id,
         userid : userName,
         notetext : note,
+        actiontype: selectedAction,
       });
       if(response.id){
         setSelected(0);
@@ -578,7 +582,8 @@ const CaseDetails = () => {
      
       let response = await createNewNote({ caseid : selectedCase.id,
         userid : userName,
-        notetext : "Communication - "+communication,
+        notetext : communication,
+        actiontype: selectedAction,
       });
       if(response.id){
         setSelected(0);
@@ -600,7 +605,8 @@ const CaseDetails = () => {
      
       let response = await createNewNote({ caseid : selectedCase.id,
         userid : userName,
-        notetext : "Output of the Issue - "+recordOutput,
+        notetext : recordOutput,
+        actiontype: selectedAction,
       });
       if(response.id){
         setSelected(0);

@@ -21,4 +21,8 @@ export class CreateCaseNoteInput {
   @IsString()
   @IsNotEmpty()
   notetext: string;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  actiontype: number;
 }

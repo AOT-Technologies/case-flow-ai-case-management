@@ -30,4 +30,8 @@ export class CaseNotes {
   @Field(() => Cases, { nullable: true })
   @JoinColumn({ name: 'id' })
   case: Cases;
+
+  @Column({ nullable: true })
+  @Field()
+  actiontype: number;
 }

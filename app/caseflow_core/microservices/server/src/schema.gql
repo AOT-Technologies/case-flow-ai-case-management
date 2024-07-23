@@ -85,6 +85,7 @@ type CaseNotes {
   userid: Float!
   notetext: String
   case: Cases
+  actiontype: Float!
 }
 
 type WorkflowActivity {
@@ -188,7 +189,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-04-21T04:08:52.906Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.290Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -217,9 +218,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-04-21T04:08:52.902Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.287Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-04-21T04:08:52.902Z"
+  lastmodificationdate: DateTime = "2024-07-22T23:56:32.287Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -245,7 +246,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-04-21T04:08:52.912Z"
+  datetime: DateTime = "2024-07-22T23:56:32.297Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -255,7 +256,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-04-21T04:08:52.912Z"
+  datetime: DateTime = "2024-07-22T23:56:32.297Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -310,22 +311,24 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-04-21T04:08:52.987Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
   userid: Float
   notetext: String
+  actiontype: Float
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-04-21T04:08:52.987Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
   userid: Float
   notetext: String
+  actiontype: Float
   id: Int!
 }
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2024-04-21T04:08:52.992Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.372Z"
   userid: String
   taskid: String!
   taskname: String

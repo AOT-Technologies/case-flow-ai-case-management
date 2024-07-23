@@ -17,8 +17,9 @@ export const createNewNote = async (data) => {
         createCaseNoteInput: {
           caseid :  parseInt(data.caseid) ,
           creationdate : new Date(),
-           userid : 1,
-           notetext : data.notetext
+          userid : 1,
+          notetext : data.notetext,
+          actiontype: data.actiontype
         },
       },
     },
