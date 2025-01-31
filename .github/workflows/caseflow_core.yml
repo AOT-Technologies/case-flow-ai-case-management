@@ -1,4 +1,4 @@
-name: Caseflow Core
+name: Caseflow Core CD - AWS
 on:
   workflow_dispatch:
     inputs:
