@@ -1,4 +1,4 @@
-name: Caseflow DMS
+name: Caseflow DMS CD - AWS
 on:
   workflow_dispatch:
     inputs:
