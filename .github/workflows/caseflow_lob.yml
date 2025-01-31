@@ -1,4 +1,4 @@
-name: Caseflow LOB
+name: Caseflow LOB CD - AWS
 on:
   workflow_dispatch:
     inputs:
