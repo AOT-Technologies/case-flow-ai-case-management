@@ -49,19 +49,3 @@ jobs:
         context: ./app/caseflow_web
         push: true
         tags: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
-    
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: caseflow_web.json
-        container-name: caseflow_web
-        image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
-    
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: caseflow_web
-        cluster: caseflow
-        wait-for-service-stability: true
