@@ -155,7 +155,7 @@ const CaseDetails = () => {
 
   
 
-  optionsForAction.map((action) => {
+  optionsForAction?.map((action) => {
     if (selectedCase?.casestatus?.displayname == "Pending") {
       if (action.text === "Wake") {
         action.status = "Active";
@@ -181,7 +181,7 @@ const CaseDetails = () => {
     
     const caseHistoryData = await getCaseHistory(id);
     const caseNotes = await getCaseNotes(id);
-    const output = caseHistoryData?.casehistory.map((element, index) => {
+    const output = caseHistoryData?.casehistory?.map((element, index) => {
       return {
         id: index,
         date: moment(element.datetime).format("yyyy-MM-DD HH:mm"),

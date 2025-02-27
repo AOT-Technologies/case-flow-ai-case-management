@@ -365,7 +365,7 @@ const NewCase = () => {
                             setValues({ ...values, contactid: e.target.value });
                           }}
                     >
-                      {contactList.map(contact => (
+                      {contactList?.map(contact => (
                       <MenuItem value={contact.id}>{contact.label}</MenuItem>
                       ))}
                     </Select>

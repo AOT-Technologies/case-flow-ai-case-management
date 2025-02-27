@@ -61,7 +61,7 @@ export default function AdvancedSearch() {
           toDateForSearch
         ).then((searchCaseResult) => {
           totalCount = totalCount + searchCaseResult?.totalCount;
-          searchCaseResult?.Cases.map((element) => {
+          searchCaseResult?.Cases?.map((element) => {
             result.push({
               title: element.id + " - " + element.issuetype,
               content: 'Owner: '+element.caseowner,
@@ -339,7 +339,7 @@ export default function AdvancedSearch() {
             </Box>
           </FormControl>
           <Box sx={{ overflow: "auto", height: "55vh" }}>
-            {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => (
+            {searchresults?.searchResult?.length ? searchresults?.searchResult.map((eachValue) => (
               <Grid container key={eachValue.title}>
                 <Grid item xs={0.5} sx={{ pt: "5vh" }}>
                   <img

@@ -75,15 +75,15 @@ const Dashboard = () => {
     let individualList = await getIndividualDetailsByIds(individuals);
     
     let contactsKey = new Map<string, string>();
-    contactList.map(contact=>{
+    contactList?.map(contact=>{
       contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
     })
     
     let individualsKey = new Map<string, string>();
-    individualList.map(individual=>{
+    individualList?.map(individual=>{
       individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
     })
-    recentCases = recentCases.filter((element, index) => {
+    recentCases = recentCases?.filter((element, index) => {
       element.contactname=contactsKey.get(element.contactid);
       element.individualname=individualsKey.get(element.individualid);
       return index < 5;

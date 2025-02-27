@@ -123,7 +123,7 @@ const CaseDetailData = ({
           Current Task{tasks?.length > 1 ? "s" : ""}
         </Typography>
         {tasks && tasks.length ? (
-          tasks.map((task: any, index: any) => (
+          tasks?.map((task: any, index: any) => (
             <Link target="_blank" style={{cursor:'pointer'}} onClick={()=>handleTaskDetailsView(task)}>
               {" "}
               <Typography variant="body2" key={index}>

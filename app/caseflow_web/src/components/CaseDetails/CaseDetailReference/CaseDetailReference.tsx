@@ -41,7 +41,7 @@ const CaseDetailReference = ({ caseId }: CaseDetailReferenceProps) => {
     <>
       <div className="case-detail-reference-first-row">
         {additionalCaseDetails
-          ? Object.keys(additionalCaseDetails).map((key, index) => (
+          ? Object.keys(additionalCaseDetails)?.map((key, index) => (
               <>
                 {additionalCaseDetails[key] && getDisplayData(key) ? (
                   <div key={index}>

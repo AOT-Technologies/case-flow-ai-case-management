@@ -37,7 +37,7 @@ const IndividualDetail = () => {
       null,
       null
     );
-    let searchResultCases = recentCases.Cases?.map((element) => {
+    let searchResultCases = recentCases?.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
     let contacts = await searchResultCases?.reduce(function(pV, cV){
@@ -48,12 +48,12 @@ const IndividualDetail = () => {
     
     
     let contactsKey = new Map<string, string>();
-    contactList.map(contact=>{
+    contactList?.map(contact=>{
       contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
     })
     
 
-    searchResultCases = searchResultCases.map((element) => {
+    searchResultCases = searchResultCases?.map((element) => {
       element.individualname=output.firstname+' '+output.lastname;
       element.contactname=contactsKey.get(element.contactid);
       return element;

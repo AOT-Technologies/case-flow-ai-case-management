@@ -18,6 +18,7 @@ import {
 } from "../../apiManager/endpoints/config";
 import RecentContactCard from "../RecentContactCard/RecentContactCard";
 import { Contact } from "../../interfaces/componentInterface";
+import { setPageSelected } from "../../reducers/newContactReducer";
 
 const ContactList = React.memo(
   ({ config, allRecentContacts, setSortSetting, sortSetting }: any) => {
@@ -32,7 +33,7 @@ const ContactList = React.memo(
     ]);
 
     useEffect(() => {
-    //   dispatch(setPageSelected(1));
+      dispatch(setPageSelected(1));
       fetchContactDetails();
     }, [totalCount]);
 
@@ -41,9 +42,9 @@ const ContactList = React.memo(
       setTotalPCount(totalPage);
     }
 
-    // const contactListpagination = (e, p) => {
-    //   dispatch(setPageSelected(p));
-    // };
+    const contactListpagination = (e, p) => {
+      dispatch(setPageSelected(p));
+    };
 
     return (
       <div style={{ padding: "2rem 4rem 0rem 4rem" }}>
@@ -204,7 +205,7 @@ const ContactList = React.memo(
             count={totalPCount}
             shape="rounded"
             className="pagination-case-list"
-            // onChange={}
+            onChange={contactListpagination}
           />
         )}
       </div>

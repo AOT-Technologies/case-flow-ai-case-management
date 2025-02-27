@@ -100,7 +100,7 @@ const CaseDocuments = () => {
       null,
       null
     );
-    let searchDocumentResult = searchResult.CaseDocuments.map((element) => {
+    let searchDocumentResult = searchResult?.CaseDocuments?.map((element) => {
       return {
         title: element.id + " - " + element.name,
         content: element.desc,

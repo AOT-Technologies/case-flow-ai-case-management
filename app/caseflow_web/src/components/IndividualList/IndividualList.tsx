@@ -4,7 +4,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 // import RecentIndividualcard from "../RecentIndividualCard/RecentIndividualCard";
 import "./individuallist.scss";
-// import { setPageSelected } from "../../reducers/newIndividualReducer";
+import { setPageSelected } from "../../reducers/newIndividualReducer";
 import { useDispatch, useSelector } from "react-redux";
 // import { Individual } from "../../interfaces/componentInterface";
 import ListItem from "@mui/material/ListItem";
@@ -32,7 +32,7 @@ const IndividualList = React.memo(
     ]);
 
     useEffect(() => {
-    //   dispatch(setPageSelected(1));
+      dispatch(setPageSelected(1));
       fetchIndividualDetails();
     }, [totalCount]);
 
@@ -41,9 +41,9 @@ const IndividualList = React.memo(
       setTotalPCount(totalPage);
     }
 
-    // const individualListpagination = (e, p) => {
-    //   dispatch(setPageSelected(p));
-    // };
+    const individualListpagination = (e, p) => {
+      dispatch(setPageSelected(p));
+    };
 
     return (
       <div style={{ padding: "2rem 4rem 0rem 4rem" }}>
@@ -181,7 +181,7 @@ const IndividualList = React.memo(
           </Grid>
           <Divider sx={{ border: 1, color: "#606060" }} />
           {allRecentIndividuals.length != 0 ? (
-            allRecentIndividuals.map((eachindividuals: Individual) => (
+            allRecentIndividuals?.map((eachindividuals: Individual) => (
               <RecentIndividualCard individual={eachindividuals} key={eachindividuals.id} />
             ))
           ) : (
@@ -204,7 +204,7 @@ const IndividualList = React.memo(
             count={totalPCount}
             shape="rounded"
             className="pagination-case-list"
-            // onChange={}
+            onChange={individualListpagination}
           />
         )}
       </div>
