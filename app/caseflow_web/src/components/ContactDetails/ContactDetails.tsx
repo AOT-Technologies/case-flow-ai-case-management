@@ -45,7 +45,7 @@ const ContactDetail = () => {
       pV.push(parseInt(cV.individualid));
       return pV;
     }, []);
-    let individualList = individuals ? await getIndividualDetailsByIds(individuals):[];
+    let individualList = individuals.length>0 ? await getIndividualDetailsByIds(individuals):[];
     
     
     let individualsKey = new Map<string, string>();
