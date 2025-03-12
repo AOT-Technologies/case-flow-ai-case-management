@@ -16,6 +16,7 @@ import EditDocuments from "./FileHandler/editDocuments";
 import Tasks from "./Tasks/Tasks";
 import Cases from "./Cases/Cases";
 import Dashboard from "./Dashboard/Dashboard";
+import Employers from "./Employer/Employers";
 import CaseDetails from "./CaseDetails/CaseDetails";
 import NewCaseComponent from "./NewCase/NewCaseComponent";
 import { State } from "../interfaces/stateInterface";
@@ -83,6 +84,7 @@ const PrivateRoute = React.memo(({ store }: any) => {
             </Route>
             <Route path="advancedSearch" element={<AdvancedSearch />} />
             <Route path="configurations" element={<Configurations />} />
+            <Route path="employers" element={<Employers/>}></Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
