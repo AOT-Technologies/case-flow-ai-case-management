@@ -16,6 +16,7 @@ import { AppService } from './app.service';
 import { CaseflowLobModule } from './caseflow_lob/caseflow_lob.module';
 import { CaseflowContactsModule } from './caseflow_contacts/caseflow_contacts.module';
 import { CaseflowIndividualsModule } from './caseflow_individuals/caseflow_individuals.module';
+import { CaseflowEmployersModule } from './caseflow_employers/caseflow_employers.module';
 
 const keyCloakOptionsProvider = {
   provide: 'keyCloakDataProvider',
@@ -54,11 +55,13 @@ const keyCloakOptionsProvider = {
         password: config.get('POSTGRES_DB_PASSWORD'),
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['./src/migrations/*.ts'],
+        // synchronize: true
       }),
     }),
     CaseflowLobModule,
     CaseflowContactsModule,
-    CaseflowIndividualsModule
+    CaseflowIndividualsModule,
+    CaseflowEmployersModule
   ],
   controllers: [AppController],
   providers: [AppService],
