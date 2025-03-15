@@ -27,10 +27,10 @@ export class CaseflowEmployersService {
     ): Promise<CaseflowEmployers> {
     // return this.caseflowEmployersRepository.save(data);
     try {
-        const newCaseflowContact = this.caseflowEmployersRepository.create(
+        const newCaseflowEmployer = this.caseflowEmployersRepository.create(
             CreateCaseflowEmployerInput,
         );
-        return this.caseflowEmployersRepository.save(newCaseflowContact);
+        return this.caseflowEmployersRepository.save(newCaseflowEmployer);
       } catch (err) {
         console.log(err);
         return err;
