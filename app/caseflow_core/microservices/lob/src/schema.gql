@@ -79,6 +79,7 @@ type CaseflowLocations {
   id: Int!
   address: String!
   city: String!
+  createdate: DateTime!
   employer: CaseflowEmployers!
   employerId: Int!
 }
@@ -98,6 +99,11 @@ type CaseflowEmployersResponse {
   totalCount: Int!
 }
 
+type CaseflowLocationsResponse {
+  CaseflowLocations: [CaseflowLocations!]!
+  totalCount: Int!
+}
+
 type Query {
   getLobById(id: Int!): CaseflowLob!
   getLobList(skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
@@ -112,6 +118,9 @@ type Query {
   searchCaseflowIndividuals(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
   getEmployersById(id: Int!): CaseflowEmployers!
   getEmployersList: CaseflowEmployersResponse!
+  getLocationsById(id: Int!): CaseflowLocations!
+  getLocationsList: CaseflowLocationsResponse!
+  locationsByEmployer(employerId: Int!): [CaseflowLocations!]!
 }
 
 type Mutation {
@@ -125,6 +134,7 @@ type Mutation {
   updateCaseflowIndividuals(updateCaseflowIndividualsInput: UpdateCaseflowIndividualsInput!): CaseflowIndividuals!
   removeCaseflowIndividuals(id: Float!): CaseflowIndividuals!
   createCaseflowEmployers(CreateCaseflowEmployersInput: CreateCaseflowEmployerInput!): CaseflowEmployers!
+  createCaseflowLocations(CreateCaseflowLocationsInput: CreateCaseflowLocationsInput!): CaseflowLocations!
 }
 
 input CreateCaseflowLobInput {
@@ -194,6 +204,13 @@ input CreateCaseflowEmployerInput {
   phonenumber: Float!
   email: String!
   createdate: DateTime!
+}
+
+input CreateCaseflowLocationsInput {
+  address: String!
+  city: String!
+  createdate: DateTime!
+  employerId: Int!
 }
 
 scalar link__Import

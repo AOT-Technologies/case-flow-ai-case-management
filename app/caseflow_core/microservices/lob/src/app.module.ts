@@ -17,6 +17,7 @@ import { CaseflowLobModule } from './caseflow_lob/caseflow_lob.module';
 import { CaseflowContactsModule } from './caseflow_contacts/caseflow_contacts.module';
 import { CaseflowIndividualsModule } from './caseflow_individuals/caseflow_individuals.module';
 import { CaseflowEmployersModule } from './caseflow_employers/caseflow_employers.module';
+import { CaseflowLocationsModule } from './caseflow_locations/caseflow_locations.module';
 
 const keyCloakOptionsProvider = {
   provide: 'keyCloakDataProvider',
@@ -61,7 +62,8 @@ const keyCloakOptionsProvider = {
     CaseflowLobModule,
     CaseflowContactsModule,
     CaseflowIndividualsModule,
-    CaseflowEmployersModule
+    CaseflowEmployersModule,
+    CaseflowLocationsModule
   ],
   controllers: [AppController],
   providers: [AppService],
