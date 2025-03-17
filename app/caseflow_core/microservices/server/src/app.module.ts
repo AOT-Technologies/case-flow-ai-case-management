@@ -21,7 +21,8 @@ import { CaseTypesModule } from './case_types/case_types.module';
 import { NatsModule } from './nats/nats.module';
 import { CaseNotesModule } from './case_notes/case_notes.module';
 import { WorkflowActivityModule } from './workflow_activities/workflow_activity.module';
-
+import { CaseflowEmployersModule } from './caseflow_employers/caseflow_employers.module';
+import { CaseflowLocationsModule } from './caseflow_locations/caseflow_locations.module';
 /**
  *  Summary :Keyclock settings
  *  Created By : Akhila U S
@@ -67,6 +68,7 @@ const keyCloakOptionsProvider = {
 
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['./src/migrations/*.ts'],
+        // synchronize: true
       }),
     }),
     CaseHistoryModule,
@@ -76,7 +78,9 @@ const keyCloakOptionsProvider = {
     CaseTypesModule,
     NatsModule,
     CaseNotesModule,
-    WorkflowActivityModule
+    WorkflowActivityModule,
+    CaseflowEmployersModule,
+    CaseflowLocationsModule
   ],
   controllers: [],
   providers: [
