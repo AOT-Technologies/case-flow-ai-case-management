@@ -2,10 +2,34 @@ import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
   FETCH_ALL,
+  FETCH_DATA
 } from "../graphql/employerRequest";
 import { print } from "graphql";
 import { PAGINATION_TAKE } from "../apiManager/endpoints/config";
 
+
+export const getEmployerDetails = async (id) => { 
+  const url = LOBURL;
+  console.log('getting employer details', id)
+  const output = await httpPOSTRequest(
+    url,
+    {
+      query: print(FETCH_DATA),
+      variables: {
+        Id: parseInt(id),
+      },
+    },
+    null
+  )
+    .then((res) => {
+      return res.data.data.getEmployersById;
+    })
+    .catch((error) => {
+      console.log({ error: error });
+      return {};
+    });
+  return output;
+};
 
 export const getAllEmployersData = async () => {
   const url = LOBURL;

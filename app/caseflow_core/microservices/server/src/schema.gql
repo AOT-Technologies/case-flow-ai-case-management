@@ -211,7 +211,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-18T19:07:36.816Z"
+  creationdate: DateTime = "2025-03-18T23:24:54.123Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -242,9 +242,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-18T19:07:36.813Z"
+  creationdate: DateTime = "2025-03-18T23:24:54.115Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2025-03-18T19:07:36.813Z"
+  lastmodificationdate: DateTime = "2025-03-18T23:24:54.115Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -272,7 +272,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2025-03-18T19:07:36.826Z"
+  datetime: DateTime = "2025-03-18T23:24:54.148Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -282,7 +282,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2025-03-18T19:07:36.826Z"
+  datetime: DateTime = "2025-03-18T23:24:54.148Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -337,7 +337,7 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2025-03-18T19:07:36.976Z"
+  creationdate: DateTime = "2025-03-18T23:24:54.325Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -345,7 +345,7 @@ input CreateCaseNoteInput {
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-18T19:07:36.976Z"
+  creationdate: DateTime = "2025-03-18T23:24:54.325Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -354,7 +354,7 @@ input UpdateCaseNoteInput {
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-18T19:07:36.981Z"
+  creationdate: DateTime = "2025-03-18T23:24:54.330Z"
   userid: String
   taskid: String!
   taskname: String

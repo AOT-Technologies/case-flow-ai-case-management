@@ -1,43 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchRecentCaseList, searchCases } from "../../services/CaseService";
+import { searchCases } from "../../services/CaseService";
 import {
-  getContactDetails,
-  getContactDetailsByIds,
-} from "../../services/ContactService";
+  getEmployerDetails
+} from "../../services/EmployerService";
 import CaseList from "../CaseList/CaseList";
-import { setSelectedContact } from "../../reducers/newContactReducer";
-import { State } from "../../interfaces/stateInterface";
 import { getIndividualDetailsByIds } from "../../services/IndividualService";
+import LocationsList from "../LocationsList/LocationsList";
 import './employerdetails.scss'
+import { getContactDetailsByIds } from "../../services/ContactService";
 
 
 export default function EmployerDetails() {
-  const employer = {
-    id: 1,
-    worksafeNumber: 123,
-    name: "A Real Business",
-    contacts: ["John Smith", "Jeff Doe"],
-    locations: ["123 Real Rd.", "456 5th St.", "456 7th St."],
-  };
   const caseListProps = {
     title: "Related Cases",
   };
 
-  const [dataForBreadCrumbs, setDataForBreadCrumbs] = useState([
-    { text: "Home", link: "/private" },
-  ]);
-  const contact = useSelector((state: State) => state.contacts.selectedContact);
   const [recentCases, setrecentCases] = useState([]);
 
-  const [searchColumn] = useState("contactid");
+  const [searchColumn] = useState("employerid");
 
   const relatedCaseList = async (output) => {
+    console.log('output id is', output.id)
     let recentCases = await searchCases(
       output.id,
-      searchColumn,
+      "employerid",
       1,
       "id",
       true,
@@ -48,6 +36,9 @@ export default function EmployerDetails() {
     let searchResultCases = recentCases?.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
+
+    console.log('case results', searchResultCases)
+
     let individuals = await searchResultCases?.reduce(function (pV, cV) {
       pV.push(parseInt(cV.individualid));
       return pV;
@@ -65,8 +56,26 @@ export default function EmployerDetails() {
       );
     });
 
+    let contacts = await searchResultCases?.reduce(function (pV, cV) {
+      pV.push(parseInt(cV.contactid));
+      return pV;
+    }, []);
+
+    let contactsList =
+    contacts.length > 0
+      ? await getContactDetailsByIds(contacts)
+      : [];
+
+    let contactsKey = new Map<string, string>();
+      contactsList?.map((contact) => {
+        contactsKey.set(
+          contact.id,
+          contact.firstname + " " + contact.lastname
+        );
+      });
+
     searchResultCases = searchResultCases?.map((element) => {
-      element.contactname = output.firstname + " " + output.lastname;
+      element.contactname = contactsKey.get(element.contactid)
       element.individualname = individualsKey.get(element.individualid);
       return element;
     });
@@ -75,30 +84,38 @@ export default function EmployerDetails() {
   };
 
   const location = useLocation();
-  const dispatch = useDispatch();
-  async function fetchContactDetails() {
+  const [employer, setEmployer] = useState({
+    id: 0,
+    name: "",
+    worksafenumber: 0,
+    phonenumber: 0,
+    email: "",
+    locations: [""],
+  });
+
+  const fetchEmployerDetails = async () => {
     var matches = location.pathname.match(/(\d+)/);
     if (matches && matches[0]) {
-      let output = await getContactDetails(matches[0]);
-      dispatch(setSelectedContact(output));
-      relatedCaseList(output);
+      const employer = await getEmployerDetails(matches[0])
+      setEmployer(employer)
+      relatedCaseList(employer)
     }
   }
 
   useEffect(() => {
-    fetchContactDetails();
+    fetchEmployerDetails();
   }, []);
 
-  useEffect(() => {
-    setDataForBreadCrumbs([
-      { text: "Home", link: "/private" },
-      { text: "Contact", link: "/private/contacts" },
-      {
-        text: "Contact ID : " + contact.id,
-        link: "/private/contacts/" + contact.id + "details",
-      },
-    ]);
-  }, [contact]);
+  // useEffect(() => {
+  //   setDataForBreadCrumbs([
+  //     { text: "Home", link: "/private" },
+  //     { text: "Contact", link: "/private/contacts" },
+  //     {
+  //       text: "Contact ID : " + contact.id,
+  //       link: "/private/contacts/" + contact.id + "details",
+  //     },
+  //   ]);
+  // }, [contact]);
 
   return (
     <>
@@ -122,15 +139,23 @@ export default function EmployerDetails() {
 
         <div className="lob-detail-name">
           <Typography variant="subtitle1">WorkSafe Number</Typography>
-          <Typography>{employer.worksafeNumber}</Typography>
+          <Typography>{employer.worksafenumber}</Typography>
+        </div>
+
+        <div className="lob-detail-name">
+          <Typography variant="subtitle1">Phone Number</Typography>
+          <Typography>{employer.phonenumber}</Typography>
+        </div>
+        <div className="lob-detail-name">
+          <Typography variant="subtitle1">Email Address</Typography>
+          <Typography>{employer.email}</Typography>
         </div>
       </div>
-      <div>
-        Location table
-      </div>
-      <div>
-        contacts
-      </div>
+      {employer.locations && employer.locations.length > 0 && (
+        <div className="recent-cases">
+          <LocationsList locations={employer.locations}/>
+        </div>
+      )}
       <div className="recent-cases">
         <CaseList
           config={caseListProps}

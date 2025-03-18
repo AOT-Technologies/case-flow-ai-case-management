@@ -12,11 +12,29 @@ export const FETCH_ALL = gql`
         email
         createdate
         locations {
-        id
-        address
-        city
+          id
+          address
+          city
         }
       }
+    }
+  }
+`;
+
+export const FETCH_DATA = gql`
+  query getEmployersById($Id: Int!) {
+    getEmployersById(id: $Id) {
+        id
+        name
+        worksafenumber
+        phonenumber
+        email
+        createdate
+        locations {
+          id
+          address
+          city
+        }
     }
   }
 `;

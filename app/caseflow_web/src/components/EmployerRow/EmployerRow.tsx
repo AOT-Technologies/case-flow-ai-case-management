@@ -112,24 +112,6 @@ export default function EmployerRow(props) {
               }
             />
           </Grid>
-          {/* <Grid
-            item
-            xs={2}
-            display="flex"
-            justifyContent="flex-start"
-            flexWrap="wrap"
-            gap={1}
-          >
-            {employer.contacts.map((contact) => (
-              <Box>
-                <Typography className="recent-contact-card-status">
-                  <div className="recent-contact-card-status-text">
-                    {contact}
-                  </div>
-                </Typography>
-              </Box>
-            ))}
-          </Grid> */}
           <Grid
             item
             xs={2}
