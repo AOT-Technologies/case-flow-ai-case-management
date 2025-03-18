@@ -9,6 +9,10 @@ import {
   } from "@mui/material";
 export default function LocationRow(props) {
     const location = props.location
+    const postalCode = () => {
+        return Math.random().toString(36).slice(2, 8).toUpperCase()
+    }
+
     return (
         <>
         <ListItem sx={{ paddingInline: 0, paddingBlock: 2 }}>
@@ -99,6 +103,24 @@ export default function LocationRow(props) {
                     }}
                   >
                     Canada{" "}
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <ListItemText
+                className="caseName-case-list"
+                primary={
+                  <Typography
+                    variant="body2"
+                    noWrap
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {postalCode()}{" "}
                   </Typography>
                 }
               />
