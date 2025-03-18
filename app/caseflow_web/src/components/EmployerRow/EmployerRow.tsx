@@ -7,13 +7,21 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Employer } from "../../interfaces/componentInterface";
+import './employerrow.scss'
 export default function EmployerRow(props) {
   const employer: Employer = props.employer;
+  const navigate = useNavigate();
+  const viewEmployerDetails = async (employer) => {
+    navigate("/private/employers/" + employer.id + "/details");
+  };
   return (
     <>
       <ListItemButton sx={{ paddingInline: 0, paddingBlock: 2 }}>
-        <Grid container spacing={1} onClick={() => {}}>
+        <Grid container spacing={1} onClick={() => {
+            viewEmployerDetails(employer);
+          }}>
           <Grid item xs={2}>
             <ListItemText
               className="caseName-case-list"
@@ -32,7 +40,7 @@ export default function EmployerRow(props) {
               }
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <ListItemText
               className="caseName-case-list"
               primary={
@@ -45,7 +53,7 @@ export default function EmployerRow(props) {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {employer.worksafeNumber}{" "}
+                  {employer.worksafenumber}{" "}
                 </Typography>
               }
             />
@@ -68,7 +76,43 @@ export default function EmployerRow(props) {
               }
             />
           </Grid>
-          <Grid
+          <Grid item xs={2}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {employer.phonenumber}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {employer.email}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          {/* <Grid
             item
             xs={2}
             display="flex"
@@ -85,21 +129,21 @@ export default function EmployerRow(props) {
                 </Typography>
               </Box>
             ))}
-          </Grid>
+          </Grid> */}
           <Grid
             item
             xs={2}
             display="flex"
-            alignItems="center"
+            alignItems=""
             justifyContent="flex-start"
             flexWrap="wrap"
             gap={1}
           >
             {employer.locations.map((location) => (
               <Box>
-                <Typography className="recent-contact-card-status">
-                  <div className="recent-contact-card-status-text">
-                    {location}
+                <Typography className="location-box">
+                  <div className="location-text">
+                    {`${location.address}, ${location.city}, BC`}
                   </div>
                 </Typography>
               </Box>

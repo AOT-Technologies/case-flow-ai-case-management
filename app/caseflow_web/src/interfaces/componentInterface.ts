@@ -72,10 +72,18 @@ export interface Contact {
 
 export interface Employer {
   id: number;
-  worksafeNumber: number;
+  worksafenumber: number;
   name: string;
+  email: string;
+  phonenumber: string;
   contacts: string[];
-  locations: string[];
+  locations: Location[];
+}
+
+export interface Location {
+  id: number;
+  address: string;
+  city: string;
 }
 
 export interface Individual {

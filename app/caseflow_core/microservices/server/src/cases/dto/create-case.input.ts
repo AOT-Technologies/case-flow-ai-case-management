@@ -103,4 +103,10 @@ export class CreateCaseInput {
 
   @Field({ nullable: true })
   resolutionsought: string;
+
+  @Field({ nullable: true })
+  locationid: number;
+
+  @Field( {nullable: true} )
+  employerid: number;
 }

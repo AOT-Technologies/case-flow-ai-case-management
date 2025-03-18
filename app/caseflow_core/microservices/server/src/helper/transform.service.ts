@@ -40,6 +40,8 @@ export class TransformService {
         caseowner: data?.caseowner,
         describetheissue: data?.describetheissue,
         resolutionsought: data?.resolutionsought,
+        locationid: data?.locationid,
+        employerid: data?.employerid
       };
       return createCaseInput;
     } catch (error) {
@@ -79,6 +81,8 @@ export class TransformService {
         caseowner: data?.caseowner,
         describetheissue: data?.describetheissue,
         resolutionsought: data?.resolutionsought,
+        locationid: data?.locationid,
+        employerid: data?.employerid
       };
       return createCaseInput;
     } catch (error) {

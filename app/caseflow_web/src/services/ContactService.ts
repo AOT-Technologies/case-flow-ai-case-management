@@ -35,6 +35,8 @@ export const getContactDetails = async (id) => {
 };
 
 export const getContactDetailsByIds = async (ids) => { 
+  console.log('ids are', ids)
+  ids = ids.filter(id => typeof id === 'number' && !isNaN(id))
   const url = LOBURL;
   const output = await httpPOSTRequest(
     url,

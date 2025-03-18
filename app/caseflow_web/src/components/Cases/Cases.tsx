@@ -64,6 +64,7 @@ const Cases = () => {
     let contactList = await getContactDetailsByIds(contacts);
     let individualList = await getIndividualDetailsByIds(individuals);
     
+    console.log(contactList)
     let contactsKey = new Map<string, string>();
     contactList?.map(contact=>{
       contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);

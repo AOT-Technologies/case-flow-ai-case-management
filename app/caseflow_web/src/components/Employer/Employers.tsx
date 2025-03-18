@@ -3,9 +3,21 @@ import { Button, Typography } from "@mui/material";
 import EmployerList from "../EmployerList/EmployerList";
 import Search from "../Search/Search";
 import './employers.scss'
+import { getAllEmployersData } from "../../services/EmployerService";
 
 export default function Employer() {
   const nothing = () => {};
+
+  const [allEmployers, setAllEmployers] = useState([])
+
+  const getAllEmployers = async () => {
+    const employers = await getAllEmployersData()
+    setAllEmployers(employers)
+  }
+
+  useEffect(() => {
+    getAllEmployers()
+  }, [])
   return (
     <>
       <div className="header-search">
@@ -37,7 +49,7 @@ export default function Employer() {
           </Button>
         </div>
       </div>
-      <EmployerList/>
+      <EmployerList employers={allEmployers}/>
     </>
   );
 }

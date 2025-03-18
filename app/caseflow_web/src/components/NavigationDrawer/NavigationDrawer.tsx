@@ -220,7 +220,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("ministryoflabourpoc"));
+    dispatch(setSelectedCaseType("employerform"));
     setOpenPopup(false);
     navigate("cases/create");
   };

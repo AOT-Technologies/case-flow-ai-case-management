@@ -163,4 +163,12 @@ export class Cases {
   @Column({ nullable: true })
   @Field({ nullable: true })
   resolutionsought: string;
+
+  @Column({ nullable: true })
+  @Field( {nullable: true} )
+  locationid: number;
+
+  @Column({ nullable: true })
+  @Field( {nullable: true} )
+  employerid: number;
 }

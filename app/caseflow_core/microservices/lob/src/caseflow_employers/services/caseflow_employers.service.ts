@@ -46,6 +46,7 @@ export class CaseflowEmployersService {
             order: {
               id: 'DESC',
             },
+            relations: ['locations']
           }),
           this.caseflowEmployersRepository.count(),
         ]);

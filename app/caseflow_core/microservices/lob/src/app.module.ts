@@ -56,7 +56,7 @@ const keyCloakOptionsProvider = {
         password: config.get('POSTGRES_DB_PASSWORD'),
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['./src/migrations/*.ts'],
-        // synchronize: true
+        synchronize: false
       }),
     }),
     CaseflowLobModule,

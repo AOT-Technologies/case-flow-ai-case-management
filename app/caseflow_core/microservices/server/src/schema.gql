@@ -133,11 +133,33 @@ type Cases {
   caseowner: String
   describetheissue: String
   resolutionsought: String
+  locationid: Float
+  employerid: Float
 }
 
 type casesResponse {
   Cases: [Cases!]!
   totalCount: Int!
+}
+
+type CaseflowLocations {
+  id: Int!
+  address: String!
+  city: String!
+  createdate: DateTime!
+  employer: CaseflowEmployers!
+  employerId: Int!
+  cases: [Cases!]
+}
+
+type CaseflowEmployers {
+  id: ID!
+  name: String
+  worksafenumber: Float
+  phonenumber: Float
+  email: String
+  createdate: DateTime
+  locations: [CaseflowLocations!]
 }
 
 type Query {
@@ -189,7 +211,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-07-22T23:56:32.290Z"
+  creationdate: DateTime = "2025-03-18T19:07:36.816Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -210,6 +232,8 @@ input CreateCaseInput {
   caseowner: String
   describetheissue: String
   resolutionsought: String
+  locationid: Float
+  employerid: Float
 }
 
 input UpdateCaseInput {
@@ -218,9 +242,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-07-22T23:56:32.287Z"
+  creationdate: DateTime = "2025-03-18T19:07:36.813Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-07-22T23:56:32.287Z"
+  lastmodificationdate: DateTime = "2025-03-18T19:07:36.813Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -239,6 +263,8 @@ input UpdateCaseInput {
   caseowner: String
   describetheissue: String
   resolutionsought: String
+  locationid: Float
+  employerid: Float
 }
 
 input RemoveCaseArgs {
@@ -246,7 +272,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-07-22T23:56:32.297Z"
+  datetime: DateTime = "2025-03-18T19:07:36.826Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -256,7 +282,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-07-22T23:56:32.297Z"
+  datetime: DateTime = "2025-03-18T19:07:36.826Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -311,7 +337,7 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
+  creationdate: DateTime = "2025-03-18T19:07:36.976Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -319,7 +345,7 @@ input CreateCaseNoteInput {
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
+  creationdate: DateTime = "2025-03-18T19:07:36.976Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -328,7 +354,7 @@ input UpdateCaseNoteInput {
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2024-07-22T23:56:32.372Z"
+  creationdate: DateTime = "2025-03-18T19:07:36.981Z"
   userid: String
   taskid: String!
   taskname: String

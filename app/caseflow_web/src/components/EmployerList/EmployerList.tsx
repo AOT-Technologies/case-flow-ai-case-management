@@ -10,39 +10,8 @@ import {
 } from "@mui/material";
 import EmployerRow from "../EmployerRow/EmployerRow";
 import { Employer } from "../../interfaces/componentInterface";
-export default function EmployerList() {
-  const employers = [
-    {
-      id: 1,
-      worksafeNumber: 123,
-      name: "Business1",
-      contacts: ["John Smith", "Jeff Doe"],
-      locations: ["123 Real Rd.", "456 5th St.", "456 7th St."],
-    },
-    {
-      id: 2,
-      worksafeNumber: 456,
-      name: "Business2",
-      //   contacts: ["Mary Smith", "Jane Doe"],
-      contacts: [],
-      locations: ["456 Fake Rd.", "789 4th St."],
-    },
-    {
-      id: 3,
-      worksafeNumber: 789,
-      name: "Business3",
-      contacts: ["Steven Smith", "Greg Doe"],
-      //   locations: ["111 Victoria Rd.", "333 3rd St."],
-      locations: [],
-    },
-    {
-      id: 4,
-      worksafeNumber: 124,
-      name: "Business4",
-      contacts: ["Jessica Smith", "Sarah Doe"],
-      locations: ["777 Lucky Rd.", "123 ABC St."],
-    },
-  ];
+export default function EmployerList(props) {
+  const employers: Employer[] = props.employers
 
   return (
     <div style={{ padding: "2rem 4rem 0rem 4rem" }}>
@@ -61,7 +30,7 @@ export default function EmployerList() {
               }
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <ListItemText
               primary={
                 <Typography
@@ -69,7 +38,7 @@ export default function EmployerList() {
                   className="recent-contact-card-style"
                   sx={{ cursor: "pointer" }}
                 >
-                  Worksafe Number
+                  Worksafe Num
                 </Typography>
               }
             />
@@ -95,7 +64,20 @@ export default function EmployerList() {
                   className="recent-contact-card-style"
                   sx={{ cursor: "pointer" }}
                 >
-                  Contacts
+                  Phone
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="subtitle1"
+                  className="recent-contact-card-style"
+                  sx={{ cursor: "pointer" }}
+                >
+                  Email
                 </Typography>
               }
             />
@@ -116,9 +98,9 @@ export default function EmployerList() {
         </Grid>
         <Divider sx={{ border: 1, color: "#606060" }} />
 
-        {employers.length != 0 ? (
+        {employers && employers.length != 0 ? (
           employers.map((employer: Employer) => (
-            <EmployerRow employer={employer} />
+            <EmployerRow key={employer.id} employer={employer} />
           ))
         ) : (
           <ListItem>
