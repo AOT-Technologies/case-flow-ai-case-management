@@ -140,35 +140,6 @@ type casesResponse {
   totalCount: Int!
 }
 
-type CaseflowLocations {
-  id: Int!
-  address: String!
-  city: String!
-  createdate: DateTime!
-  employer: CaseflowEmployers!
-  employerId: Int!
-}
-
-type CaseflowEmployers {
-  id: ID!
-  name: String
-  worksafenumber: Float
-  phonenumber: Float
-  email: String
-  createdate: DateTime
-  locations: [CaseflowLocations!]
-}
-
-type CaseflowEmployersResponse {
-  CaseflowEmployers: [CaseflowEmployers!]!
-  totalCount: Int!
-}
-
-type CaseflowLocationsResponse {
-  CaseflowLocations: [CaseflowLocations!]!
-  totalCount: Int!
-}
-
 type Query {
   getCase(skip: Int = 0, take: Int = 25, id: Int!): Cases!
   case(skip: Int = 0, take: Int = 25): casesResponse!
@@ -188,11 +159,6 @@ type Query {
   caseNote(id: Int!): CaseNotes!
   caseNotesByCaseId(id: Int!): [CaseNotes!]!
   workflowActivitiesByCaseId(id: Int!): [WorkflowActivity!]!
-  getEmployersById(id: Int!): CaseflowEmployers!
-  getEmployersList: CaseflowEmployersResponse!
-  getLocationsById(id: Int!): CaseflowLocations!
-  getLocationsList: CaseflowLocationsResponse!
-  locationsByEmployer(employerId: Int!): [CaseflowLocations!]!
 }
 
 type Mutation {
@@ -216,8 +182,6 @@ type Mutation {
   removeCaseNote(id: Int!): CaseNotes!
   createWorkflowActivity(createWorkflowActivityInput: CreateWorkflowActivityInput!): WorkflowActivity!
   updateWorkflowActivity(updateWorkflowActivityInput: UpdateWorkflowActivityInput!): WorkflowActivity!
-  createCaseflowEmployers(CreateCaseflowEmployersInput: CreateCaseflowEmployerInput!): CaseflowEmployers!
-  createCaseflowLocations(CreateCaseflowLocationsInput: CreateCaseflowLocationsInput!): CaseflowLocations!
 }
 
 input CreateCaseInput {
@@ -225,7 +189,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-17T21:57:31.812Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.290Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -254,9 +218,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-17T21:57:31.808Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.287Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2025-03-17T21:57:31.808Z"
+  lastmodificationdate: DateTime = "2024-07-22T23:56:32.287Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -282,7 +246,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2025-03-17T21:57:31.819Z"
+  datetime: DateTime = "2024-07-22T23:56:32.297Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -292,7 +256,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2025-03-17T21:57:31.819Z"
+  datetime: DateTime = "2024-07-22T23:56:32.297Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -347,7 +311,7 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2025-03-17T21:57:31.881Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -355,7 +319,7 @@ input CreateCaseNoteInput {
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-17T21:57:31.881Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.366Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -364,7 +328,7 @@ input UpdateCaseNoteInput {
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-17T21:57:31.884Z"
+  creationdate: DateTime = "2024-07-22T23:56:32.372Z"
   userid: String
   taskid: String!
   taskname: String
@@ -376,21 +340,6 @@ input CreateWorkflowActivityInput {
 input UpdateWorkflowActivityInput {
   taskid: String
   status: String
-}
-
-input CreateCaseflowEmployerInput {
-  name: String!
-  worksafenumber: Float!
-  phonenumber: Float!
-  email: String!
-  createdate: DateTime!
-}
-
-input CreateCaseflowLocationsInput {
-  address: String!
-  city: String!
-  createdate: DateTime!
-  employerId: Int!
 }
 
 scalar link__Import
