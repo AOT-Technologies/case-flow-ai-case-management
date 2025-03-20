@@ -124,6 +124,7 @@ export const createNewContact = async (data) => {
           dateofbirth: new Date(data.dateofbirth),
           address: data.address,
           createdat: new Date(),
+          employerid:Number(data.employerid)
         },
       },
     },

@@ -26,6 +26,16 @@ export const createEmployer = async (data) => {
       },
       null
     )
+    .then((res) => {
+      return res.data.data.createCaseflowEmployers;
+    })
+    .catch((error) => {
+      if (error?.response?.data) {
+        return { error: error };
+      } else {
+        return { error: "something went wrong" };
+      }
+    });
 }
 
 

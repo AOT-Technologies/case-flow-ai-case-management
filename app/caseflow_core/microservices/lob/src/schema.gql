@@ -112,7 +112,6 @@ type Query {
   getContactsById(id: Int!): CaseflowContacts!
   getContactsByIds(id: [Int!]!): CaseflowContactsResponse!
   getContactsList: CaseflowContactsResponse!
-  getContactsByEmployerId(employerid: Int!): CaseflowContacts!
   contactsByEmployer(employerid: Int!): [CaseflowContacts!]!
   searchCaseflowContacts(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
   getIndividualsById(id: Int!): CaseflowIndividuals!
@@ -167,6 +166,7 @@ input CreateCaseflowContactsInput {
   dateofbirth: DateTime
   address: String
   createdat: DateTime
+  employerid: Float
 }
 
 input UpdateCaseflowContactsInput {

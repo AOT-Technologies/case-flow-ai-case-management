@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateCaseflowContactsInput {
@@ -24,9 +24,9 @@ export class CreateCaseflowContactsInput {
   email?: String;
 
   @Field({ nullable: true })
+  @IsOptional()
   @IsDate()
-  @IsNotEmpty()
-  dateofbirth?: Date;
+  dateofbirth?: Date | null;
 
   @Field({ nullable: true })
   @IsString()
@@ -37,4 +37,7 @@ export class CreateCaseflowContactsInput {
   @IsDate()
   @IsNotEmpty()
   createdat?: Date;
+
+  @Field( {nullable: true })
+  employerid?: number;
 }
