@@ -1,11 +1,32 @@
 import { httpPOSTRequest } from "../apiManager/httpRequestHandler";
 import { LOBURL } from "../apiManager/endpoints";
 import {
+  CREATE_EMPLOYER,
   FETCH_ALL,
   FETCH_DATA
 } from "../graphql/employerRequest";
 import { print } from "graphql";
 import { PAGINATION_TAKE } from "../apiManager/endpoints/config";
+
+export const createEmployer = async (data) => {
+  const url = LOBURL;
+   return httpPOSTRequest(
+      url,
+      {
+        query: print(CREATE_EMPLOYER),
+        variables: {
+          CreateCaseflowEmployersInput: {
+            name: data.name,
+            worksafenumber: Number(data.worksafenumber),
+            phonenumber: Number(data.phoneNumber),
+            email: data.email,
+            createdate: new Date(),
+          },
+        },
+      },
+      null
+    )
+}
 
 
 export const getEmployerDetails = async (id) => { 

@@ -15,8 +15,9 @@ import CaseList from "../CaseList/CaseList";
 export default function LocationRow(props) {
   const location = props.location;
   const [open, setOpen] = useState(false);
-  const postalCode = () => {
-    return Math.random().toString(36).slice(2, 8).toUpperCase();
+  const genPostalCode = () => {
+    const postalCode = Math.random().toString(36).slice(2, 8).toUpperCase();
+    setPostalCode(postalCode)
   };
 
   const caseListProps = {
@@ -25,7 +26,7 @@ export default function LocationRow(props) {
 
   const [recentCases, setrecentCases] = useState([]);
 
-  const [searchColumn] = useState("locationid");
+  const [postalCode, setPostalCode] = useState("")
 
   const relatedCaseList = async (locationid: string) => {
     console.log("output id is", locationid);
@@ -61,7 +62,6 @@ export default function LocationRow(props) {
 
     searchResultCases = searchResultCases?.map((element) => {
       element.contactname = contactsKey.get(element.contactid);
-      // element.individualname = individualsKey.get(element.individualid);
       return element;
     });
 
@@ -75,6 +75,7 @@ export default function LocationRow(props) {
   };
 
   useEffect(() => {
+    genPostalCode()
     getCasesByLocation();
   }, []);
 
@@ -113,7 +114,7 @@ export default function LocationRow(props) {
         </TableCell>
         <TableCell>
           <Typography variant="body2" className="caseName-case-list" noWrap>
-            {postalCode()}
+            {postalCode}
           </Typography>
         </TableCell>
       </TableRow>

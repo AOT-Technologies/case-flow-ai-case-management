@@ -1,5 +1,13 @@
 import gql from "graphql-tag";
 
+export const CREATE_EMPLOYER = gql`
+  mutation createCaseflowEmployers($CreateCaseflowEmployersInput: CreateCaseflowEmployerInput!) {
+    createCaseflowEmployers(CreateCaseflowEmployersInput: $CreateCaseflowEmployersInput) {
+      id
+    }
+  }
+`;
+
 export const FETCH_ALL = gql`
   query getEmployersList {
     getEmployersList {
