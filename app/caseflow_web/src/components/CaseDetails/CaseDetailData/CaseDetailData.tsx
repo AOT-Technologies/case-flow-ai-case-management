@@ -64,22 +64,22 @@ const CaseDetailData = ({
           <Typography variant="subtitle1">Contact name</Typography>
           <Typography variant="body2">{contactid}</Typography>
         </div>
-        <div className="case-detail-name">
+        {/* <div className="case-detail-name">
           <Typography variant="subtitle1">Individual</Typography>
           <Typography variant="body2">{individualid}</Typography>
-        </div>
-        <div className="case-detail-email">
+        </div> */}
+        {/* <div className="case-detail-email">
           <Typography variant="subtitle1">Email</Typography>
           <Typography variant="body2">{email}</Typography>
-        </div>
-        <div className="case-detail-phonenumber">
-          <Typography variant="subtitle1">Phone Number</Typography>
-          <Typography variant="body2">{phonenumber}</Typography>
-        </div>
-        <div className="case-detail-dateofbirth">
+        </div> */}
+          {/* <div className="case-detail-phonenumber">
+            <Typography variant="subtitle1">Phone Number</Typography>
+            <Typography variant="body2">{phonenumber}</Typography>
+          </div> */}
+        {/* <div className="case-detail-dateofbirth">
           <Typography variant="subtitle1">Date of Birth</Typography>
           <Typography variant="body2">{dateofbirth}</Typography>
-        </div>
+        </div> */}
         {/* <div className="case-detail-date">
           <Typography variant="subtitle1">Start Date</Typography>
 
@@ -96,14 +96,14 @@ const CaseDetailData = ({
         <Typography variant="body2">{dueDate}</Typography>
 
         </div> */}
-        <div className="case-detail-city">
+        {/* <div className="case-detail-city">
           <Typography variant="subtitle1">City</Typography>
           <Typography variant="body2">{city}</Typography>
         </div>
         <div className="case-detail-province">
           <Typography variant="subtitle1">Region</Typography>
           <Typography variant="body2">{region}</Typography>
-        </div>
+        </div> */}
         <div className="case-detail-issuetype">
           <Typography variant="subtitle1">Issue Type</Typography>
           <Typography variant="body2">{issuetype}</Typography>

@@ -220,7 +220,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("employerform"));
+    dispatch(setSelectedCaseType("loopform"));
     setOpenPopup(false);
     navigate("cases/create");
   };

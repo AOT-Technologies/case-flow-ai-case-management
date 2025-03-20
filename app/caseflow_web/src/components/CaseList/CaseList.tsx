@@ -98,7 +98,7 @@ const CaseList = React.memo(
                 }
               />
             </Grid>
-            <Grid
+            {/* <Grid
               item
               xs={1.5}
               onClick={() =>
@@ -119,7 +119,7 @@ const CaseList = React.memo(
                   </Typography>
                 }
               />
-            </Grid>
+            </Grid> */}
             {/* <Grid item xs={1.5}>
               <ListItemText
                 primary={
@@ -133,7 +133,7 @@ const CaseList = React.memo(
                 }
               />
             </Grid> */}
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <ListItemText
                 primary={
                   <Typography
@@ -141,6 +141,18 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                   >
                     Issue Type
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-case-card-style"
+                  >
+                    Issue Description
                   </Typography>
                 }
               />

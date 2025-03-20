@@ -97,8 +97,9 @@ export default function EmployerDetails() {
     var matches = location.pathname.match(/(\d+)/);
     if (matches && matches[0]) {
       const employer = await getEmployerDetails(matches[0])
+      console.log('employer is', employer)
       setEmployer(employer)
-      relatedCaseList(employer)
+      // relatedCaseList(employer)
     }
   }
 
@@ -151,17 +152,17 @@ export default function EmployerDetails() {
           <Typography>{employer.email}</Typography>
         </div>
       </div>
-      {employer.locations && employer.locations.length > 0 && (
+      {employer.locations && employer.locations.length > 0 && employer.id != 0 && (
         <div className="recent-cases">
           <LocationsList locations={employer.locations}/>
         </div>
       )}
-      <div className="recent-cases">
+      {/* <div className="recent-cases">
         <CaseList
           config={caseListProps}
           allRecentCases={recentCases}
         ></CaseList>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -217,6 +217,16 @@ export class CasesService {
           .getManyAndCount()
           return  {Cases,totalCount};
         }
+        case 'locationid': {
+          const [Cases,totalCount] =await this.caseRepository.createQueryBuilder("table")
+          .where("table.locationid = :locationid", { locationid: isNaN(parseInt(searchField))?0:parseInt(searchField)}) 
+          .andWhere('table.isdeleted = :status', {status:false})
+          .orderBy({[orderBy]: orderType})
+          .leftJoinAndSelect('table.casestatus', 'status')
+          .leftJoinAndSelect('table.casestype', 'type')
+          .getManyAndCount()
+          return  {Cases,totalCount};
+        }
         default :
          const [Cases,totalCount] = await  (this.caseRepository.createQueryBuilder("table")
         .where(new Brackets((qb) => {

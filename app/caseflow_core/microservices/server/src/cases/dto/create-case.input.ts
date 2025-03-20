@@ -67,9 +67,7 @@ export class CreateCaseInput {
   @Field({ nullable: true })
   lobcaseid: number;
 
-  @Field()
-  @IsString()
-  @IsNotEmpty()
+  @Field( { nullable: true })
   individualid: string;
 
   @Field()
