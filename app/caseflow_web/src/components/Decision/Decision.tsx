@@ -1,21 +1,62 @@
 import React from "react";
-import { TextField, Button, MenuItem, FormControl, InputLabel, Select, Grid, Container, Typography } from "@mui/material";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  FormControl,
+  Box,
+  Select,
+  Grid,
+  Container,
+  Typography,
+} from "@mui/material";
 
-export default function DecisionForm() {
+export default function DecisionForm(props) {
+  const issues = ["Penalties"];
+  const eaoRoles = ["Appellant", "Cross Appeal", "Respondant"];
+  const decisionAgency = ["WorkSafeBC", "RD", "WCAT", "Board of Directors"];
+  const decisionMakers = ["RD", "WSBC"];
+  const outcomes = [
+    "Pending",
+    "Denied",
+    "Allowed",
+    "Varied",
+    "Settled at Mediation",
+    "Return to WSBC",
+    "Suspended",
+    "Withdrawn",
+  ];
+
+  const handleChange = (event, index) => {
+    const { name, value } = event.target;
+
+    if (index !== undefined) {
+      const updatedIssues = [...formValues.issues];
+      updatedIssues[index] = { ...updatedIssues[index], [name]: value };
+      setFormValues({ ...formValues, issues: updatedIssues });
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    }
+  };
+
+  const initializeIssues = issues.map((issue) => ({
+    issue: issue,
+    eaoRole: "",
+    outcome: "",
+    impact: "",
+  }));
+
   const [formValues, setFormValues] = React.useState({
     rootDecisionDate: "",
     rootDecisionAgency: "",
     decisionMaker: "",
     referenceNumber: "",
     decisionDate: "",
-    issue: "",
-    eaoRole: "",
-    outcome: "",
+    issues: initializeIssues,
   });
-
-  const handleChange = (event) => {
-    setFormValues({ ...formValues, [event.target.name]: event.target.value });
-  };
 
   return (
     <Container>
@@ -23,111 +64,167 @@ export default function DecisionForm() {
         Root Decision Details
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        {/* Root Decision Date */}
-        <Grid item xs={3}><Typography>Root Decision Date:</Typography></Grid>
+        <Grid item xs={3}>
+          <Typography>Root Decision Date:</Typography>
+        </Grid>
         <Grid item xs={9}>
           <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="rootDecisionDate" value={formValues.rootDecisionDate} onChange={handleChange}>
-              <MenuItem value="">Select a date</MenuItem>
-              <MenuItem value="Date 1">Date 1</MenuItem>
-              <MenuItem value="Date 2">Date 2</MenuItem>
-            </Select>
+            <TextField
+              type="date"
+              name="rootDecisionDate"
+              value={formValues.rootDecisionDate}
+              onChange={handleChange}
+            />
           </FormControl>
         </Grid>
-        
-        {/* Root Decision Agency */}
-        <Grid item xs={3}><Typography>Root Decision Agency:</Typography></Grid>
+
+        <Grid item xs={3}>
+          <Typography>Root Decision Agency:</Typography>
+        </Grid>
         <Grid item xs={9}>
           <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="rootDecisionAgency" value={formValues.rootDecisionAgency} onChange={handleChange}>
+            <Select
+              displayEmpty
+              name="rootDecisionAgency"
+              value={formValues.rootDecisionAgency}
+              onChange={(e) => handleChange(e)}
+            >
               <MenuItem value="">Select an agency</MenuItem>
-              <MenuItem value="Agency 1">Agency 1</MenuItem>
-              <MenuItem value="Agency 2">Agency 2</MenuItem>
+              {decisionAgency.map((agency) => (
+                <MenuItem key={agency} value={agency}>
+                  {agency}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
-        
-        {/* Decision Maker */}
-        <Grid item xs={3}><Typography>Decision Maker:</Typography></Grid>
+
+        <Grid item xs={3}>
+          <Typography>Decision Maker:</Typography>
+        </Grid>
         <Grid item xs={9}>
           <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="decisionMaker" value={formValues.decisionMaker} onChange={handleChange}>
-              <MenuItem value="">Select a decision maker</MenuItem>
-              <MenuItem value="Person A">Person A</MenuItem>
-              <MenuItem value="Person B">Person B</MenuItem>
-            </Select>
+            <TextField
+              name="decisionMaker"
+              value={formValues.decisionMaker}
+              onChange={handleChange}
+            />
           </FormControl>
         </Grid>
-        
-        {/* Reference Number */}
-        <Grid item xs={3}><Typography>Reference #:</Typography></Grid>
-        <Grid item xs={9}><TextField fullWidth name="referenceNumber" value={formValues.referenceNumber} onChange={handleChange} /></Grid>
-        
-        {/* Decision Date */}
-        <Grid item xs={3}><Typography>Decision Date:</Typography></Grid>
+
+        <Grid item xs={3}>
+          <Typography>Reference #:</Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <TextField
+            fullWidth
+            name="referenceNumber"
+            value={formValues.referenceNumber}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        <Grid item xs={3}>
+          <Typography>Decision Date:</Typography>
+        </Grid>
         <Grid item xs={9}>
           <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="decisionDate" value={formValues.decisionDate} onChange={handleChange}>
-              <MenuItem value="">Select a date</MenuItem>
-              <MenuItem value="Date 1">Date 1</MenuItem>
-              <MenuItem value="Date 2">Date 2</MenuItem>
-            </Select>
+            <TextField
+              type="date"
+              name="decisionDate"
+              value={formValues.decisionDate}
+              onChange={handleChange}
+            />
           </FormControl>
         </Grid>
       </Grid>
-      
-      <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+
+      <Typography variant="h6" gutterBottom style={{ marginTop: "20px" }}>
         Issues and Outcomes
       </Typography>
-      <Grid container spacing={2} alignItems="center">
-        {/* Issue */}
-        <Grid item xs={3}><Typography>Issue:</Typography></Grid>
-        <Grid item xs={9}>
-          <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="issue" value={formValues.issue} onChange={handleChange}>
-              <MenuItem value="">Select an issue</MenuItem>
-              <MenuItem value="Issue 1">Issue 1</MenuItem>
-              <MenuItem value="Issue 2">Issue 2</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        
-        {/* EAO Role */}
-        <Grid item xs={3}><Typography>EAO Role:</Typography></Grid>
-        <Grid item xs={9}>
-          <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="eaoRole" value={formValues.eaoRole} onChange={handleChange}>
-              <MenuItem value="">Select a role</MenuItem>
-              <MenuItem value="Role 1">Role 1</MenuItem>
-              <MenuItem value="Role 2">Role 2</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        
-        {/* Outcome */}
-        <Grid item xs={3}><Typography>Outcome:</Typography></Grid>
-        <Grid item xs={9}>
-          <FormControl fullWidth variant="outlined">
-            <Select displayEmpty name="outcome" value={formValues.outcome} onChange={handleChange}>
-              <MenuItem value="">Select an outcome</MenuItem>
-              <MenuItem value="Approved">Approved</MenuItem>
-              <MenuItem value="Denied">Denied</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
+      {formValues.issues.map((issue, index) => (
+        <Box key={index}>
+          {index > 0 && (
+            <hr style={{ margin: "20px 0", border: "1px solid #ccc" }} />
+          )}
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={3}>
+              <Typography>Issue:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant="body1">{issue.issue}</Typography>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography>EAO Role:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl fullWidth variant="outlined">
+                <Select
+                  displayEmpty
+                  name="eaoRole"
+                  value={issue.eaoRole}
+                  onChange={(e) => handleChange(e, index)}
+                >
+                  <MenuItem value="">Select a role</MenuItem>
+                  {eaoRoles.map((role) => (
+                    <MenuItem key={role} value={role}>
+                      {role}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography>Outcome:</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl fullWidth variant="outlined">
+                <Select
+                  displayEmpty
+                  name="outcome"
+                  value={issue.outcome}
+                  onChange={(e) => handleChange(e, index)}
+                >
+                  <MenuItem value="">Select an outcome</MenuItem>
+                  {outcomes.map((outcome) => (
+                    <MenuItem key={outcome} value={outcome}>
+                      {outcome}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography>Impact ($):</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <TextField
+                fullWidth
+                type="number"
+                name="impact"
+                value={issue.impact}
+                onChange={(e) => handleChange(e, index)}
+                placeholder="Enter amount"
+                inputProps={{ step: "0.01", min: "0" }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      ))}
       <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "primary.main",
-                borderColor: "primary.main",
-                width: "100%",
-                marginTop: 5
-              }}
-            //   onClick={submitCommunication}
-            >
-              Submit
-            </Button>
+        variant="contained"
+        sx={{
+          backgroundColor: "primary.main",
+          borderColor: "primary.main",
+          width: "100%",
+          marginTop: 5,
+        }}
+      >
+        Submit
+      </Button>
     </Container>
   );
-};
+}
