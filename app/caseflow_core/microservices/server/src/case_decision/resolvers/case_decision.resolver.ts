@@ -5,6 +5,7 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
 
 import { CaseDecision } from '../entities/case_decision.entity';
 import { CaseDecisionsService } from '../services/case_decision.service';
@@ -26,7 +27,7 @@ export class CaseDecisionResolver {
 
   @Query(() => CaseDecisionResponse, { nullable: true, name: 'getCaseDecisionByCaseId' })
   async getCaseDecisionByCaseId(
-    @Args("caseId") caseId: number
+    @Args("caseId", { type: () => Int }) caseId: number
   ):  Promise<{ rootDecision: RootDecision; issueDecisions: IssueDecision[] } | null> {
     return this.CaseDecisionService.getCaseDecisionByCaseId(caseId);
   }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FilterMuiComponent from "../FilterMuiComponent/FilterMuiComponent";
 import CaseDetailData from "./CaseDetailData/CaseDetailData";
 import CaseDetailReference from "./CaseDetailReference/CaseDetailReference";
-import DecisionForm from "../Decision/Decision";
+import DecisionForm from "../CreateDecision/CreateDecision";
 import "./CaseDetails.scss";
 import Search from "../Search/Search";
 import CaseHistory from "../CaseHistory/caseHistory";
@@ -95,7 +95,9 @@ import {
   getWorkflowActivities,
 } from "../../services/workflowActivityService";
 import RelatedWorkflowActivities from "../RelatedWorkflowActivities/RelatedWorkflowActivities";
-
+import Decision from "../Decision/Decision";
+import { createRootDecisionService, createIssueDecisionService, createCaseDecisionService } from "../../services/DecisionService";
+import { getCaseDecisionByCaseId } from "../../services/DecisionService";
 // Formio.setProjectUrl("https://app2.aot-technologies.com/formio");
 // Formio.setBaseUrl("https://app2.aot-technologies.com/formio");
 
@@ -191,6 +193,7 @@ const CaseDetails = () => {
       findContact(output.contactid);
       // findIndividual(output.individualid);
       setWorkflowActivities(await getWorkflowActivities(matches[0]));
+      fetchCaseDecision(matches[0])
     }
   }
   async function fetchCaseHistory(id) {
@@ -229,6 +232,9 @@ const CaseDetails = () => {
   const [note, setNote]: any = useState();
   const [communication, setCommunication]: any = useState();
   const [recordOutput, setRecordOutput]: any = useState();
+  const [decisionData, setDecisionData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleClose = (event, reason) => {
     setOpenPopup(false);
@@ -243,7 +249,7 @@ const CaseDetails = () => {
     setSelected(0);
   };
 
-  const handleDecisionPopUpClose = (event, reason) => {
+  const handleDecisionPopUpClose = () => {
     setIsDecisionOpen(false);
     setSelected(0);
   };
@@ -588,6 +594,51 @@ const CaseDetails = () => {
         });
     });
   };
+  const submitDecision = async (formValues) => {
+    try {
+      const rootDecisionResponse = await createRootDecisionService({
+        rootDecisionDate: formValues.rootDecisionDate,
+        rootDecisionAgency: formValues.rootDecisionAgency,
+        decisionMaker: formValues.decisionMaker,
+        referenceNumber: formValues.referenceNumber,
+        decisionDate: formValues.decisionDate,
+      });
+
+      if (rootDecisionResponse?.error) throw new Error("Failed to create root decision");
+      const rootDecisionId = rootDecisionResponse.id;
+
+      for (const issue of formValues.issues) {
+        const issueDecisionResponse = await createIssueDecisionService({
+          issue: issue.issue,
+          eaoRole: issue.eaoRole,
+          outcome: issue.outcome,
+          impact: parseFloat(issue.impact) || 0,
+        });
+
+        if (issueDecisionResponse?.error) throw new Error("Failed to create issue decision");
+
+        const caseDecisionReponse = await createCaseDecisionService({
+          caseId: selectedCase.id,
+          rootDecisionId,
+          issueDecisionId: issueDecisionResponse.id,
+        });
+
+        if (caseDecisionReponse?.error) throw new Error("Failed to create case decision");
+      }
+
+      toast.success("Decision created successfully!");
+      handleDecisionPopUpClose()
+      setSelected(0)
+      fetchCaseDecision(selectedCase.id)
+      // add to case history 
+    } catch {
+      toast.error("Failed to create decision. Please try again!");
+    }
+  };
+  const fetchCaseDecision = async (caseId) => {
+    const result = await getCaseDecisionByCaseId({ caseId: selectedCase.id });
+    setDecisionData(result)
+  }
   const submitNote = async () => {
     if (note) {
       let response = await createNewNote({
@@ -751,6 +802,24 @@ const CaseDetails = () => {
               ></RelatedCaseDocuments>
             </AccordionDetails>
           </Accordion>
+
+          <Accordion className="case-documents">
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              className="case-documents-head-section"
+              sx={{ marginBottom: 0 }}
+            >
+              <Typography variant="body1" className="caseDocuments-headtag">
+                Case Decisions
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ paddingLeft: 0 }}>
+              <Decision caseId={selectedCase.id} decisionData={decisionData}/>
+            </AccordionDetails>
+          </Accordion>
+          
 
           <LobCustom />
         </section>
@@ -955,7 +1024,7 @@ const CaseDetails = () => {
             </Button>
           </FormControl>
         </div> */}
-        <DecisionForm issues={selectedCase.describetheissue} caseId={selectedCase.id}></DecisionForm>
+        <DecisionForm submitDecision={submitDecision} issues={selectedCase.describetheissue} caseId={selectedCase.id} closeDecisionPopUp={handleDecisionPopUpClose}></DecisionForm>
       </CustomizedDialog>
       <CustomizedDialog
         title="Record Output of the Issue"

@@ -25,3 +25,26 @@ export const CREATE_CASE_DECISION = gql`
     }
   }
 `;
+
+
+export const GET_CASE_DECISION_BY_CASE_ID = gql`
+  query GetCaseDecisionByCaseId($caseId: Int!) {
+    getCaseDecisionByCaseId(caseId: $caseId) {
+      rootDecision {
+        id
+        decisionMaker
+        referenceNumber
+        rootDecisionDate
+        decisionDate
+        rootDecisionAgency
+      }
+      issueDecisions {
+        id
+        issue
+        eaoRole
+        outcome
+        impact
+      }
+    }
+  }
+`;

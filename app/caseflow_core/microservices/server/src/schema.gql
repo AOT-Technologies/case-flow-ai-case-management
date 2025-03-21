@@ -213,7 +213,7 @@ type Query {
   caseNote(id: Int!): CaseNotes!
   caseNotesByCaseId(id: Int!): [CaseNotes!]!
   workflowActivitiesByCaseId(id: Int!): [WorkflowActivity!]!
-  getCaseDecisionByCaseId(caseId: Float!): CaseDecisionResponse
+  getCaseDecisionByCaseId(caseId: Int!): CaseDecisionResponse
 }
 
 type Mutation {
@@ -247,7 +247,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-21T00:25:05.807Z"
+  creationdate: DateTime = "2025-03-21T01:54:39.489Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -278,9 +278,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-21T00:25:05.803Z"
+  creationdate: DateTime = "2025-03-21T01:54:39.485Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2025-03-21T00:25:05.803Z"
+  lastmodificationdate: DateTime = "2025-03-21T01:54:39.485Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -308,7 +308,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2025-03-21T00:25:05.816Z"
+  datetime: DateTime = "2025-03-21T01:54:39.500Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -318,7 +318,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2025-03-21T00:25:05.816Z"
+  datetime: DateTime = "2025-03-21T01:54:39.500Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -373,7 +373,7 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2025-03-21T00:25:05.928Z"
+  creationdate: DateTime = "2025-03-21T01:54:39.624Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -381,7 +381,7 @@ input CreateCaseNoteInput {
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-21T00:25:05.928Z"
+  creationdate: DateTime = "2025-03-21T01:54:39.624Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -390,7 +390,7 @@ input UpdateCaseNoteInput {
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-21T00:25:05.932Z"
+  creationdate: DateTime = "2025-03-21T01:54:39.628Z"
   userid: String
   taskid: String!
   taskname: String
