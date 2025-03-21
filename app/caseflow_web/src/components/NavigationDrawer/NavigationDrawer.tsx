@@ -138,7 +138,7 @@ export default function MiniDrawer() {
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
     { key: 5, text: "Reports", path: "/private/reports" },
-    { key: 6, text: "Individual", path: "/private/individuals" },
+    // { key: 6, text: "Individual", path: "/private/individuals" },
     { key: 7, text: "Contacts", path: "/private/contacts" },
     { key: 8, text: "Employers", path: "/private/employers"}
   ];

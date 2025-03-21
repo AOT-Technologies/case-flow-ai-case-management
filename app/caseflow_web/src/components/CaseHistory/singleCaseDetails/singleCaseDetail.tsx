@@ -54,7 +54,7 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
         </h3>
         {expand && (
           <div>
-            <p>{( caseNotes && caseNotes.length && (caseHistoryData.eventtypeId == 4 || caseHistoryData.eventtypeId == 14 || caseHistoryData.eventtypeId == 15)) ? getNote() : (caseHistoryData.caseHistoryWorkflowType ? caseHistoryData.caseHistoryWorkflowType : caseHistoryData.caseHistoryType)}</p>
+            <p style={{ whiteSpace: "pre-line"}}>{( caseNotes && caseNotes.length && (caseHistoryData.eventtypeId == 4 || caseHistoryData.eventtypeId == 14 || caseHistoryData.eventtypeId == 15)) ? getNote() : (caseHistoryData.caseHistoryWorkflowType ? caseHistoryData.caseHistoryWorkflowType : caseHistoryData.caseHistoryType)}</p>
             <p>User - {userInfo.userName}</p>
           </div>
         )}

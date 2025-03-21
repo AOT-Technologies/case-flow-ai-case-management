@@ -145,21 +145,25 @@ const CaseDetails = () => {
     { id: 7, code: 7, text: "Add Communication" },
     { id: 8, code: 8, text: "Close" },
     { id: 9, code: 9, text: "Add Decision" },
+    { id: 10, code: 10, text: "Email - Received"},
+    { id: 11, code: 11, text: "Email - Sent"},
   ];
   const optionsForActivity = [
     { id: 1, code: 1, text: "Closed" },
-    { id: 2, code: 2, text: "Correspondence - Received" },
-    { id: 3, code: 3, text: "Correspondence - Sent" },
-    { id: 4, code: 4, text: "Email - Received" },
-    { id: 5, code: 5, text: "Email - Sent" },
+    // { id: 2, code: 2, text: "Correspondence - Received" },
+    // { id: 3, code: 3, text: "Correspondence - Sent" },
+    // { id: 4, code: 4, text: "Email - Received" },
+    // { id: 5, code: 5, text: "Email - Sent" },
     { id: 6, code: 6, text: "Hearing/Mediation - Preparation" },
     { id: 7, code: 7, text: "Hearing/Mediation Attended" },
     { id: 8, code: 8, text: "No Merit/Appeal Deflected" },
-    { id: 9, code: 9, text: "Phone Call - Incoming" },
-    { id: 10, code: 10, text: "Phone Call - Outgoing" },
+    // { id: 9, code: 9, text: "Phone Call - Incoming" },
+    // { id: 10, code: 10, text: "Phone Call - Outgoing" },
   ];
   const [isDeleteConfirmationUpOpen, setDeleteConfirmation] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [isEmailReceivedOpen, setIsEmailReceivedOpen] = useState(false);
+  const [isEmailSentOpen, setIsEmailSentOpen] = useState(false)
   const [isCommunicationOpen, setIsCommunicationOpen] = useState(false);
   const [isRecordOutputOpen, setIsRecordOutputOpen] = useState(false);
   const [isDecisionOpen, setIsDecisionOpen] = useState(false);
@@ -199,7 +203,9 @@ const CaseDetails = () => {
     if (matches && matches[0]) {
       let output = await getCaseDetails(matches[0]);
       // stored as csv for demo sake put it into a list
-      output.describetheissue = output.describetheissue.split(",")
+      if (typeof output.describetheissue === "string" && output.describetheissue.includes(",")) {
+        output.describetheissue = output.describetheissue.split(",");
+      }
       dispatch(setSelectedCase({ ...output, isEdit: false }));
       await fetchCaseHistory(matches[0]);
       findContact(output.contactid);
@@ -245,6 +251,8 @@ const CaseDetails = () => {
   const [formsList, setFormsList]: any = useState([]);
   const [selectedFormDetails, setSelectedFormDetails]: any = useState();
   const [note, setNote]: any = useState();
+  const [emailSender, setEmailSender]: any = useState();
+  const [emailRecipient, setEmailRecipient]: any = useState();
   const [communication, setCommunication]: any = useState();
   const [recordOutput, setRecordOutput]: any = useState();
   const [decisionData, setDecisionData] = useState(null);
@@ -259,6 +267,14 @@ const CaseDetails = () => {
     setIsNoteOpen(false);
     setSelected(0);
   };
+  const handleEmailReceivedPopUpClose = () => {
+    setIsEmailReceivedOpen(false)
+    setSelected(0);
+  }
+  const handleEmailSentPopUpClose = () => {
+    setIsEmailSentOpen(false)
+    setSelected(0);
+  }
   const handleCommunicationPopUpClose = (event, reason) => {
     setIsCommunicationOpen(false);
     setSelected(0);
@@ -314,7 +330,7 @@ const CaseDetails = () => {
 
   const onActivityChangeHandler = async (e: any) => {
     const selectedActivity = e.target.value;
-    setNote(selectedActivity)
+    setNote(`Activity Added:\n\n${selectedActivity}`)
     setSelectedActivity(selectedActivity); // assuming you have this state
     setActivityConfirmationText(`Add activity: ${selectedActivity}?`);
     setOpenActivityConfirmationPopup(true);
@@ -360,6 +376,14 @@ const CaseDetails = () => {
       case optionsForAction[9].text: {
         setSelectedAction(9);
         return setIsDecisionOpen(true);
+      }
+      case optionsForAction[10].text: {
+        setSelectedAction(10);
+        return setIsEmailReceivedOpen(true)
+      }
+      case optionsForAction[11].text: {
+        setSelectedAction(11);
+        return setIsEmailSentOpen(true)
       }
     }
   };
@@ -676,6 +700,7 @@ const CaseDetails = () => {
   }
   const submitNote = async () => {
     if (note) {
+      console.log('action type is', selectedAction)
       let response = await createNewNote({
         caseid: selectedCase.id,
         userid: userName,
@@ -936,20 +961,20 @@ const CaseDetails = () => {
                 {selectedContact.firstname + " " + selectedContact.lastname}
               </Typography>
             </div>
-            <div>
+            {/* <div>
               <Typography variant="subtitle2">Individual name</Typography>
               <Typography variant="body2">
                 {selectedIndividual.firstname +
                   " " +
                   selectedIndividual.lastname}
               </Typography>
-            </div>
+            </div> */}
             <div>
               <Typography variant="subtitle2">Issue Type </Typography>
               <Typography variant="body2"> {selectedCase.issuetype}</Typography>
             </div>
             <div>
-              <Typography variant="subtitle2">Issue Detials </Typography>
+              <Typography variant="subtitle2">Issue Details </Typography>
               <Typography variant="body2">
                 {" "}
                 {selectedCase.describetheissue}
@@ -989,6 +1014,91 @@ const CaseDetails = () => {
                 borderColor: "primary.main",
               }}
               onClick={submitNote}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
+        title="Email - Received"
+        isOpen={isEmailReceivedOpen}
+        setIsOpen={setIsEmailReceivedOpen}
+        handleClose={handleEmailReceivedPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+              id="outlined-multiline-flexible"
+              label="Received From"
+              sx={{ border: "0px", mb: 2 }}
+              rows={1}
+              onChange={(e) => setEmailSender(e.target.value)}
+            />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Email Content"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setNote(`Email received from ${emailSender}:\n\n${e.target.value}`)}
+            />
+          </FormControl>
+
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={() => {
+                handleEmailReceivedPopUpClose()
+                submitNote()
+              }}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
+        title="Email - Sent"
+        isOpen={isEmailSentOpen}
+        setIsOpen={setIsEmailSentOpen}
+        handleClose={handleEmailSentPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+              id="outlined-multiline-flexible"
+              label="Sent to"
+              sx={{ border: "0px", mb: 2 }}
+              rows={1}
+              onChange={(e) => setEmailRecipient(e.target.value)}
+            />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Email Content"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setNote(`Email sent to ${emailRecipient}:\n\n${e.target.value}`)}
+            />
+          </FormControl>
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={() => {
+                handleEmailSentPopUpClose()
+                submitNote()
+              }}
             >
               Submit
             </Button>
