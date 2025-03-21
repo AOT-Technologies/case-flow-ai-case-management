@@ -70,10 +70,6 @@ export default function DecisionForm(props) {
     } catch {
       toast.error("Failed to create employer. Please try again!");
     }
-
-    for (const issue of formValues.issues) {
-      console.log(issue)
-    }
   }
 
   const handleChange = (event, index) => {
