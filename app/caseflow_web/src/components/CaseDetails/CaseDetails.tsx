@@ -184,10 +184,12 @@ const CaseDetails = () => {
     var matches = location.pathname.match(/(\d+)/);
     if (matches && matches[0]) {
       let output = await getCaseDetails(matches[0]);
+      // stored as csv for demo sake put it into a list
+      output.describetheissue = output.describetheissue.split(",")
       dispatch(setSelectedCase({ ...output, isEdit: false }));
       await fetchCaseHistory(matches[0]);
       findContact(output.contactid);
-      findIndividual(output.individualid);
+      // findIndividual(output.individualid);
       setWorkflowActivities(await getWorkflowActivities(matches[0]));
     }
   }
@@ -953,7 +955,7 @@ const CaseDetails = () => {
             </Button>
           </FormControl>
         </div> */}
-        <DecisionForm></DecisionForm>
+        <DecisionForm issues={selectedCase.describetheissue}></DecisionForm>
       </CustomizedDialog>
       <CustomizedDialog
         title="Record Output of the Issue"

@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 
 export default function DecisionForm(props) {
-  const issues = ["Penalties"];
+  const issues = props.issues
+  // const issues = ["Penalties"];
   const eaoRoles = ["Appellant", "Cross Appeal", "Respondant"];
   const decisionAgency = ["WorkSafeBC", "RD", "WCAT", "Board of Directors"];
   const decisionMakers = ["RD", "WSBC"];

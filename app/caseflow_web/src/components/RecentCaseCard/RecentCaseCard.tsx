@@ -131,7 +131,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.describetheissue}{" "}
+                  {CaseDetails.describetheissue.split(",").join(", ")}{" "}
                 </Typography>
               }
             />

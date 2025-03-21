@@ -57,12 +57,12 @@ const Cases = () => {
       pV.push(parseInt(cV.contactid));
       return pV;
     }, []);
-    let individuals = await searchResultCases?.reduce(function(pV, cV){
-      pV.push(parseInt(cV.individualid));
-      return pV;
-    }, []);
+    // let individuals = await searchResultCases?.reduce(function(pV, cV){
+    //   pV.push(parseInt(cV.individualid));
+    //   return pV;
+    // }, []);
     let contactList = await getContactDetailsByIds(contacts);
-    let individualList = await getIndividualDetailsByIds(individuals);
+    // let individualList = await getIndividualDetailsByIds(individuals);
     
     console.log(contactList)
     let contactsKey = new Map<string, string>();
@@ -70,14 +70,14 @@ const Cases = () => {
       contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
     })
     
-    let individualsKey = new Map<string, string>();
-    individualList?.map(individual=>{
-      individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
-    })
+    // let individualsKey = new Map<string, string>();
+    // individualList?.map(individual=>{
+    //   individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
+    // })
 
     searchResultCases = searchResultCases?.map((element) => {
       element.contactname=contactsKey.get(element.contactid);
-      element.individualname=individualsKey.get(element.individualid);
+      // element.individualname=individualsKey.get(element.individualid);
       return element;
     });
     

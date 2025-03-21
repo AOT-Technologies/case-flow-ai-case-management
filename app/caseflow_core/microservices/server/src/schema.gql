@@ -101,6 +101,33 @@ type WorkflowActivity {
   case: Cases
 }
 
+type RootDecision {
+  id: ID!
+  rootDecisionDate: String
+  rootDecisionAgency: String
+  decisionMaker: String
+  referenceNumber: String
+  decisionDate: String
+}
+
+type IssueDecision {
+  id: ID!
+  issue: String
+  eaoRole: String
+  outcome: String
+  impact: Float
+}
+
+type CaseDecision {
+  id: ID!
+  caseId: Float!
+  rootDecisionId: Float!
+  issueDecisionId: Float!
+  case: Cases
+  rootDecision: RootDecision
+  issueDecision: IssueDecision
+}
+
 type Cases {
   id: ID!
   lobid: Int!
@@ -142,6 +169,11 @@ type casesResponse {
   totalCount: Int!
 }
 
+type CaseDecisionResponse {
+  rootDecision: RootDecision!
+  issueDecisions: [IssueDecision!]!
+}
+
 type CaseflowLocations {
   id: Int!
   address: String!
@@ -181,6 +213,7 @@ type Query {
   caseNote(id: Int!): CaseNotes!
   caseNotesByCaseId(id: Int!): [CaseNotes!]!
   workflowActivitiesByCaseId(id: Int!): [WorkflowActivity!]!
+  getCaseDecisionByCaseId(caseId: Float!): CaseDecisionResponse
 }
 
 type Mutation {
@@ -204,6 +237,9 @@ type Mutation {
   removeCaseNote(id: Int!): CaseNotes!
   createWorkflowActivity(createWorkflowActivityInput: CreateWorkflowActivityInput!): WorkflowActivity!
   updateWorkflowActivity(updateWorkflowActivityInput: UpdateWorkflowActivityInput!): WorkflowActivity!
+  createRootDecision(createRootDecisionInput: CreateRootDecisionInput!): RootDecision!
+  createIssueDecision(createIssueDecisionInput: CreateIssueDecisionInput!): IssueDecision!
+  createCaseDecision(createCaseDecisionInput: CreateCaseDecisionInput!): CaseDecision!
 }
 
 input CreateCaseInput {
@@ -211,7 +247,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-20T02:49:37.255Z"
+  creationdate: DateTime = "2025-03-21T00:25:05.807Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -242,9 +278,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2025-03-20T02:49:37.250Z"
+  creationdate: DateTime = "2025-03-21T00:25:05.803Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2025-03-20T02:49:37.250Z"
+  lastmodificationdate: DateTime = "2025-03-21T00:25:05.803Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -272,7 +308,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2025-03-20T02:49:37.266Z"
+  datetime: DateTime = "2025-03-21T00:25:05.816Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -282,7 +318,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2025-03-20T02:49:37.266Z"
+  datetime: DateTime = "2025-03-21T00:25:05.816Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -337,7 +373,7 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2025-03-20T02:49:37.385Z"
+  creationdate: DateTime = "2025-03-21T00:25:05.928Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -345,7 +381,7 @@ input CreateCaseNoteInput {
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-20T02:49:37.385Z"
+  creationdate: DateTime = "2025-03-21T00:25:05.928Z"
   userid: Float
   notetext: String
   actiontype: Float
@@ -354,7 +390,7 @@ input UpdateCaseNoteInput {
 
 input CreateWorkflowActivityInput {
   caseid: Float
-  creationdate: DateTime = "2025-03-20T02:49:37.390Z"
+  creationdate: DateTime = "2025-03-21T00:25:05.932Z"
   userid: String
   taskid: String!
   taskname: String
@@ -366,6 +402,27 @@ input CreateWorkflowActivityInput {
 input UpdateWorkflowActivityInput {
   taskid: String
   status: String
+}
+
+input CreateRootDecisionInput {
+  rootDecisionDate: String!
+  rootDecisionAgency: String!
+  decisionMaker: String!
+  referenceNumber: String!
+  decisionDate: String!
+}
+
+input CreateIssueDecisionInput {
+  issue: String!
+  eaoRole: String!
+  outcome: String!
+  impact: Float!
+}
+
+input CreateCaseDecisionInput {
+  caseId: Float!
+  rootDecisionId: Float!
+  issueDecisionId: Float!
 }
 
 scalar link__Import
