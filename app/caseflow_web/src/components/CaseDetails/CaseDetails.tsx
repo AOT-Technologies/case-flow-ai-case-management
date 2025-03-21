@@ -664,6 +664,7 @@ const CaseDetails = () => {
       handleDecisionPopUpClose()
       // setSelected(0)
       fetchCaseDecision(selectedCase.id)
+      // submitNote()
       // add to case history 
     } catch {
       toast.error("Failed to create decision. Please try again!");

@@ -278,6 +278,7 @@ const NewCase = () => {
         })
         .then(async (tasks) => {
           let task = tasks[0];
+          // COMMENTED OUT FOR DEMO PURPOSES
           // if (task &&task["id"]) {
             // try {
             //   const SUBJECT = "CaseCreate";
@@ -294,9 +295,16 @@ const NewCase = () => {
             // } catch (error) {
             //   console.log(error);
             // }
+            
+            
+            // TIMEOUT FOR DEMO PURPOSES
             toast.success("New workflow started successfully");
-            let recentCases = await fetchRecentCaseList();
-            navigate("/private/employers/" + recentCases[0].employerid + "/details");
+            setTimeout(async function(){
+              let recentCases = await fetchRecentCaseList();
+              console.log('recent cases are', recentCases)
+              navigate("/private/employers/" + recentCases[0].employerid + "/details");
+
+            }, 1000)
           // } 
           // else {
             // toast.success("Failed to  start the workflow. Please try again!");
