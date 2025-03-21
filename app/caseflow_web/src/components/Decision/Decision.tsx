@@ -10,9 +10,12 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import { toast } from "react-toastify";
+import { createRootDecisionService, createIssueDecisionService, createCaseDecisionService } from "../../services/DecisionService";
 
 export default function DecisionForm(props) {
   const issues = props.issues
+  const caseId = props.caseId
   // const issues = ["Penalties"];
   const eaoRoles = ["Appellant", "Cross Appeal", "Respondant"];
   const decisionAgency = ["WorkSafeBC", "RD", "WCAT", "Board of Directors"];
@@ -27,6 +30,51 @@ export default function DecisionForm(props) {
     "Suspended",
     "Withdrawn",
   ];
+
+  const handleSubmit = async() => {
+    try {
+      const rootDecisionResponse = await createRootDecisionService({
+        rootDecisionDate: formValues.rootDecisionDate,
+        rootDecisionAgency: formValues.rootDecisionAgency,
+        decisionMaker: formValues.decisionMaker,
+        referenceNumber: formValues.referenceNumber,
+        decisionDate: formValues.decisionDate,
+      })
+
+      if (rootDecisionResponse?.error) throw new Error("Failed to create root decision");
+      const rootDecisionId = rootDecisionResponse.id;
+      
+
+      for (const issue of formValues.issues) {
+        console.log('impact is', issue.impact)
+        const issueDecisionResponse = await createIssueDecisionService({
+          issue: issue.issue,
+          eaoRole: issue.eaoRole,
+          outcome: issue.outcome,
+          impact: parseFloat(issue.impact) || 0,
+        })
+        
+        if (issueDecisionResponse?.error) throw new Error("Failed to create issue decision");
+        const issueDecisionId = issueDecisionResponse.id;
+
+        const caseDecisionReponse = await createCaseDecisionService({
+          caseId,
+          rootDecisionId,
+          issueDecisionId,
+        });
+
+        if (caseDecisionReponse?.error) throw new Error("Failed to create issue decision");
+      }
+
+      toast.success("Employer created succesfully!");
+    } catch {
+      toast.error("Failed to create employer. Please try again!");
+    }
+
+    for (const issue of formValues.issues) {
+      console.log(issue)
+    }
+  }
 
   const handleChange = (event, index) => {
     const { name, value } = event.target;
@@ -217,6 +265,7 @@ export default function DecisionForm(props) {
       ))}
       <Button
         variant="contained"
+        onClick={handleSubmit}
         sx={{
           backgroundColor: "primary.main",
           borderColor: "primary.main",

@@ -955,7 +955,7 @@ const CaseDetails = () => {
             </Button>
           </FormControl>
         </div> */}
-        <DecisionForm issues={selectedCase.describetheissue}></DecisionForm>
+        <DecisionForm issues={selectedCase.describetheissue} caseId={selectedCase.id}></DecisionForm>
       </CustomizedDialog>
       <CustomizedDialog
         title="Record Output of the Issue"

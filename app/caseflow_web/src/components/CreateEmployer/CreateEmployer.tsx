@@ -84,7 +84,7 @@ export default function EmployerForm(props) {
           )
         );
 
-        toast.success("Contact created succesfully!");
+        toast.success("Employer created succesfully!");
         closePopUp()
         navigate("/private/employers/" + employerid + "/details");
       } else {
