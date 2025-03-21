@@ -628,7 +628,7 @@ const CaseDetails = () => {
 
       toast.success("Decision created successfully!");
       handleDecisionPopUpClose()
-      setSelected(0)
+      // setSelected(0)
       fetchCaseDecision(selectedCase.id)
       // add to case history 
     } catch {
@@ -636,7 +636,7 @@ const CaseDetails = () => {
     }
   };
   const fetchCaseDecision = async (caseId) => {
-    const result = await getCaseDecisionByCaseId({ caseId: selectedCase.id });
+    const result = await getCaseDecisionByCaseId({ caseId: caseId });
     setDecisionData(result)
   }
   const submitNote = async () => {

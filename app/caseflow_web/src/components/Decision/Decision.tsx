@@ -3,13 +3,10 @@ import {
   Container,
   Typography,
   Grid,
-  Card,
-  CardContent,
   TableContainer,
   Box,
   Divider,
   Paper,
-  CircularProgress,
 } from "@mui/material";
 import { getCaseDecisionByCaseId } from "../../services/DecisionService";
 

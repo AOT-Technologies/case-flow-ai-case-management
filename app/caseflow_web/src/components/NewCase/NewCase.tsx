@@ -265,6 +265,8 @@ const NewCase = () => {
           "/submission/" +
           res._id,
       };
+
+      console.log("submission data is", submissionData, selectedFormDetails)
       // let createDraftData = { data: {}, formId: res.form };
       // createDraft(createDraftData)
       //   .then((draftId) => {
@@ -274,6 +276,7 @@ const NewCase = () => {
       //   })
       createCase(submissionData)
         .then((data) => {
+          console.log('data is', data)
           return getTaksByProcessInstanceId(data.processInstanceId);
         })
         .then(async (tasks) => {
@@ -296,7 +299,8 @@ const NewCase = () => {
             // }
             toast.success("New workflow started successfully");
             let recentCases = await fetchRecentCaseList();
-            navigate("/private/cases/" + recentCases[0].id + "/details");
+            console.log('recent cases', recentCases[0])
+            navigate("/private/employers/" + recentCases[0].employerid + "/details");
           // } 
           // else {
             // toast.success("Failed to  start the workflow. Please try again!");

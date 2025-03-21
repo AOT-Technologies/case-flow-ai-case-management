@@ -95,7 +95,9 @@ export const getCaseDecisionByCaseId = async (data) => {
     },
     null
   )
-    .then((res) => res.data.data.getCaseDecisionByCaseId)
+    .then((res) => {
+        return res.data.data.getCaseDecisionByCaseId
+    })
     .catch((error) => {
       return error?.response?.data
         ? { error: error }
