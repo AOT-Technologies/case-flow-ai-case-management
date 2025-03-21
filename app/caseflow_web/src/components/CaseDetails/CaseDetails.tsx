@@ -146,6 +146,18 @@ const CaseDetails = () => {
     { id: 8, code: 8, text: "Close" },
     { id: 9, code: 9, text: "Add Decision" },
   ];
+  const optionsForActivity = [
+    { id: 1, code: 1, text: "Closed" },
+    { id: 2, code: 2, text: "Correspondence - Received" },
+    { id: 3, code: 3, text: "Correspondence - Sent" },
+    { id: 4, code: 4, text: "Email - Received" },
+    { id: 5, code: 5, text: "Email - Sent" },
+    { id: 6, code: 6, text: "Hearing/Mediation - Preparation" },
+    { id: 7, code: 7, text: "Hearing/Mediation Attended" },
+    { id: 8, code: 8, text: "No Merit/Appeal Deflected" },
+    { id: 9, code: 9, text: "Phone Call - Incoming" },
+    { id: 10, code: 10, text: "Phone Call - Outgoing" },
+  ];
   const [isDeleteConfirmationUpOpen, setDeleteConfirmation] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [isCommunicationOpen, setIsCommunicationOpen] = useState(false);
@@ -218,9 +230,12 @@ const CaseDetails = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [isOpenConfirmationPopup, setOpenConfirmationPopup] = useState(false);
   const [confirmationText, setConfirmationText] = useState("");
+  const [isOpenActivityConfirmationPopUp, setOpenActivityConfirmationPopup] = useState(false)
+  const [activityConfirmationText, setActivityConfirmationText] = useState("");
   const [newStatus, setNewStatus] = useState(0);
   const [selected, setSelected] = useState(0);
   const [selectedAction, setSelectedAction] = useState(0);
+  const [selectedActivity, setSelectedActivity] = useState(0);
   const docDetail = useSelector(
     (state: store) => state.cases.selectedCase.documents
   );
@@ -296,6 +311,16 @@ const CaseDetails = () => {
     dispatch(setSelectedCaseDocuments(output.CaseDocuments));
     dispatch(setTotalDocCount(output.totalCount));
   };
+
+  const onActivityChangeHandler = async (e: any) => {
+    const selectedActivity = e.target.value;
+    setNote(selectedActivity)
+    setSelectedActivity(selectedActivity); // assuming you have this state
+    setActivityConfirmationText(`Add activity: ${selectedActivity}?`);
+    setOpenActivityConfirmationPopup(true);
+  };
+  
+
   const onActionChangehandler = async (e: any) => {
     setSelected(e.target.value);
     switch (e.target.value) {
@@ -392,6 +417,15 @@ const CaseDetails = () => {
     setOpenConfirmationPopup(false);
     setSelected(0);
   };
+  const onCloseAcitvityConfirmationPopup = () => {
+    setOpenActivityConfirmationPopup(false)
+    setSelectedActivity(0)
+  }
+  const onActivityConfirmation = async () => {
+    submitNote()
+    setSelectedActivity(0);
+    setOpenActivityConfirmationPopup(false);
+  }
   const onConfirmation = async () => {
     let newStatusDetails = statuses.find((stat) => stat.code == newStatus);
     if (newStatusDetails && newStatusDetails.id) {
@@ -726,12 +760,20 @@ const CaseDetails = () => {
                 {selectedCase?.casestatus?.displayname}
               </Typography>
             </div>
-            <FilterMuiComponent
-              label="Action"
-              options={optionsForAction}
-              onChnagehandler={onActionChangehandler}
-              selected={selected}
-            />
+            <div style={{display: "flex"}}>
+              <FilterMuiComponent
+                label="Action"
+                options={optionsForAction}
+                onChnagehandler={onActionChangehandler}
+                selected={selected}
+              />
+              <FilterMuiComponent
+                label="Add Activity"
+                options={optionsForActivity}
+                onChnagehandler={onActivityChangeHandler}
+                selected={selectedActivity}
+              />
+            </div>
           </span>
           <Divider sx={{ border: 1, color: "#606060" }} />
           {selectedCase && selectedCase.id ? (
@@ -1077,6 +1119,15 @@ const CaseDetails = () => {
         btn1={"Cancel"}
         btn2={"Delete"}
         type="delete"
+      />
+      <PopUpDialogBox
+        isOpen={isOpenActivityConfirmationPopUp}
+        onClose={onCloseAcitvityConfirmationPopup}
+        dialogContentText={activityConfirmationText}
+        onConfirm={onActivityConfirmation}
+        btn1={"Cancel"}
+        btn2={"Confirm"}
+        type="confirm"
       />
     </>
   );
