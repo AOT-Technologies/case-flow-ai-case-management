@@ -51,7 +51,6 @@ export default function EmployerForm(props) {
 
   const handleSubmit = async () => {
     try {
-      console.log("form values", formValues);
       const res = await createEmployer({
         name: formValues.employerName,
         worksafenumber: formValues.workSafeBCNumber,

@@ -700,7 +700,6 @@ const CaseDetails = () => {
   }
   const submitNote = async () => {
     if (note) {
-      console.log('action type is', selectedAction)
       let response = await createNewNote({
         caseid: selectedCase.id,
         userid: userName,

@@ -29,8 +29,6 @@ export default function LocationRow(props) {
   const [postalCode, setPostalCode] = useState("")
 
   const relatedCaseList = async (locationid: string) => {
-    console.log("output id is", locationid);
-
     let recentCases = await searchCases(
       locationid.toString(),
       "locationid",
@@ -44,8 +42,6 @@ export default function LocationRow(props) {
     let searchResultCases = recentCases?.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
-
-    console.log("case results", searchResultCases);
 
     let contacts = await searchResultCases?.reduce(function (pV, cV) {
       pV.push(parseInt(cV.contactid));
@@ -70,7 +66,6 @@ export default function LocationRow(props) {
 
   const getCasesByLocation = () => {
     const locationid = location.id;
-    console.log('location id is', locationid)
     relatedCaseList(locationid);
   };
 
