@@ -220,7 +220,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("loopform"));
+    dispatch(setSelectedCaseType("MinistryOfLabourPOC"));
     setOpenPopup(false);
     navigate("cases/create");
   };
