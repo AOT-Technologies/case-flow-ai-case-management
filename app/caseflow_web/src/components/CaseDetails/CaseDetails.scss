@@ -97,6 +97,11 @@
   }
 }
 
+.decision-container {
+  display: flex;
+  justify-content: space-between; 
+}
+
 // font-family: "Poppins", sans-serif;
 .col-form-label {
   padding-top: calc(0.375rem + 1px);

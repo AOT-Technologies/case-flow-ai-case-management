@@ -52,6 +52,7 @@ type CaseflowContacts {
   dateofbirth: DateTime
   address: String
   createdat: DateTime
+  employerid: Float
 }
 
 type CaseflowContactsResponse {
@@ -75,6 +76,35 @@ type CaseflowIndividualsResponse {
   totalCount: Int!
 }
 
+type CaseflowLocations {
+  id: Int!
+  address: String!
+  city: String!
+  createdate: DateTime!
+  employer: CaseflowEmployers!
+  employerId: Int!
+}
+
+type CaseflowEmployers {
+  id: ID!
+  name: String
+  worksafenumber: Float
+  phonenumber: Float
+  email: String
+  createdate: DateTime
+  locations: [CaseflowLocations!]
+}
+
+type CaseflowEmployersResponse {
+  CaseflowEmployers: [CaseflowEmployers!]!
+  totalCount: Int!
+}
+
+type CaseflowLocationsResponse {
+  CaseflowLocations: [CaseflowLocations!]!
+  totalCount: Int!
+}
+
 type Query {
   getLobById(id: Int!): CaseflowLob!
   getLobList(skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
@@ -82,11 +112,17 @@ type Query {
   getContactsById(id: Int!): CaseflowContacts!
   getContactsByIds(id: [Int!]!): CaseflowContactsResponse!
   getContactsList: CaseflowContactsResponse!
+  contactsByEmployer(employerid: Int!): [CaseflowContacts!]!
   searchCaseflowContacts(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
   getIndividualsById(id: Int!): CaseflowIndividuals!
   getIndividualsByIds(id: [Int!]!): CaseflowIndividualsResponse!
   getIndividualsList: CaseflowIndividualsResponse!
   searchCaseflowIndividuals(searchField: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
+  getEmployersById(id: Int!): CaseflowEmployers!
+  getEmployersList: CaseflowEmployersResponse!
+  getLocationsById(id: Int!): CaseflowLocations!
+  getLocationsList: CaseflowLocationsResponse!
+  locationsByEmployer(employerId: Int!): [CaseflowLocations!]!
 }
 
 type Mutation {
@@ -99,6 +135,8 @@ type Mutation {
   createCaseflowIndividuals(CreateCaseflowIndividualsInput: CreateCaseflowIndividualsInput!): CaseflowIndividuals!
   updateCaseflowIndividuals(updateCaseflowIndividualsInput: UpdateCaseflowIndividualsInput!): CaseflowIndividuals!
   removeCaseflowIndividuals(id: Float!): CaseflowIndividuals!
+  createCaseflowEmployers(CreateCaseflowEmployersInput: CreateCaseflowEmployerInput!): CaseflowEmployers!
+  createCaseflowLocations(CreateCaseflowLocationsInput: CreateCaseflowLocationsInput!): CaseflowLocations!
 }
 
 input CreateCaseflowLobInput {
@@ -128,6 +166,7 @@ input CreateCaseflowContactsInput {
   dateofbirth: DateTime
   address: String
   createdat: DateTime
+  employerid: Float
 }
 
 input UpdateCaseflowContactsInput {
@@ -160,6 +199,21 @@ input UpdateCaseflowIndividualsInput {
   dateofbirth: DateTime
   address: String
   createdat: DateTime
+}
+
+input CreateCaseflowEmployerInput {
+  name: String!
+  worksafenumber: Float!
+  phonenumber: Float!
+  email: String!
+  createdate: DateTime!
+}
+
+input CreateCaseflowLocationsInput {
+  address: String!
+  city: String!
+  createdate: DateTime!
+  employerId: Int!
 }
 
 scalar link__Import

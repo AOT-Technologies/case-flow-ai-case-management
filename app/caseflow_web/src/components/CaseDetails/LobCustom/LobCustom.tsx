@@ -83,7 +83,7 @@ const LobCustom = () => {
       )} */}
     </>
      <>
-     <Typography
+     {/* <Typography
        variant="body1"
        sx={{ margin: "3.5rem 0  1rem ", fontSize: 24 }}
      >
@@ -91,7 +91,7 @@ const LobCustom = () => {
      </Typography>
      <Divider sx={{ border: 1, color: "#606060" }} />
      {/* {lobData && lobData.id ? ( */}
-     <div className="lob-custom-content-case-detail">
+     {/* <div className="lob-custom-content-case-detail">
      <div>
           <Typography variant="subtitle1">Id</Typography>
           <Typography variant="subtitle1">{selectedIndividual?.id}</Typography>
@@ -128,7 +128,7 @@ const LobCustom = () => {
           </Typography>
         </div>
 
-         {/* <div>
+         <div>
            <Typography
              variant="subtitle1"
              className="lob-record-link-upper-section"
@@ -143,7 +143,7 @@ const LobCustom = () => {
              </Link>
            </Typography>
          </div> */}
-       </div>
+       {/* </div>  */}
      {/* ) : (
        <Typography variant="body1" className="no-details-found">
          No Details Found!

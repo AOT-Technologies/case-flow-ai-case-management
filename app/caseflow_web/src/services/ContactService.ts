@@ -35,6 +35,8 @@ export const getContactDetails = async (id) => {
 };
 
 export const getContactDetailsByIds = async (ids) => { 
+  console.log('ids are', ids)
+  ids = ids.filter(id => typeof id === 'number' && !isNaN(id))
   const url = LOBURL;
   const output = await httpPOSTRequest(
     url,
@@ -122,6 +124,7 @@ export const createNewContact = async (data) => {
           dateofbirth: new Date(data.dateofbirth),
           address: data.address,
           createdat: new Date(),
+          employerid:Number(data.employerid)
         },
       },
     },

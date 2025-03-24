@@ -190,6 +190,7 @@ export const FETCH_RECENT_CASES = gql`
       describetheissue
       caseowner
       resolutionsought
+      employerid
       casestatus {
         id
         name

@@ -39,6 +39,10 @@ export class CaseflowContactsService {
     }
   }
 
+    async findByEmployerId(employerid: number): Promise<CaseflowContacts[]> {
+      return this.caseflowContactsRepository.find({ where: { employerid } });
+    }
+
   async findByIds(id: number): Promise<CaseflowContactsResponse> {
     try {
       if (id) {

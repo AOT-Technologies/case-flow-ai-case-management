@@ -37,4 +37,8 @@ export class CaseflowContacts {
   @Column({ nullable: true })
   @Field({ nullable: true })
   createdat?: Date;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  employerid?: number;
 }

@@ -74,6 +74,7 @@ const Contacts = () => {
       }
   }
   const searchContactsDetails = async () => {
+    console.log("SEARCH CONTACT DETAILS")
     let searchResult = await getContactsData(
       selectedPage,
       searchField,

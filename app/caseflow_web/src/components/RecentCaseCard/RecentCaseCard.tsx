@@ -67,7 +67,7 @@ const RecentCaseCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={1.5}>
+          {/* <Grid item xs={1.5}>
             <ListItemText 
               className="caseName-case-list"
               primary={
@@ -84,7 +84,7 @@ const RecentCaseCard = (props) => {
                 </Typography>
               }
             />
-          </Grid>
+          </Grid> */}
           {/* <Grid item xs={1.5}>
             <ListItemText
               primary={
@@ -102,7 +102,7 @@ const RecentCaseCard = (props) => {
               }
             />
           </Grid> */}
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <ListItemText
               primary={
                 <Typography
@@ -115,6 +115,23 @@ const RecentCaseCard = (props) => {
                   }}
                 >
                   {CaseDetails.issuetype}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.describetheissue.split(",").join(", ")}{" "}
                 </Typography>
               }
             />

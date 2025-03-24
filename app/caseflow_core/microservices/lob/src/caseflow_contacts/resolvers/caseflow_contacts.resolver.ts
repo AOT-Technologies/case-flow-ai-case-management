@@ -31,6 +31,12 @@ export class CaseflowContactsResolver {
     return output;
   }
 
+
+  @Query(() => [CaseflowContacts], { name: 'contactsByEmployer' })
+  async findByEmployer(@Args('employerid', { type: () => Int }) employerid: number) {
+    return this.caseflowContactsService.findByEmployerId(employerid);
+  }
+
   @Query((returns) => CaseflowContactsResponse, { name: 'searchCaseflowContacts' })
   searchCaseflowContacts(
     @Args() args: FetchSearchArgs,

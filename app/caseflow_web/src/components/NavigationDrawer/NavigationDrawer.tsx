@@ -138,8 +138,9 @@ export default function MiniDrawer() {
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
     { key: 5, text: "Reports", path: "/private/reports" },
-    { key: 6, text: "Individual", path: "/private/individuals" },
+    // { key: 6, text: "Individual", path: "/private/individuals" },
     { key: 7, text: "Contacts", path: "/private/contacts" },
+    { key: 8, text: "Employers", path: "/private/employers"}
   ];
   const { pathname } = useLocation();
   const selectedPathName = pathname.split("/").slice(0, 3).join("/");
@@ -185,6 +186,10 @@ export default function MiniDrawer() {
         return (
           <img alt="ContactIcon" src={require("../../assets/ContactsIcon.png")}></img>
         );
+      case 7:
+        return (
+          <img alt="EmployerIcon" src={require("../../assets/AssignedIcon.png")}></img>
+        )
       default:
         return (
           <img alt="Home" src={require("../../assets/HomeIcon.png")}></img>
@@ -215,7 +220,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("caseflowpoc"));
+    dispatch(setSelectedCaseType("loopform"));
     setOpenPopup(false);
     navigate("cases/create");
   };

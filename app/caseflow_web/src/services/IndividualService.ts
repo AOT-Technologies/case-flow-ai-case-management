@@ -36,6 +36,7 @@ export const getIndividualDetails = async (id) => {
 
 export const getIndividualDetailsByIds = async (ids) => { 
   const url = LOBURL;
+  ids = ids.filter(id => typeof id === 'number' && !isNaN(id))
   const output = await httpPOSTRequest(
     url,
     {

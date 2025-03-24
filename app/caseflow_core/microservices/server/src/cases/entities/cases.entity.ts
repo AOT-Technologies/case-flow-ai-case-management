@@ -16,6 +16,7 @@ import { CaseStatuses } from '../../case_status/entities/case_status.entity';
 import { CaseTypes } from '../../case_types/entities/case_type.entity';
 import { CaseNotes } from 'src/case_notes/entities/case_note.entity';
 import { WorkflowActivity } from 'src/workflow_activities/entities/workflow_activity.entity';
+import { CaseDecision } from 'src/case_decision/entities/case_decision.entity';
 
 /**
  * Summary :  Entity Class For External Cases
@@ -163,4 +164,15 @@ export class Cases {
   @Column({ nullable: true })
   @Field({ nullable: true })
   resolutionsought: string;
+
+  @Column({ nullable: true })
+  @Field( {nullable: true} )
+  locationid: number;
+
+  @Column({ nullable: true })
+  @Field( {nullable: true} )
+  employerid: number;
+
+  @OneToMany(() => CaseDecision, (caseDecision) => caseDecision.case)
+  caseDecisions: CaseDecision[];
 }

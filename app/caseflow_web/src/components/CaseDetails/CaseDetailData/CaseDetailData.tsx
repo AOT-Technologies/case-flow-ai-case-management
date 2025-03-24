@@ -15,7 +15,7 @@ interface CaseDetailDataProps {
   city: String;
   region: String;
   dateofbirth: any;
-  describetheissue: String;
+  describetheissue: any;
   resolutionsought: String;
   issuetype: String;
   phonenumber: String;
@@ -47,7 +47,6 @@ const CaseDetailData = ({
   const handleTaskDetailsPopUpClose = async ()=> {
     setIsTaskDetailsPopupOpen(false);
   };
-  
   return (
     <>
     <CustomizedDialog
@@ -64,22 +63,22 @@ const CaseDetailData = ({
           <Typography variant="subtitle1">Contact name</Typography>
           <Typography variant="body2">{contactid}</Typography>
         </div>
-        <div className="case-detail-name">
+        {/* <div className="case-detail-name">
           <Typography variant="subtitle1">Individual</Typography>
           <Typography variant="body2">{individualid}</Typography>
-        </div>
-        <div className="case-detail-email">
+        </div> */}
+        {/* <div className="case-detail-email">
           <Typography variant="subtitle1">Email</Typography>
           <Typography variant="body2">{email}</Typography>
-        </div>
-        <div className="case-detail-phonenumber">
-          <Typography variant="subtitle1">Phone Number</Typography>
-          <Typography variant="body2">{phonenumber}</Typography>
-        </div>
-        <div className="case-detail-dateofbirth">
+        </div> */}
+          {/* <div className="case-detail-phonenumber">
+            <Typography variant="subtitle1">Phone Number</Typography>
+            <Typography variant="body2">{phonenumber}</Typography>
+          </div> */}
+        {/* <div className="case-detail-dateofbirth">
           <Typography variant="subtitle1">Date of Birth</Typography>
           <Typography variant="body2">{dateofbirth}</Typography>
-        </div>
+        </div> */}
         {/* <div className="case-detail-date">
           <Typography variant="subtitle1">Start Date</Typography>
 
@@ -96,21 +95,27 @@ const CaseDetailData = ({
         <Typography variant="body2">{dueDate}</Typography>
 
         </div> */}
-        <div className="case-detail-city">
+        {/* <div className="case-detail-city">
           <Typography variant="subtitle1">City</Typography>
           <Typography variant="body2">{city}</Typography>
         </div>
         <div className="case-detail-province">
           <Typography variant="subtitle1">Region</Typography>
           <Typography variant="body2">{region}</Typography>
-        </div>
+        </div> */}
         <div className="case-detail-issuetype">
           <Typography variant="subtitle1">Issue Type</Typography>
           <Typography variant="body2">{issuetype}</Typography>
         </div>
         <div className="case-detail-describetheissue">
-          <Typography variant="subtitle1">Describe the Issue</Typography>
-          <Typography variant="body2">{describetheissue}</Typography>
+          <Typography variant="subtitle1">Issue Descriptions</Typography>
+          <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
+            {describetheissue.map((desc,idx) => (
+              <li key={idx}>
+                <Typography variant="body2">{desc}</Typography>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="case-detail-resolutionsought">
           <Typography variant="subtitle1">Resolution Sought</Typography>

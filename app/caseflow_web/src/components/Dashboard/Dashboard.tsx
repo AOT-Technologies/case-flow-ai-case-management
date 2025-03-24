@@ -67,25 +67,25 @@ const Dashboard = () => {
       pV.push(parseInt(cV.contactid));
       return pV;
     }, []);
-    let individuals = await recentCases.reduce(function(pV, cV){
-      pV.push(parseInt(cV.individualid));
-      return pV;
-    }, []);
+    // let individuals = await recentCases.reduce(function(pV, cV){
+    //   pV.push(parseInt(cV.individualid));
+    //   return pV;
+    // }, []);
     let contactList = await getContactDetailsByIds(contacts);
-    let individualList = await getIndividualDetailsByIds(individuals);
+    // let individualList = await getIndividualDetailsByIds(individuals);
     
     let contactsKey = new Map<string, string>();
     contactList?.map(contact=>{
       contactsKey.set(contact.id, contact.firstname+' '+contact.lastname);
     })
     
-    let individualsKey = new Map<string, string>();
-    individualList?.map(individual=>{
-      individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
-    })
+    // let individualsKey = new Map<string, string>();
+    // individualList?.map(individual=>{
+    //   individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
+    // })
     recentCases = recentCases?.filter((element, index) => {
       element.contactname=contactsKey.get(element.contactid);
-      element.individualname=individualsKey.get(element.individualid);
+      // element.individualname=individualsKey.get(element.individualid);
       return index < 5;
     });
     

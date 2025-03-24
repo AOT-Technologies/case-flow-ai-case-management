@@ -67,9 +67,7 @@ export class CreateCaseInput {
   @Field({ nullable: true })
   lobcaseid: number;
 
-  @Field()
-  @IsString()
-  @IsNotEmpty()
+  @Field( { nullable: true })
   individualid: string;
 
   @Field()
@@ -103,4 +101,10 @@ export class CreateCaseInput {
 
   @Field({ nullable: true })
   resolutionsought: string;
+
+  @Field({ nullable: true })
+  locationid: number;
+
+  @Field( {nullable: true} )
+  employerid: number;
 }

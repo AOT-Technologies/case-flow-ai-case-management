@@ -70,6 +70,22 @@ export interface Contact {
   email: string;
 }
 
+export interface Employer {
+  id: number;
+  worksafenumber: number;
+  name: string;
+  email: string;
+  phonenumber: string;
+  contacts: string[];
+  locations: Location[];
+}
+
+export interface Location {
+  id: number;
+  address: string;
+  city: string;
+}
+
 export interface Individual {
   id: number;
   firstname: string;

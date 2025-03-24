@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import FilterMuiComponent from "../FilterMuiComponent/FilterMuiComponent";
 import CaseDetailData from "./CaseDetailData/CaseDetailData";
 import CaseDetailReference from "./CaseDetailReference/CaseDetailReference";
+import DecisionForm from "../CreateDecision/CreateDecision";
 import "./CaseDetails.scss";
 import Search from "../Search/Search";
 import CaseHistory from "../CaseHistory/caseHistory";
-import { deleteCase, getCaseDetails, updateCases } from "../../services/CaseService";
+import {
+  deleteCase,
+  getCaseDetails,
+  updateCases,
+} from "../../services/CaseService";
 import { useLocation } from "react-router-dom";
 import RelatedCaseDocuments from "../RelatedCaseDocuments/RelatedCaseDocuments";
 import Accordion from "@mui/material/Accordion";
@@ -49,6 +54,7 @@ import {
   updateTaksById,
 } from "../../services/workflowService";
 import {
+  Box,
   Button,
   Divider,
   FormControl,
@@ -69,18 +75,29 @@ import {
   submitNewFormDraft,
 } from "../../services/formsService";
 import { Form as FormIOForm, saveSubmission, Formio } from "react-formio";
-import { FORMSFLOW_APPLICATION_URL, FORMSFLOW_WEB_APPLICATION_URL } from "../../apiManager/endpoints";
+import {
+  FORMSFLOW_APPLICATION_URL,
+  FORMSFLOW_WEB_APPLICATION_URL,
+} from "../../apiManager/endpoints";
 import { publishMessage } from "../../services/NatsServices";
 import { v4 as uuidv4 } from "uuid";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
 import { createNewNote, getCaseNotes } from "../../services/caseNotesService";
-import { getContactDetails, getContactsData } from "../../services/ContactService";
+import {
+  getContactDetails,
+  getContactsData,
+} from "../../services/ContactService";
 import { setSelectedContact } from "../../reducers/newContactReducer";
 import { getIndividualDetails } from "../../services/IndividualService";
 import { setSelectedIndividual } from "../../reducers/newIndividualReducer";
-import { createNewWorkflowActivity, getWorkflowActivities } from "../../services/workflowActivityService";
+import {
+  createNewWorkflowActivity,
+  getWorkflowActivities,
+} from "../../services/workflowActivityService";
 import RelatedWorkflowActivities from "../RelatedWorkflowActivities/RelatedWorkflowActivities";
-
+import Decision from "../Decision/Decision";
+import { createRootDecisionService, createIssueDecisionService, createCaseDecisionService } from "../../services/DecisionService";
+import { getCaseDecisionByCaseId } from "../../services/DecisionService";
 // Formio.setProjectUrl("https://app2.aot-technologies.com/formio");
 // Formio.setBaseUrl("https://app2.aot-technologies.com/formio");
 
@@ -92,8 +109,12 @@ const CaseDetails = () => {
   const caseTypes = useSelector((state: State) => state.constants.caseTypes);
   const tasks = useSelector((state: State) => state.cases.selectedCase.tasks);
   const selectedCase = useSelector((state: State) => state.cases.selectedCase);
-  const selectedContact = useSelector((state: State) => state.contacts.selectedContact);
-  const selectedIndividual = useSelector((state: State) => state.individuals.selectedIndividual);
+  const selectedContact = useSelector(
+    (state: State) => state.contacts.selectedContact
+  );
+  const selectedIndividual = useSelector(
+    (state: State) => state.individuals.selectedIndividual
+  );
   const [workflowActivities, setWorkflowActivities] = useState([]);
   const userName = useSelector(
     (state: State) => state.auth.userDetails.userName
@@ -118,42 +139,53 @@ const CaseDetails = () => {
     // { id: 4, code: 4, text: "Complete" },
     // { id: 4, code: 4, text: "Merge" },
     // { id: 5, code: 5, text: "Archive" },
-    { id: 4, code: 4, text: "Upload Document" }, 
-    { id: 5, code: 5, text: "Add Note" }, 
+    { id: 4, code: 4, text: "Upload Document" },
+    { id: 5, code: 5, text: "Add Note" },
     { id: 6, code: 6, text: "Delete" },
-    { id: 7, code: 7, text: "Add Communication" }, 
-    { id: 8, code: 8, text: "Close" }, 
+    { id: 7, code: 7, text: "Add Communication" },
+    { id: 8, code: 8, text: "Close" },
+    { id: 9, code: 9, text: "Add Decision" },
+    { id: 10, code: 10, text: "Email - Received"},
+    { id: 11, code: 11, text: "Email - Sent"},
+  ];
+  const optionsForActivity = [
+    { id: 1, code: 1, text: "Closed" },
+    // { id: 2, code: 2, text: "Correspondence - Received" },
+    // { id: 3, code: 3, text: "Correspondence - Sent" },
+    // { id: 4, code: 4, text: "Email - Received" },
+    // { id: 5, code: 5, text: "Email - Sent" },
+    { id: 6, code: 6, text: "Hearing/Mediation - Preparation" },
+    { id: 7, code: 7, text: "Hearing/Mediation Attended" },
+    { id: 8, code: 8, text: "No Merit/Appeal Deflected" },
+    // { id: 9, code: 9, text: "Phone Call - Incoming" },
+    // { id: 10, code: 10, text: "Phone Call - Outgoing" },
   ];
   const [isDeleteConfirmationUpOpen, setDeleteConfirmation] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [isEmailReceivedOpen, setIsEmailReceivedOpen] = useState(false);
+  const [isEmailSentOpen, setIsEmailSentOpen] = useState(false)
   const [isCommunicationOpen, setIsCommunicationOpen] = useState(false);
   const [isRecordOutputOpen, setIsRecordOutputOpen] = useState(false);
+  const [isDecisionOpen, setIsDecisionOpen] = useState(false);
 
   const onCloseDeletePopup = (id) => {
     setDeleteConfirmation(false);
   };
 
   const onConfirmDeleteCase = (id) => {
+    deleteCase(parseInt(selectedCase.id.toString()))
+      .then((data) => {
+        if (data.success) {
+          toast.success(data?.success);
+          setTimeout(() => navigate("/private/cases/"), 2000);
+        } else {
+          toast.success(data?.error);
+        }
 
-    deleteCase(parseInt(selectedCase.id.toString())).then((data=>{
-    if(data.success){
-    toast.success(data?.success);
-    setTimeout(()=>navigate("/private/cases/"), 2000);
-      
-    }
-    else{
-    toast.success(data?.error);
-
-    }
-
-      setDeleteConfirmation(false);
-    }))
-    .catch(err=>{
-
-    })
+        setDeleteConfirmation(false);
+      })
+      .catch((err) => {});
   };
-
-  
 
   optionsForAction?.map((action) => {
     if (selectedCase?.casestatus?.displayname == "Pending") {
@@ -170,15 +202,19 @@ const CaseDetails = () => {
     var matches = location.pathname.match(/(\d+)/);
     if (matches && matches[0]) {
       let output = await getCaseDetails(matches[0]);
+      // stored as csv for demo sake put it into a list
+      if (typeof output.describetheissue === "string" && output.describetheissue.includes(",")) {
+        output.describetheissue = output.describetheissue.split(",");
+      }
       dispatch(setSelectedCase({ ...output, isEdit: false }));
       await fetchCaseHistory(matches[0]);
       findContact(output.contactid);
-      findIndividual(output.individualid);
-      setWorkflowActivities(await getWorkflowActivities(matches[0]))
+      // findIndividual(output.individualid);
+      setWorkflowActivities(await getWorkflowActivities(matches[0]));
+      fetchCaseDecision(matches[0])
     }
   }
   async function fetchCaseHistory(id) {
-    
     const caseHistoryData = await getCaseHistory(id);
     const caseNotes = await getCaseNotes(id);
     const output = caseHistoryData?.casehistory?.map((element, index) => {
@@ -187,25 +223,25 @@ const CaseDetails = () => {
         date: moment(element.datetime).format("yyyy-MM-DD HH:mm"),
         caseHistoryType: element.event.eventtype.text,
         caseHistoryWorkflowType: element.event.workflowtype,
-        eventtypeId : element.event.eventtypeId,
-        artifactId :  element.event.artifactId
-
+        eventtypeId: element.event.eventtypeId,
+        artifactId: element.event.artifactId,
       };
     });
 
-    dispatch(setSelectedCaseNote(caseNotes))
+    dispatch(setSelectedCaseNote(caseNotes));
     dispatch(setCaseHistory(output));
     dispatch(setFilteredCaseHistory(output));
   }
 
-  
-
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [isOpenConfirmationPopup, setOpenConfirmationPopup] = useState(false);
   const [confirmationText, setConfirmationText] = useState("");
+  const [isOpenActivityConfirmationPopUp, setOpenActivityConfirmationPopup] = useState(false)
+  const [activityConfirmationText, setActivityConfirmationText] = useState("");
   const [newStatus, setNewStatus] = useState(0);
   const [selected, setSelected] = useState(0);
   const [selectedAction, setSelectedAction] = useState(0);
+  const [selectedActivity, setSelectedActivity] = useState(0);
   const docDetail = useSelector(
     (state: store) => state.cases.selectedCase.documents
   );
@@ -215,8 +251,13 @@ const CaseDetails = () => {
   const [formsList, setFormsList]: any = useState([]);
   const [selectedFormDetails, setSelectedFormDetails]: any = useState();
   const [note, setNote]: any = useState();
+  const [emailSender, setEmailSender]: any = useState();
+  const [emailRecipient, setEmailRecipient]: any = useState();
   const [communication, setCommunication]: any = useState();
   const [recordOutput, setRecordOutput]: any = useState();
+  const [decisionData, setDecisionData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleClose = (event, reason) => {
     setOpenPopup(false);
@@ -226,8 +267,21 @@ const CaseDetails = () => {
     setIsNoteOpen(false);
     setSelected(0);
   };
+  const handleEmailReceivedPopUpClose = () => {
+    setIsEmailReceivedOpen(false)
+    setSelected(0);
+  }
+  const handleEmailSentPopUpClose = () => {
+    setIsEmailSentOpen(false)
+    setSelected(0);
+  }
   const handleCommunicationPopUpClose = (event, reason) => {
     setIsCommunicationOpen(false);
+    setSelected(0);
+  };
+
+  const handleDecisionPopUpClose = () => {
+    setIsDecisionOpen(false);
     setSelected(0);
   };
   const handleRecordOutputPopUpClose = (event, reason) => {
@@ -273,6 +327,16 @@ const CaseDetails = () => {
     dispatch(setSelectedCaseDocuments(output.CaseDocuments));
     dispatch(setTotalDocCount(output.totalCount));
   };
+
+  const onActivityChangeHandler = async (e: any) => {
+    const selectedActivity = e.target.value;
+    setNote(`Activity Added:\n\n${selectedActivity}`)
+    setSelectedActivity(selectedActivity); // assuming you have this state
+    setActivityConfirmationText(`Add activity: ${selectedActivity}?`);
+    setOpenActivityConfirmationPopup(true);
+  };
+  
+
   const onActionChangehandler = async (e: any) => {
     setSelected(e.target.value);
     switch (e.target.value) {
@@ -294,27 +358,38 @@ const CaseDetails = () => {
       case optionsForAction[0].text: {
         return editCaseDetails(selectedCase);
       }
-       case optionsForAction[6].text: {
-        return setDeleteConfirmation(true)
+      case optionsForAction[6].text: {
+        return setDeleteConfirmation(true);
       }
-       case optionsForAction[5].text: {
-        setSelectedAction(5)
-        return setIsNoteOpen(true)
+      case optionsForAction[5].text: {
+        setSelectedAction(5);
+        return setIsNoteOpen(true);
       }
       case optionsForAction[7].text: {
-        setSelectedAction(7)
-        return setIsCommunicationOpen(true)
+        setSelectedAction(7);
+        return setIsCommunicationOpen(true);
       }
       case optionsForAction[8].text: {
-        setSelectedAction(8)
-        return setIsRecordOutputOpen(true)
+        setSelectedAction(8);
+        return setIsRecordOutputOpen(true);
+      }
+      case optionsForAction[9].text: {
+        setSelectedAction(9);
+        return setIsDecisionOpen(true);
+      }
+      case optionsForAction[10].text: {
+        setSelectedAction(10);
+        return setIsEmailReceivedOpen(true)
+      }
+      case optionsForAction[11].text: {
+        setSelectedAction(11);
+        return setIsEmailSentOpen(true)
       }
     }
   };
 
   const getForms = async () => {
-
-    let type= caseTypes.find(type=> type.id == selectedCase.typeid)
+    let type = caseTypes.find((type) => type.id == selectedCase.typeid);
     // const formsList = await getFormsListByName('Case Flow POC');
     const formsList = await getFormsListByName(type?.searchterm);
     setFormsList(formsList);
@@ -339,14 +414,14 @@ const CaseDetails = () => {
     fetchCaseDetails();
     fetchAllCaseStatuses();
   }, []);
-  async function  findContact (contactid){
+  async function findContact(contactid) {
     const selectedContact = await getContactDetails([contactid]);
     dispatch(setSelectedContact(selectedContact));
-  };
-  async function  findIndividual (individualid) {
+  }
+  async function findIndividual(individualid) {
     const selectedIndividual = await getIndividualDetails(individualid);
     dispatch(setSelectedIndividual(selectedIndividual));
-  };
+  }
   useEffect(() => {
     if (selectedCase && selectedCase.id) fetchRealtedTasks();
   }, [selectedCase.id]);
@@ -366,6 +441,15 @@ const CaseDetails = () => {
     setOpenConfirmationPopup(false);
     setSelected(0);
   };
+  const onCloseAcitvityConfirmationPopup = () => {
+    setOpenActivityConfirmationPopup(false)
+    setSelectedActivity(0)
+  }
+  const onActivityConfirmation = async () => {
+    submitNote()
+    setSelectedActivity(0);
+    setOpenActivityConfirmationPopup(false);
+  }
   const onConfirmation = async () => {
     let newStatusDetails = statuses.find((stat) => stat.code == newStatus);
     if (newStatusDetails && newStatusDetails.id) {
@@ -486,7 +570,7 @@ const CaseDetails = () => {
     // } catch (error) {
     //   console.log(error);
     // }
-    
+
     submitNewForm(selectedForm, data).then((res) => {
       let submissionData = {
         formId: res.form,
@@ -498,7 +582,7 @@ const CaseDetails = () => {
           "/submission/" +
           res._id,
         webFormUrl:
-        FORMSFLOW_WEB_APPLICATION_URL +
+          FORMSFLOW_WEB_APPLICATION_URL +
           "/form/" +
           res.form +
           "/submission/" +
@@ -511,7 +595,7 @@ const CaseDetails = () => {
       //       return submitNewFormDraft(submissionData, draftId);
       //     }
       //   })
-        createCase(submissionData)
+      createCase(submissionData)
         .then(async (data) => {
           if (data && data.applicationStatus == "Completed") {
             toast.success("New workflow started successfully");
@@ -519,9 +603,12 @@ const CaseDetails = () => {
             setOpenFormIOPopup(false);
             fetchRealtedTasks();
             setSelected(0);
-            setWorkflowActivities(await getWorkflowActivities(selectedCase.id))
+            setWorkflowActivities(await getWorkflowActivities(selectedCase.id));
 
-            await addWorkflowCaseHistory(selectedCase.id,selectedFormDetails.title);
+            await addWorkflowCaseHistory(
+              selectedCase.id,
+              selectedFormDetails.title
+            );
             await fetchCaseHistory(selectedCase.id);
           } else {
             return getTaksByProcessInstanceId(data.processInstanceId);
@@ -532,9 +619,20 @@ const CaseDetails = () => {
             let task = tasks[0];
             if (task) {
               task.caseInstanceId = selectedCase.id;
-              
-              await createNewWorkflowActivity(selectedCase.id, task.id, task.name, selectedFormDetails.title, 
-                FORMSFLOW_WEB_APPLICATION_URL + "/form/" + res.form + "/submission/" + res._id, 'New', userName)
+
+              await createNewWorkflowActivity(
+                selectedCase.id,
+                task.id,
+                task.name,
+                selectedFormDetails.title,
+                FORMSFLOW_WEB_APPLICATION_URL +
+                  "/form/" +
+                  res.form +
+                  "/submission/" +
+                  res._id,
+                "New",
+                userName
+              );
               return updateTaksById(task.id, task);
             }
           }
@@ -546,7 +644,7 @@ const CaseDetails = () => {
             setOpenWorkflowPopup(false);
             setOpenFormIOPopup(false);
             fetchRealtedTasks();
-            setWorkflowActivities(await getWorkflowActivities(selectedCase.id))
+            setWorkflowActivities(await getWorkflowActivities(selectedCase.id));
             await fetchCaseHistory(selectedCase.id);
           } else {
             toast.error("Failed to  start the workflow. Please try again!");
@@ -554,76 +652,114 @@ const CaseDetails = () => {
         });
     });
   };
-  const submitNote = async () =>{
-    if(note){
-     
-      let response = await createNewNote({ caseid : selectedCase.id,
-        userid : userName,
-        notetext : note,
+  const submitDecision = async (formValues) => {
+    try {
+      const rootDecisionResponse = await createRootDecisionService({
+        rootDecisionDate: formValues.rootDecisionDate,
+        rootDecisionAgency: formValues.rootDecisionAgency,
+        decisionMaker: formValues.decisionMaker,
+        referenceNumber: formValues.referenceNumber,
+        decisionDate: formValues.decisionDate,
+      });
+
+      if (rootDecisionResponse?.error) throw new Error("Failed to create root decision");
+      const rootDecisionId = rootDecisionResponse.id;
+
+      for (const issue of formValues.issues) {
+        const issueDecisionResponse = await createIssueDecisionService({
+          issue: issue.issue,
+          eaoRole: issue.eaoRole,
+          outcome: issue.outcome,
+          impact: parseFloat(issue.impact) || 0,
+        });
+
+        if (issueDecisionResponse?.error) throw new Error("Failed to create issue decision");
+
+        const caseDecisionReponse = await createCaseDecisionService({
+          caseId: selectedCase.id,
+          rootDecisionId,
+          issueDecisionId: issueDecisionResponse.id,
+        });
+
+        if (caseDecisionReponse?.error) throw new Error("Failed to create case decision");
+      }
+
+      toast.success("Decision created successfully!");
+      handleDecisionPopUpClose()
+      // setSelected(0)
+      fetchCaseDecision(selectedCase.id)
+      // submitNote()
+      // add to case history 
+    } catch {
+      toast.error("Failed to create decision. Please try again!");
+    }
+  };
+  const fetchCaseDecision = async (caseId) => {
+    const result = await getCaseDecisionByCaseId({ caseId: caseId });
+    setDecisionData(result)
+  }
+  const submitNote = async () => {
+    if (note) {
+      console.log('action type is', selectedAction)
+      let response = await createNewNote({
+        caseid: selectedCase.id,
+        userid: userName,
+        notetext: note,
         actiontype: selectedAction,
       });
-      if(response.id){
+      if (response.id) {
         setSelected(0);
         setIsNoteOpen(false);
         toast.success("Note added succesfully!");
         await fetchCaseHistory(selectedCase.id);
-      }
-      else{
+      } else {
         toast.error("Failed to  add the note. Please try again!");
       }
-    }
-    else{
+    } else {
       toast.error("Please add some notes");
     }
- 
-  }
-  const submitCommunication = async () =>{
-    if(communication){
-     
-      let response = await createNewNote({ caseid : selectedCase.id,
-        userid : userName,
-        notetext : communication,
+  };
+  const submitCommunication = async () => {
+    if (communication) {
+      let response = await createNewNote({
+        caseid: selectedCase.id,
+        userid: userName,
+        notetext: communication,
         actiontype: selectedAction,
       });
-      if(response.id){
+      if (response.id) {
         setSelected(0);
         setIsCommunicationOpen(false);
         toast.success("Communication added succesfully!");
         await fetchCaseHistory(selectedCase.id);
-      }
-      else{
+      } else {
         toast.error("Failed to  add the communication. Please try again!");
       }
-    }
-    else{
+    } else {
       toast.error("Please add some communication");
     }
- 
-  }
-  const submitRecordedOutput = async () =>{
-    if(recordOutput){
-     
-      let response = await createNewNote({ caseid : selectedCase.id,
-        userid : userName,
-        notetext : recordOutput,
+  };
+  const submitRecordedOutput = async () => {
+    if (recordOutput) {
+      let response = await createNewNote({
+        caseid: selectedCase.id,
+        userid: userName,
+        notetext: recordOutput,
         actiontype: selectedAction,
       });
-      if(response.id){
+      if (response.id) {
         setSelected(0);
         setIsRecordOutputOpen(false);
         toast.success("Output of the issue recorded succesfully!");
         await fetchCaseHistory(selectedCase.id);
         changeStatus(3);
-      }
-      else{
+      } else {
         toast.error("Failed to record output of the issue. Please try again!");
       }
-    }
-    else{
+    } else {
       toast.error("Please add output of the issue");
     }
- 
-  }
+  };
   return (
     <>
       <div className="details-container">
@@ -650,19 +786,33 @@ const CaseDetails = () => {
                 {selectedCase?.casestatus?.displayname}
               </Typography>
             </div>
-            <FilterMuiComponent
-              label="Action"
-              options={optionsForAction}
-              onChnagehandler={onActionChangehandler}
-              selected={selected}
-            />
+            <div style={{display: "flex"}}>
+              <FilterMuiComponent
+                label="Action"
+                options={optionsForAction}
+                onChnagehandler={onActionChangehandler}
+                selected={selected}
+              />
+              <FilterMuiComponent
+                label="Add Activity"
+                options={optionsForActivity}
+                onChnagehandler={onActivityChangeHandler}
+                selected={selectedActivity}
+              />
+            </div>
           </span>
           <Divider sx={{ border: 1, color: "#606060" }} />
           {selectedCase && selectedCase.id ? (
             <>
               <CaseDetailData
-                contactid={selectedContact.firstname+' '+selectedContact.lastname}
-                individualid={selectedIndividual.firstname+" "+selectedIndividual.lastname}
+                contactid={
+                  selectedContact.firstname + " " + selectedContact.lastname
+                }
+                individualid={
+                  selectedIndividual.firstname +
+                  " " +
+                  selectedIndividual.lastname
+                }
                 startDate={caseDetail.startDate}
                 owner={caseDetail.owner}
                 tasks={tasks}
@@ -691,7 +841,7 @@ const CaseDetails = () => {
               sx={{ marginBottom: 0 }}
             >
               <Typography variant="body1" className="caseDocuments-headtag">
-                 Related Workflow Activities
+                Related Workflow Activities
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ paddingLeft: 0 }}>
@@ -710,7 +860,7 @@ const CaseDetails = () => {
               sx={{ marginBottom: 0 }}
             >
               <Typography variant="body1" className="caseDocuments-headtag">
-                 {GENERIC_NAME} Documents
+                {GENERIC_NAME} Documents
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ paddingLeft: 0 }}>
@@ -720,6 +870,24 @@ const CaseDetails = () => {
               ></RelatedCaseDocuments>
             </AccordionDetails>
           </Accordion>
+
+          <Accordion className="case-documents">
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              className="case-documents-head-section"
+              sx={{ marginBottom: 0 }}
+            >
+              <Typography variant="body1" className="caseDocuments-headtag">
+                Case Decisions
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ paddingLeft: 0 }}>
+              <Decision caseId={selectedCase.id} decisionData={decisionData}/>
+            </AccordionDetails>
+          </Accordion>
+          
 
           <LobCustom />
         </section>
@@ -789,19 +957,28 @@ const CaseDetails = () => {
             </div>
             <div>
               <Typography variant="subtitle2">Contact name</Typography>
-              <Typography variant="body2">{selectedContact.firstname+' '+selectedContact.lastname}</Typography>
+              <Typography variant="body2">
+                {selectedContact.firstname + " " + selectedContact.lastname}
+              </Typography>
             </div>
-            <div>
+            {/* <div>
               <Typography variant="subtitle2">Individual name</Typography>
-              <Typography variant="body2">{selectedIndividual.firstname+' '+selectedIndividual.lastname}</Typography>
-            </div>
+              <Typography variant="body2">
+                {selectedIndividual.firstname +
+                  " " +
+                  selectedIndividual.lastname}
+              </Typography>
+            </div> */}
             <div>
               <Typography variant="subtitle2">Issue Type </Typography>
               <Typography variant="body2"> {selectedCase.issuetype}</Typography>
             </div>
             <div>
-              <Typography variant="subtitle2">Issue Detials </Typography>
-              <Typography variant="body2"> {selectedCase.describetheissue}</Typography>
+              <Typography variant="subtitle2">Issue Details </Typography>
+              <Typography variant="body2">
+                {" "}
+                {selectedCase.describetheissue}
+              </Typography>
             </div>
           </div>
           <FormIOForm
@@ -820,14 +997,14 @@ const CaseDetails = () => {
       >
         <div className="workflow">
           <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Notes"
-          sx={{border: "0px"}}
-          multiline
-          rows={4}
-          onChange={(e)=> setNote(e.target.value)}
-        />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Notes"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setNote(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <Button
@@ -844,6 +1021,91 @@ const CaseDetails = () => {
         </div>
       </CustomizedDialog>
       <CustomizedDialog
+        title="Email - Received"
+        isOpen={isEmailReceivedOpen}
+        setIsOpen={setIsEmailReceivedOpen}
+        handleClose={handleEmailReceivedPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+              id="outlined-multiline-flexible"
+              label="Received From"
+              sx={{ border: "0px", mb: 2 }}
+              rows={1}
+              onChange={(e) => setEmailSender(e.target.value)}
+            />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Email Content"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setNote(`Email received from ${emailSender}:\n\n${e.target.value}`)}
+            />
+          </FormControl>
+
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={() => {
+                handleEmailReceivedPopUpClose()
+                submitNote()
+              }}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
+        title="Email - Sent"
+        isOpen={isEmailSentOpen}
+        setIsOpen={setIsEmailSentOpen}
+        handleClose={handleEmailSentPopUpClose}
+        fullWidth
+      >
+        <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
+          <TextField
+              id="outlined-multiline-flexible"
+              label="Sent to"
+              sx={{ border: "0px", mb: 2 }}
+              rows={1}
+              onChange={(e) => setEmailRecipient(e.target.value)}
+            />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Email Content"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setNote(`Email sent to ${emailRecipient}:\n\n${e.target.value}`)}
+            />
+          </FormControl>
+          <FormControl>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={() => {
+                handleEmailSentPopUpClose()
+                submitNote()
+              }}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div>
+      </CustomizedDialog>
+      <CustomizedDialog
         title="Add Communication"
         isOpen={isCommunicationOpen}
         setIsOpen={setIsCommunicationOpen}
@@ -852,14 +1114,14 @@ const CaseDetails = () => {
       >
         <div className="workflow">
           <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Communication"
-          sx={{border: "0px"}}
-          multiline
-          rows={4}
-          onChange={(e)=> setCommunication(e.target.value)}
-        />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Communication"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setCommunication(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <Button
@@ -876,6 +1138,48 @@ const CaseDetails = () => {
         </div>
       </CustomizedDialog>
       <CustomizedDialog
+        title={"Add Decision"}
+        isOpen={isDecisionOpen}
+        setIsOpen={setIsDecisionOpen}
+        handleClose={handleDecisionPopUpClose}
+        fullWidth
+      >
+        {/* <div className="workflow">
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
+            <div className="decision">
+              <InputLabel> Root Decision Date </InputLabel>
+              <InputLabel> Root Decision Date2 </InputLabel>
+
+            </div>
+            <FilterMuiComponent
+                label="Action"
+                options={['1','2']}
+                onChnagehandler={() => {}}
+                selected={'1'}
+              />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Communication"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setCommunication(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.main",
+                borderColor: "primary.main",
+              }}
+              onClick={submitCommunication}
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </div> */}
+        <DecisionForm submitDecision={submitDecision} issues={selectedCase.describetheissue} caseId={selectedCase.id} closeDecisionPopUp={handleDecisionPopUpClose}></DecisionForm>
+      </CustomizedDialog>
+      <CustomizedDialog
         title="Record Output of the Issue"
         isOpen={isRecordOutputOpen}
         setIsOpen={setIsRecordOutputOpen}
@@ -884,14 +1188,14 @@ const CaseDetails = () => {
       >
         <div className="workflow">
           <FormControl sx={{ m: 1, minWidth: 90 }} size="small">
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Record output of the Issue"
-          sx={{border: "0px"}}
-          multiline
-          rows={4}
-          onChange={(e)=> setRecordOutput(e.target.value)}
-        />
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Record output of the Issue"
+              sx={{ border: "0px" }}
+              multiline
+              rows={4}
+              onChange={(e) => setRecordOutput(e.target.value)}
+            />
           </FormControl>
           <FormControl>
             <Button
@@ -918,7 +1222,7 @@ const CaseDetails = () => {
         type="confirm"
       />
 
-<PopUpDialogBox
+      <PopUpDialogBox
         isOpen={isDeleteConfirmationUpOpen}
         onClose={onCloseDeletePopup}
         dialogContentText={" Are you sure you want to delete Case?"}
@@ -927,10 +1231,17 @@ const CaseDetails = () => {
         btn2={"Delete"}
         type="delete"
       />
+      <PopUpDialogBox
+        isOpen={isOpenActivityConfirmationPopUp}
+        onClose={onCloseAcitvityConfirmationPopup}
+        dialogContentText={activityConfirmationText}
+        onConfirm={onActivityConfirmation}
+        btn1={"Cancel"}
+        btn2={"Confirm"}
+        type="confirm"
+      />
     </>
   );
 };
 
 export default CaseDetails;
-
-
