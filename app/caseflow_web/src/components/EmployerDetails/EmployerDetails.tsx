@@ -22,7 +22,6 @@ export default function EmployerDetails() {
   const [searchColumn] = useState("employerid");
 
   const relatedCaseList = async (output) => {
-    console.log('output id is', output.id)
     let recentCases = await searchCases(
       output.id,
       "employerid",
@@ -36,8 +35,6 @@ export default function EmployerDetails() {
     let searchResultCases = recentCases?.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
-
-    console.log('case results', searchResultCases)
 
     let individuals = await searchResultCases?.reduce(function (pV, cV) {
       pV.push(parseInt(cV.individualid));
@@ -97,7 +94,6 @@ export default function EmployerDetails() {
     var matches = location.pathname.match(/(\d+)/);
     if (matches && matches[0]) {
       const employer = await getEmployerDetails(matches[0])
-      console.log('employer is', employer)
       setEmployer(employer)
       // relatedCaseList(employer)
     }

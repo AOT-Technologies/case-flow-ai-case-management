@@ -61,7 +61,7 @@ export interface SelectedCase {
   city: string;
   region: string;
   issuetype: String;
-  describetheissue: string;
+  describetheissue: string | string[];
   caseowner: string;
   resolutionsought: string;
   casestatus: CaseStatuses;
