@@ -793,7 +793,7 @@ const CaseDetails = () => {
                 selected={selected}
               />
               <FilterMuiComponent
-                label="Add Activity"
+                label="Custom Action"
                 options={optionsForActivity}
                 onChnagehandler={onActivityChangeHandler}
                 selected={selectedActivity}

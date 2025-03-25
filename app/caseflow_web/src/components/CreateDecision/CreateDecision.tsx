@@ -52,12 +52,21 @@ export default function DecisionForm(props) {
     }
   };
 
-  const initializeIssues = issues.map((issue) => ({
+  const issuesArray = Array.isArray(issues) ? issues : [issues];
+
+  const initializeIssues = issuesArray.map((issue) => ({
     issue: issue,
     eaoRole: "",
     outcome: "",
     impact: "",
   }));
+
+  // const initializeIssues = issues.map((issue) => ({
+  //   issue: issue,
+  //   eaoRole: "",
+  //   outcome: "",
+  //   impact: "",
+  // }));
 
   const [formValues, setFormValues] = React.useState({
     rootDecisionDate: "",
