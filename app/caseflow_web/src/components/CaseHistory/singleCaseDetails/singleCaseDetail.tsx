@@ -20,6 +20,22 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
     let note = caseNotes.find(note=>note.id == caseHistoryData.artifactId);
     return (note && note["notetext"]) ? note["notetext"] : "";
   }
+
+  const getType = () => {
+    try {
+      let note = caseNotes.find(note=>note.id == caseHistoryData.artifactId);
+      if (note && note["notetext"] && note["notetext"].includes("Activity Added:")) {
+        return "Activity Added"
+      } else if (note && note["notetext"] && note["notetext"].includes("Email received from")) {
+        return "Email - Received"
+      } else if (note && note["notetext"] && note["notetext"].includes("Email sent to")) {
+        return "Email - Sent"
+      }
+      return caseHistoryData.caseHistoryType
+    } catch {
+      return caseHistoryData.caseHistoryType
+    }
+  }
   return (
     <div className="case-grid-container">
       <span className="case-grid-date">
@@ -45,7 +61,9 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
       )}
       <span className="case-gird-details">
         <h3 onClick={expandDetailhandler} className="case-gird-details-header">
-          <span>{caseHistoryData.caseHistoryType}</span>
+          {/* <span>{caseHistoryData.caseHistoryType}</span> */}
+          <span>{getType()}</span>
+
           {expand ? (
             <KeyboardArrowUpRoundedIcon />
           ) : (
@@ -54,6 +72,7 @@ const SingleCaseDetail = ({ caseHistoryData, userInfo, progress }) => {
         </h3>
         {expand && (
           <div>
+            {/* Quick workaround for demo for displaying email content */}
             <p style={{ whiteSpace: "pre-line"}}>{( caseNotes && caseNotes.length && (caseHistoryData.eventtypeId == 4 || caseHistoryData.eventtypeId == 14 || caseHistoryData.eventtypeId == 15)) ? getNote() : (caseHistoryData.caseHistoryWorkflowType ? caseHistoryData.caseHistoryWorkflowType : caseHistoryData.caseHistoryType)}</p>
             <p>User - {userInfo.userName}</p>
           </div>
