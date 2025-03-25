@@ -110,11 +110,11 @@ const CaseDetailData = ({
         <div className="case-detail-describetheissue">
           <Typography variant="subtitle1">Issue Descriptions</Typography>
           <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-            {describetheissue.map((desc,idx) => (
-              <li key={idx}>
-                <Typography variant="body2">{desc}</Typography>
-              </li>
-            ))}
+          {(Array.isArray(describetheissue) ? describetheissue : [describetheissue]).map((desc, idx) => (
+            <li key={idx}>
+              <Typography variant="body2">{desc}</Typography>
+            </li>
+          ))}
           </ul>
         </div>
         <div className="case-detail-resolutionsought">
