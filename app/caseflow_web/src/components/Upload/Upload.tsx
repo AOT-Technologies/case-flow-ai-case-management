@@ -123,7 +123,7 @@ const Upload = (props) => {
       bodyFormData.append("name", values.fileName);
       bodyFormData.append("desc", values.fileDescription);
       bodyFormData.append("caseId", selectedCase.id);
-      bodyFormData.append("dmsprovider", CASEFLOW_DMS);
+      bodyFormData.append("dmsprovider", 4);
       bodyFormData.append("metaData", JSON.stringify(inputFields));
       bodyFormData.append("type", values.file.type);
       bodyFormData.append("size", values.fileSize);
