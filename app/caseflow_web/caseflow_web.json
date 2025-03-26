@@ -56,7 +56,7 @@
             },
             {
                 "name": "REACT_APP_CASEFLOW_DMS_API_URL",
-                "value": "https://caseflow-dms.aot-technologies.com"
+                "value": "https://caseflow-microservice.aot-technologies.com"
             },
             {
                 "name": "REACT_APP_FORMSFLOW_FROM_URL",
