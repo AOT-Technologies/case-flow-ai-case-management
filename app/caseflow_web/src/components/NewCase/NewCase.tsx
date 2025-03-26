@@ -302,7 +302,9 @@ const NewCase = () => {
             setTimeout(async function(){
               let recentCases = await fetchRecentCaseList();
               console.log('recent cases are', recentCases)
-              navigate("/private/employers/" + recentCases[0].employerid + "/details");
+              // navigate("/private/employers/" + recentCases[0].employerid + "/details");
+              navigate("/private");
+
 
             }, 1000)
           // } 
