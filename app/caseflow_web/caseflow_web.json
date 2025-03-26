@@ -36,7 +36,7 @@
             },
             {
                 "name": "REACT_APP_CASEFLOW_DMS",
-                "value": "3"
+                "value": "4"
             },
             {
                 "name": "REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL",

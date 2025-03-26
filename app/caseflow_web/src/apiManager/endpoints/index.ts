@@ -15,7 +15,7 @@ export const LOB_GRAPHQLAPI: string = `${CASEFLOW_LOB_GRAPHQL_API_URL}`;
 
 //alert(CASEFLOW_API_URL)
 export const API = {
-  DMS_API: 'https://caseflow-microservice.aot-technologies.com/documents',
+  DMS_API: `${CASEFLOW_DMS_API_URL}/documents`,
 };
 export const GRAPHQL = GRAPHQLAPI + "/graphql";
 export const LOBURL = LOB_GRAPHQLAPI + "/graphql";

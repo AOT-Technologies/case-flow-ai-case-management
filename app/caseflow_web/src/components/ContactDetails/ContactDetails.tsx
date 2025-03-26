@@ -41,22 +41,22 @@ const ContactDetail = () => {
     let searchResultCases = recentCases?.Cases?.map((element) => {
       return { ...element, status: "Open" };
     });
-    let individuals = await searchResultCases?.reduce(function(pV, cV){
-      pV.push(parseInt(cV.individualid));
-      return pV;
-    }, []);
-    let individualList = individuals.length>0 ? await getIndividualDetailsByIds(individuals):[];
+    // let individuals = await searchResultCases?.reduce(function(pV, cV){
+    //   pV.push(parseInt(cV.individualid));
+    //   return pV;
+    // }, []);
+    // let individualList = individuals.length>0 ? await getIndividualDetailsByIds(individuals):[];
     
     
-    let individualsKey = new Map<string, string>();
-    individualList?.map(individual=>{
-      individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
-    })
+    // let individualsKey = new Map<string, string>();
+    // individualList?.map(individual=>{
+    //   individualsKey.set(individual.id, individual.firstname+' '+individual.lastname);
+    // })
     
 
     searchResultCases = searchResultCases?.map((element) => {
       element.contactname=output.firstname+' '+output.lastname;
-      element.individualname=individualsKey.get(element.individualid);
+      // element.individualname=individualsKey.get(element.individualid);
       return element;
     });
     
